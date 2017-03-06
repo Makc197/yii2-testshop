@@ -5,7 +5,7 @@
                 <h3>Our Latest Work</h3>
                 <div class="portfolio-item">
                     <div class="portfolio-image">
-                        <a href="theme/page-portfolio-item.html"><img src="theme/img/portfolio6.jpg" alt="Project Name"></a>
+                        <a href="theme/page-portfolio-item.html"><img src="/img/portfolio6.jpg" alt="Project Name"></a>
                     </div>
                 </div>
             </div>

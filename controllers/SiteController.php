@@ -9,19 +9,18 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
-class SiteController extends Controller
-{
+class SiteController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
                 'only' => ['logout'],
                 'rules' => [
-                    [
+                        [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
@@ -40,8 +39,7 @@ class SiteController extends Controller
     /**
      * @inheritdoc
      */
-    public function actions()
-    {
+    public function actions() {
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -58,9 +56,64 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         return $this->render('index');
+    }
+
+    public function actionFeatures() {
+        return $this->render('features');
+    }
+
+    public function actionPageHomepageSample() {
+        return $this->render('page-homepage-sample');
+    }
+
+    public function actionPagePortfolioItem() {
+        return $this->render('page-portfolio-item');
+    }
+
+    public function actionPageServices1Column() {
+        return $this->render('page-services-1-column');
+    }
+
+    public function actionPageServices3Columns() {
+        return $this->render('page-services-3-columns');
+    }
+
+    public function actionPageServices4Columns() {
+        return $this->render('page-services-4-columns');
+    }
+
+    public function actionPagePricing() {
+        return $this->render('page-pricing');
+    }
+
+    public function actionPageTeam() {
+        return $this->render('page-team');
+    }
+
+    public function actionPageVacancies() {
+        return $this->render('page-vacancies');
+    }
+
+    public function actionPageJobDetails() {
+        return $this->render('page-job-details');
+    }
+
+    public function actionPagePortfolio2Columns1() {
+        return $this->render('page-portfolio-2-columns-1');
+    }
+
+    public function actionPagePortfolio2Columns2() {
+        return $this->render('page-portfolio-2-columns-2');
+    }
+
+    public function actionPagePortfolio3Columns1() {
+        return $this->render('page-portfolio-3-columns-1');
+    }
+
+    public function actionPagePortfolio3Columns2() {
+        return $this->render('page-job-details');
     }
 
     /**
@@ -68,8 +121,7 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionLogin()
-    {
+    public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -88,8 +140,7 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionLogout()
-    {
+    public function actionLogout() {
         Yii::$app->user->logout();
 
         return $this->goHome();
@@ -100,8 +151,7 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionContact()
-    {
+    public function actionContact() {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
@@ -118,8 +168,8 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionAbout()
-    {
+    public function actionAbout() {
         return $this->render('about');
     }
+
 }

@@ -19,7 +19,6 @@ class AppAsset extends AssetBundle {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'theme/css/site.css',
         'theme/css/bootstrap.min.css',
         'theme/css/icomoon-social.css',
         'theme/css/leaflet.css',
@@ -34,7 +33,6 @@ class AppAsset extends AssetBundle {
         'theme/js/template.js'
     ];
     public $depends = [
-        'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
 
