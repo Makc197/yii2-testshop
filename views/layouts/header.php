@@ -1,7 +1,23 @@
 <?php
 
 use yii\helpers\Url;
+use yii\helpers\Html;
+
 ?>
+
+<style>
+    .maks-logout {
+        padding: 0px;
+        border: 0px;
+        color: #222;
+    }
+    .maks-logout:hover {
+        padding: 0px;
+        border: 0px;
+        color: #222;
+        text-decoration: none;
+    }
+</style>
 
 <!-- Navigation & Logo-->
 <div class="mainmenu-wrapper">
@@ -9,18 +25,33 @@ use yii\helpers\Url;
         <div class="menuextras">
             <div class="extras">
                 <ul>
-                    <li class="shopping-cart-items"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> <a href="page-shopping-cart.html"><b>3 items</b></a></li>
-                    <li>
-                        <div class="dropdown choose-country">
-                            <a class="#" data-toggle="dropdown" href="#"><img src="/img/flags/gb.png" alt="Great Britain"> UK</a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li role="menuitem"><a href="#"><img src="/img/flags/us.png" alt="United States"> US</a></li>
-                                <li role="menuitem"><a href="#"><img src="/img/flags/de.png" alt="Germany"> DE</a></li>
-                                <li role="menuitem"><a href="#"><img src="/img/flags/es.png" alt="Spain"> ES</a></li>
-                            </ul>
-                        </div>
+                    <li class="shopping-cart-items"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> <a href="/shop/page-shopping-cart"><b>3 items</b></a></li>
+                    
+                    <!--<li><a href="<? Url::to('/site/login') ?>">Login</a></li>-->
+                    
+                    <!--<li>
+                        <php if (Yii::$app->user->isGuest) : ?>
+                            <a href="<= Url::to('/site/login') ?>">Login</a>
+                        <php else : ?>
+                            <a href="<= Url::to('/site/logout') ?>">
+                                Logout (<= Yii::$app->user->identity->username ?>)
+                            </a>
+                        <php endif; ?>
                     </li>
-                    <li><a href="theme/page-login.html">Login</a></li>
+                    -->
+                    <li>
+                        <?= Html::beginForm(['/site/logout'], 'post') ?>
+                        <?= 
+                            Yii::$app->user->isGuest ? 
+                            Html::a('Login', '/site/login') :
+                            Html::submitButton(
+                                sprintf('Logout (%s)', Yii::$app->user->identity->username),
+                                ['class' => 'btn-link logout maks-logout']
+                            );
+                        ?>
+                        <?= Html::endForm() ?>
+                    </li>
+
                 </ul>
             </div>
         </div>
@@ -68,42 +99,42 @@ use yii\helpers\Url;
                                 </ul>
                                 <h4>General Pages</h4>
                                 <ul>
-                                    <li><a href="theme/page-about-us.html">About Us</a></li>
-                                    <li><a href="theme/page-contact-us.html">Contact Us</a></li>
-                                    <li><a href="theme/page-faq.html">Frequently Asked Questions</a></li>
-                                    <li><a href="theme/page-testimonials-clients.html">Testimonials & Clients</a></li>
-                                    <li><a href="theme/page-events.html">Events</a></li>
-                                    <li><a href="theme/page-404.html">404 Page</a></li>
-                                    <li><a href="theme/page-sitemap.html">Sitemap</a></li>
-                                    <li><a href="theme/page-login.html">Login</a></li>
-                                    <li><a href="theme/page-register.html">Register</a></li>
-                                    <li><a href="theme/page-password-reset.html">Password Reset</a></li>
-                                    <li><a href="theme/page-terms-privacy.html">Terms & Privacy</a></li>
-                                    <li><a href="theme/page-coming-soon.html">Coming Soon</a></li>
+                                    <li><a href="/theme/page-about-us.html">About Us</a></li>
+                                    <li><a href="/theme/page-contact-us.html">Contact Us</a></li>
+                                    <li><a href="/theme/page-faq.html">Frequently Asked Questions</a></li>
+                                    <li><a href="/theme/page-testimonials-clients.html">Testimonials & Clients</a></li>
+                                    <li><a href="/theme/page-events.html">Events</a></li>
+                                    <li><a href="/theme/page-404.html">404 Page</a></li>
+                                    <li><a href="/theme/page-sitemap.html">Sitemap</a></li>
+                                    <li><a href="/theme/page-login.html">Login</a></li>
+                                    <li><a href="/theme/page-register.html">Register</a></li>
+                                    <li><a href="/theme/page-password-reset.html">Password Reset</a></li>
+                                    <li><a href="/theme/page-terms-privacy.html">Terms & Privacy</a></li>
+                                    <li><a href="/theme/page-coming-soon.html">Coming Soon</a></li>
                                 </ul>
                             </div>
                             <div>
                                 <h4>eShop</h4>
                                 <ul>
-                                    <li><a href="theme/page-products-3-columns.html">Products listing (3 Columns)</a></li>
-                                    <li><a href="theme/page-products-4-columns.html">Products listing (4 Columns)</a></li>
-                                    <li><a href="theme/page-products-slider.html">Products Slider</a></li>
-                                    <li><a href="theme/page-product-details.html">Product Details</a></li>
-                                    <li><a href="theme/page-shopping-cart.html">Shopping Cart</a></li>
+                                    <li><a href="/theme/page-products-3-columns.html">Products listing (3 Columns)</a></li>
+                                    <li><a href="/theme/page-products-4-columns.html">Products listing (4 Columns)</a></li>
+                                    <li><a href="/theme/page-products-slider.html">Products Slider</a></li>
+                                    <li><a href="/theme/page-product-details.html">Product Details</a></li>
+                                    <li><a href="/theme/page-shopping-cart.html">Shopping Cart</a></li>
                                 </ul>
                                 <h4>Blog</h4>
                                 <ul>
-                                    <li><a href="theme/page-blog-posts.html">Blog Posts (List)</a></li>
-                                    <li><a href="theme/page-blog-post-right-sidebar.html">Blog Single Post (Right Sidebar)</a></li>
-                                    <li><a href="theme/page-blog-post-left-sidebar.html">Blog Single Post (Left Sidebar)</a></li>
-                                    <li><a href="theme/page-news.html">Latest & Featured News</a></li>
+                                    <li><a href="/theme/page-blog-posts.html">Blog Posts (List)</a></li>
+                                    <li><a href="/theme/page-blog-post-right-sidebar.html">Blog Single Post (Right Sidebar)</a></li>
+                                    <li><a href="/theme/page-blog-post-left-sidebar.html">Blog Single Post (Left Sidebar)</a></li>
+                                    <li><a href="/theme/page-news.html">Latest & Featured News</a></li>
                                 </ul>
                             </div>
                         </div><!-- /mainmenu-submenu-inner -->
                     </div><!-- /mainmenu-submenu -->
                 </li>
                 <li>
-                    <a href="theme/credits.html">Credits</a>
+                    <a href="/theme/credits.html">Credits</a>
                 </li>
             </ul>
         </nav>
