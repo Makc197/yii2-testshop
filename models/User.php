@@ -2,103 +2,114 @@
 
 namespace app\models;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
-{
-    public $id;
-    public $username;
+use Yii;
+
+/**
+ * This is the model class for table "users".
+ *
+ * @property integer $id
+ * @property string $created
+ * @property string $lastname
+ * @property string $firstname
+ * @property string $middlename
+ * @property string $login
+ * @property string $passwhash
+ * @property string $birthday
+ * @property integer $role_id
+ */
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
+
     public $password;
-    public $authKey;
-    public $accessToken;
+    public $reppassword;
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentity($id)
-    {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+    public static function tableName() {
+        return 'users';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
+    public function rules() {
+        return [
+                [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'role_id', 'created', 'birthday'], 'required'],
+                [['email'], 'email'],
+                [['id', 'emailtoken'], 'safe'],
+                [['birthday'], 'date', 'format' => 'php:d.m.Y'],
+                [['reppassword'], 'myunique'],
+                [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200],
+        ];
+    }
+
+    public function attributeLabels() {
+        return [
+            'id' => 'ID',
+            'created' => 'Created',
+            'lastname' => 'Фамилия',
+            'firstname' => 'Имя',
+            'middlename' => 'Отчество',
+            'login' => 'Login',
+            'email' => 'E-mail',
+            'birthday' => 'День рождения',
+            'passwhash' => 'Passwhash',
+            'password' => 'Пароль',
+            'reppassword' => 'Пароль еще раз',
+            'role_id' => 'Роль',
+            'emailtoken' => 'Auth token'
+        ];
+    }
+
+    //Валидатор проверяющий идентичность 2х паролей
+    public function myunique($attribute) {
+
+        if ($this->password !== $this->reppassword) {
+            $this->addError($attribute, 'Повторный пароль не совпал с первым');
         }
-
-        return null;
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+    //Установка значений вспомогательных полей
+    public function setFieldsval() {
+        $this->passwhash = password_hash($this->password, PASSWORD_DEFAULT);
+        $this->emailtoken = md5($this->login . time());
+        $this->role_id = 1;
+        $this->created = date('Y-m-d H:i:s');
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getId()
-    {
+//    public function beforeValidate() {
+//        $this->passwhash = password_hash($this->password, PASSWORD_DEFAULT);      
+//        $this->role_id = 1;
+//        $this->created = date('Y-m-d H:i:s');
+//        return parent::beforeValidate();
+//    }
+    //Find By Login (Username)
+    public static function findByUsername($login) {
+        return self::findOne(['login' => $login]) ?? null;
+    }
+
+    public static function findIdentity($id) {
+        //return isset(self::findOne($id)) ? self::findOne($id) : null;
+        return self::findOne($id) ?? null;
+    }
+
+    public function getId() {
         return $this->id;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
+    public function validatePassword($passwhash) {
+        return $this->passwhash === $passwhash;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
+    //Идентификация по токену, отправляемому при регистрации пользователя письмом
+    public static function findIdentityByAccessToken($emailtoken, $type = null) {
+        $user = self::findOne(['emailtoken' => $emailtoken]);
+        if ($user->emailtoken === $emailtoken) {
+            return $user;
+        }
     }
 
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
+    //Пока не задействуем - просто реализуем интерфейс \yii\web\IdentityInterface
+    public function getAuthKey() {
+        
     }
+
+    public function validateAuthKey($authkey) {
+        
+    }
+
 }

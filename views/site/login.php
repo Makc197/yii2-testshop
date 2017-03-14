@@ -16,7 +16,12 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 </style>
 
-
+<?php
+$form = ActiveForm::begin([
+    'method' => 'post',
+    'action' => '/user/auth'
+]);
+?>
 <!-- Page Title -->
 <div class="section section-breadcrumbs">
     <div class="container">
@@ -32,28 +37,35 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                <?php $form = ActiveForm::begin([]); ?>
 
-                    <div class="form-group">
-                        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
-                    </div>
-                    <div class="form-group">
-                        <?= $form->field($model, 'password')->passwordInput() ?>
-                    </div>
+                <div class="form-group">
+                    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                </div>
+                <div class="form-group">
+                    <?= $form->field($model, 'password')->passwordInput() ?>
+                </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <?= $form->field($model, 'rememberMe')->checkbox() ?>
-                            <a href="page-password-reset.html" class="forgot-password">Forgot password?</a>
-
-                        </div>
-                        <div class="col-md-6">
-                            <?= Html::submitButton('Login', ['class' => 'btn pull-right', 'name' => 'login-button']) ?>
-                        </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <?= $form->field($model, 'rememberMe')->checkbox() ?>
                     </div>
 
-                    <div class="clearfix"></div>
-                <?php ActiveForm::end(); ?>
+                    <div class="col-md-6">
+                        <?= Html::submitButton('Login', ['class' => 'btn pull-right', 'name' => 'login-button']) ?>                     
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="page-password-reset.html" class="forgot-password">Forgot password?</a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <?= Html::a('Register new user', '/user/create', ['class' => 'btn pull-right', 'name' => 'register-button']) ?>  
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
             </div>
         </div>
         <div style="color:#999; margin-top: 10px">
@@ -62,5 +74,4 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
-
-
+<?php ActiveForm::end(); ?>

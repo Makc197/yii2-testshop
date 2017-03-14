@@ -22,7 +22,8 @@ class AppAsset extends AssetBundle {
         'theme/css/bootstrap.min.css',
         'theme/css/icomoon-social.css',
         'theme/css/leaflet.css',
-        'theme/css/main.css'
+        'theme/css/main.css',
+        'css/site.css'
     ];
     public $js = [
         'theme/js/bootstrap.min.js',

@@ -1,8 +1,22 @@
 <?php
 use yii\helpers\Url;
+use yii\helpers\Html;
 
-$this->title = 'My Yii Application';
+$this->title = 'Test Shop';
 ?>
+
+<!-- Page Title -->
+<div class="section section-breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1><?= Html::encode($this->title) ?></h1>
+                <br>
+                <h1><?= yii::$app->session->getFlash('regsuccess') ?? 'Необходимо авторизоваться' ?></h1>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Homepage Slider -->
 <div class="homepage-slider">
