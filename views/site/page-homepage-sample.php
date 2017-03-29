@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Url;
+
+$this->title = 'Homepage (Sample 2)';
 ?>
 
 <div class="section section-white">

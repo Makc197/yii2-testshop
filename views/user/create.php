@@ -8,7 +8,6 @@ use yii\bootstrap\ActiveForm;
 
 $this->title = 'Регистрация пользователя. Введите данные.';
 $this->params['breadcrumbs'][] = $this->title;
-$flashtxt = yii::$app->session->getFlash('regsuccess');
 ?>
 
 <style> 
@@ -24,16 +23,7 @@ $form = ActiveForm::begin([
 ]);
 ?>
 
-<!-- Page Title -->
-<div class="section section-breadcrumbs">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1><?= $flashtxt == '' ? Html::encode($this->title) : $flashtxt ?></h1>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <div class="section">
     <div class="container">

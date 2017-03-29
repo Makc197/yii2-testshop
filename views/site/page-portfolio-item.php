@@ -1,13 +1,9 @@
-<!-- Page Title -->
-<div class="section section-breadcrumbs">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <h1>Portfolio Item Description</h1>
-            </div>
-        </div>
-    </div>
-</div>
+<?php
+
+use yii\helpers\Url;
+
+$this->title = 'Portfolio Item Description';
+?>
 
 <div class="section">
     <div class="container">

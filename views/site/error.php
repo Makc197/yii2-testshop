@@ -6,17 +6,6 @@ use yii\helpers\Url;
 $this->title = $name;
 ?>
 
-<!-- Page Title -->
-<div class="section section-breadcrumbs">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1><?= Html::encode($this->title) ?></h1>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="section">
     <div class="container">
         <div class="row">

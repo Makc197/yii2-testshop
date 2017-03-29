@@ -1,18 +1,9 @@
 <?php
 
 use yii\helpers\Url;
-?>
 
-<!-- Page Title -->
-<div class="section section-breadcrumbs">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Pricing Table</h1>
-            </div>
-        </div>
-    </div>
-</div>
+$this->title = 'Pricing Table';
+?>
 
 <div class="section">
     <div class="container">

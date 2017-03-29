@@ -1,13 +1,6 @@
-<!-- Page Title -->
-<div class="section section-breadcrumbs">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Theme Features</h1>
-            </div>
-        </div>
-    </div>
-</div>
+<?php
+$this->title = 'Theme Features';
+?>
 
 <div class="section">
     <div class="container">

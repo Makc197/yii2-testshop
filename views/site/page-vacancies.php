@@ -1,13 +1,9 @@
-<!-- Page Title -->
-<div class="section section-breadcrumbs">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Open Vacancies</h1>
-            </div>
-        </div>
-    </div>
-</div>
+<?php
+
+use yii\helpers\Url;
+
+$this->title = 'Open Vacancies';
+?>
 
 <div class="section">
     <div class="container">

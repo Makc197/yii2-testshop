@@ -26,15 +26,38 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         return 'users';
     }
 
+    const SCENARIO_REGISTRATION = 'registration';
+    const SCENARIO_FIRSTACTIVATION = 'firstactivation';
+
+    public function scenarios() {
+        $scenarios = parent::scenarios();
+        //Перечень полей, которые нужно проверять в сценарии - остальные поля исключаются
+        $scenarios[self::SCENARIO_REGISTRATION] = ['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'role_id', 'created', 'birthday'];
+        $scenarios[self::SCENARIO_FIRSTACTIVATION] = ['emailtoken', 'isactive'];
+        return $scenarios;
+    }
+
     public function rules() {
+          //Правила валидации - вариант1 - с перечислением сценариев
+//        return [
+//                [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'role_id', 'created', 'birthday'], 'required', 'on' => 'registration'],
+//                [['email'], 'email', 'on' => 'registration'],
+//                [['id', 'emailtoken', 'isactive'], 'safe','on' => 'registration', 'firstactivation'],
+//                [['birthday'], 'date', 'format' => 'php:d.m.Y', 'on' => 'registration'],
+//                [['reppassword'], 'myunique', 'on' => 'registration'], //myunique - самописный валидатор используем при регистрации
+//                [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200,'on' => 'registration'],
+//        ];
+        
+        //Правила валидации - вариант2 - поля для проверки в сценарии заданы в function scenarios()
         return [
                 [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'role_id', 'created', 'birthday'], 'required'],
                 [['email'], 'email'],
-                [['id', 'emailtoken'], 'safe'],
+                [['id', 'emailtoken', 'isactive'], 'safe'],
                 [['birthday'], 'date', 'format' => 'php:d.m.Y'],
-                [['reppassword'], 'myunique'],
+                [['reppassword'], 'myunique'], //myunique - самописный валидатор используем при регистрации
                 [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200],
         ];
+        
     }
 
     public function attributeLabels() {
@@ -51,11 +74,12 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
             'password' => 'Пароль',
             'reppassword' => 'Пароль еще раз',
             'role_id' => 'Роль',
-            'emailtoken' => 'Auth token'
+            'emailtoken' => 'Auth token',
+            'isactive' => 'Статус'
         ];
     }
 
-    //Валидатор проверяющий идентичность 2х паролей
+    //Валидатор, проверяющий идентичность 2х паролей
     public function myunique($attribute) {
 
         if ($this->password !== $this->reppassword) {
@@ -67,8 +91,20 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
     public function setFieldsval() {
         $this->passwhash = password_hash($this->password, PASSWORD_DEFAULT);
         $this->emailtoken = md5($this->login . time());
-        $this->role_id = 1;
+        $this->role_id = 3;
         $this->created = date('Y-m-d H:i:s');
+    }
+
+    public function firstActivate() {
+        echo 'Активация - firstActivate()' . '</br>';
+        //При первом входе - активация - простановка признака Active, удаление токена
+        $this->isactive = true;
+        $this->emailtoken = null;
+       
+        //Сохранение модели и возврат в контроллер флага успешно/неуспешно
+        var_dump($this->validate(), $this->getErrors(), $this->save());
+        echo '</br>';
+        return $this->save(); 
     }
 
 //    public function beforeValidate() {
@@ -95,12 +131,23 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         return $this->passwhash === $passwhash;
     }
 
+    //Отправка письма с токеном при регистрации пользователя
+    public function sendEmail($registurl) {
+        if ($this->validate()) {
+            Yii::$app->mailer->compose()
+            ->setTo($this->email)
+            ->setFrom('TestYiiShop')
+            ->setSubject('Подтверждение регистрации')
+            ->setTextBody('Для подтверждения регистрации необходимо перейти по следующей ссылке ---> ' . $registurl)
+            ->send();
+            return true;
+        }
+        return false;
+    }
+
     //Идентификация по токену, отправляемому при регистрации пользователя письмом
     public static function findIdentityByAccessToken($emailtoken, $type = null) {
-        $user = self::findOne(['emailtoken' => $emailtoken]);
-        if ($user->emailtoken === $emailtoken) {
-            return $user;
-        }
+        return self::findOne(['emailtoken' => $emailtoken]);
     }
 
     //Пока не задействуем - просто реализуем интерфейс \yii\web\IdentityInterface
