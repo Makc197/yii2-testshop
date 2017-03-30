@@ -2,7 +2,6 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-
 ?>
 
 <style>
@@ -26,28 +25,27 @@ use yii\helpers\Html;
             <div class="extras">
                 <ul>
                     <li class="shopping-cart-items"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> <a href="/shop/page-shopping-cart"><b>3 items</b></a></li>
-                    
-                    <!--<li><a href="<? Url::to('/site/login') ?>">Login</a></li>-->
-                    
+
+<!--<li><a href="<? Url::to('/site/login') ?>">Login</a></li>-->
+
                     <!--<li>
                         <php if (Yii::$app->user->isGuest) : ?>
                             <a href="<= Url::to('/site/login') ?>">Login</a>
                         <php else : ?>
                             <a href="<= Url::to('/site/logout') ?>">
-                                Logout (<= Yii::$app->user->identity->username ?>)
+                                Logout (<= Yii::$app->user->identity->login ?>)
                             </a>
                         <php endif; ?>
                     </li>
                     -->
                     <li>
                         <?= Html::beginForm(['/site/logout'], 'post') ?>
-                        <?= 
-                            Yii::$app->user->isGuest ? 
-                            Html::a('Login', '/site/login') :
-                            Html::submitButton(
-                                sprintf('Logout (%s)', Yii::$app->user->identity->username),
-                                ['class' => 'btn-link logout maks-logout']
-                            );
+                        <?=
+                        Yii::$app->user->isGuest ?
+                        Html::a('Login', '/site/login') :
+                        Html::submitButton(
+                        sprintf('Logout (%s)', Yii::$app->user->identity->login), ['class' => 'btn-link logout maks-logout']
+                        );
                         ?>
                         <?= Html::endForm() ?>
                     </li>
@@ -135,6 +133,9 @@ use yii\helpers\Html;
                 </li>
                 <li>
                     <a href="/theme/credits.html">Credits</a>
+                </li>
+                <li>
+                    <a href="/site/contact">Contact</a>
                 </li>
             </ul>
         </nav>

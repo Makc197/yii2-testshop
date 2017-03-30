@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\LoginForm;
+use app\models\User;
 use app\models\ContactForm;
 
 class SiteController extends _BaseController {
@@ -95,12 +95,15 @@ class SiteController extends _BaseController {
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        $user = new User();
+        $user->scenario = User::SCENARIO_LOGIN;
+        
+        if ($user->load(Yii::$app->request->post()) && $user->findIdentityByLoginPassword()) {
             return $this->goBack();
-        }
+        }        
+             
         return $this->render('login', [
-            'model' => $model,
+            'model' => $user,
         ]);
     }
 

@@ -29,7 +29,7 @@ $form = ActiveForm::begin([
             <div class="col-sm-6">
 
                 <div class="form-group">
-                    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                    <?= $form->field($model, 'login')->textInput(['autofocus' => true]) ?>
                 </div>
                 <div class="form-group">
                     <?= $form->field($model, 'password')->passwordInput() ?>
@@ -37,7 +37,7 @@ $form = ActiveForm::begin([
 
                 <div class="row">
                     <div class="col-md-6">
-                        <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                        <?= $form->field($model, 'rememberme')->checkbox() ?>
                     </div>
 
                     <div class="col-md-6">
@@ -57,10 +57,6 @@ $form = ActiveForm::begin([
 
                 <div class="clearfix"></div>
             </div>
-        </div>
-        <div style="color:#999; margin-top: 10px">
-            You may login with <strong>admin/admin</strong> or <strong>demo/demo</strong>.<br>
-            To modify the username/password, please check out the code <code>app\models\User::$users</code>.
         </div>
     </div>
 </div>

@@ -8,36 +8,24 @@ use \yii\helpers\Url;
 
 class UserController extends _BaseController {
 
-    //Функция аутентификации - на вход логин и пароль
+    //Метод аутентификации
     public function actionAuth() {
 
-        //Получаем данные из формы аутентификации - $login, $password
-        $login = Yii::$app->request->post('LoginForm')['username'];
-        $password = Yii::$app->request->post('LoginForm')['password'];
-        //echo "login: " . $login . " | password:" . $password . "</br>";
-        //Проверяем пару $login $passwhash в таблице users
-        //Ищем пользователя по логину и хешу пароля
-        $user = User::findOne(['login' => $login], ['passwhash' => password_hash($password, PASSWORD_DEFAULT)]);
+        $user = new User();
+        $user->scenario = User::SCENARIO_LOGIN;
 
-        //Если не найден - не аутентифиц
-        //if (isEmpty($user))  echo 'Пользователь не найден';
-        if (!isset($user)) {
-            //echo 'Пользователь не найден'; die;
-            //throw new \yii\web\NotFoundHttpException('Пользователь не найден');
-            throw new \yii\web\NotAcceptableHttpException('Доступ запрещен');
-        } else {
-            //echo 'Все ОК - доступ разрешен';
-            //var_dump($user); die;
-            return $user; //Доступ разрешен - возвращаем объект $user
+        if ($user->load(Yii::$app->request->post()) && $user->findIdentityByLoginPassword()) {
+            return $this->goBack();
         }
+        
     }
 
-    //При первом посещении - проверка токена, простановка признака Active, удаление токена 
+    //При первой аутентификации - проверка токена, простановка признака Active, удаление токена из БД 
     public function actionAcceptreg($actkey) {
         //Поиск пользователя по токену
         //$user = User::findOne(['emailtoken' => $emailtoken]); 
         $user = User::findIdentityByAccessToken($actkey);
-                        
+
         //Если не найден - доступ запрещен
         if (!$user) {
             throw new \yii\web\NotAcceptableHttpException('Доступ запрещен');
