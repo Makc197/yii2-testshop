@@ -51,7 +51,7 @@ $form = ActiveForm::begin([
                     </div>
 
                     <div class="col-md-6">
-                        <?= Html::a('Register new user', '/user/create', ['class' => 'btn pull-right', 'name' => 'register-button']) ?>  
+                        <?= Html::a('Register new user', '/user/registration', ['class' => 'btn pull-right', 'name' => 'register-button']) ?>  
                     </div>
                 </div>
 

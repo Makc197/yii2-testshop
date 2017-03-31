@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use \yii\helpers\Url;
 
 /**
  * This is the model class for table "users".
@@ -41,7 +42,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
     }
 
     public function rules() {
-        //Правила валидации - вариант1 - с перечислением сценариев
+//        Правила валидации - вариант1 - с перечислением сценариев
 //        return [
 //                [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'role_id', 'created', 'birthday'], 'required', 'on' => 'registration'],
 //                [['email'], 'email', 'on' => 'registration'],
@@ -50,17 +51,17 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 //                [['reppassword'], 'myunique', 'on' => 'registration'], //myunique - самописный валидатор используем при регистрации
 //                [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200,'on' => 'registration'],
 //        ];
-//        
-        //Правила валидации - вариант2 - поля для проверки в сценарии заданы в function scenarios()
+//      Правила валидации - вариант2 - поля для проверки в сценарии заданы в function scenarios()
         return [
                 [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'role_id', 'created', 'birthday'], 'required'],
                 [['email'], 'email'],
 //              [['password'], 'validatePassword'],
             [['id', 'emailtoken', 'isactive'], 'safe'],
                 [['birthday'], 'date', 'format' => 'php:d.m.Y'],
-                [['reppassword'], 'myunique'], //myunique - самописный валидатор используем при регистрации
+                [['reppassword'], 'passunique'], //passunique - самописный валидатор используем при регистрации
             [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200],
                 [['rememberme'], 'boolean'],
+                [['login'], 'loginunique'],
         ];
     }
 
@@ -84,12 +85,19 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         ];
     }
 
-    //<<< ВАЛИДАТОРЫ ===================================================================
     //Валидатор, проверяющий идентичность 2х паролей
-    public function myunique($attribute) {
+    public function passunique($attribute) {
 
         if ($this->password !== $this->reppassword) {
             $this->addError($attribute, 'Повторный пароль не совпал с первым');
+        }
+    }
+
+    //Валидатор, проверяющий уникальность логина
+    public function loginunique($login) {
+        $user = self::findByUsername($login);
+        if (isset($user)) {
+            $this->addError($login, 'Пользователь с таким Login уже существует. Придумайте другой.');
         }
     }
 
@@ -98,10 +106,28 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         return password_hash($password, PASSWORD_DEFAULT) === $this->passwhash;
     }
 
-    //ВАЛИДАТОРЫ >>> ===================================================================
-    //<<< ФУНКЦИИ ПОИСКА ПОЛЬЗОВАТЕЛЯ ==================================================
+    //Регистрация нового пользователя
+    public function regnewuser() {
+        $this->scenario = User::SCENARIO_FIRSTACTIVATION;
+        //Установим значения вспомогательных полей
+        $this->setFieldsval();
+
+        // var_dump($this->validate(), $this->getErrors(), $this->save());
+
+        if ($this->validate() && $this->save()) {
+            $registurl = Url::toRoute(['user/acceptreg', 'actkey' => $this->emailtoken], true);
+            //Отправка на e-mail пользователя ссылки с GET параметром где токен для аутентификации
+//          $user->sendEmail($registurl);
+//          yii::$app->session->setFlash('regsuccess', 'Пользователь ' . $this->login . ' зарегистрирован'.'</br>'.'Для подтверждения регистрации необходимо перейти по ссылке, отправленной на Ваш e-mail');
+            yii::$app->session->setFlash('regsuccess', 'Пользователь ' . $this->login . ' зарегистрирован' . '</br>' . 'Для подтверждения регистрации необходимо перейти по ' . '<a href="' . $registurl . '">ссылке, отправленной на Ваш e-mail</a>');
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     //Поиск по login(Username)
-    public static function findByUsername($login) {
+    public function findByUsername($login) {
         return self::findOne(['login' => $login]) ?? null;
     }
 
@@ -116,48 +142,75 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         //Получаем данные из формы аутентификации - $login, $password
         //$password = Yii::$app->request->post('LoginForm')['login'];
         $login = $this->login;
-        //$password = Yii::$app->request->post('LoginForm')['password'];
         $password = $this->password;
-        $rememberme = $post['rememberme'];
-        $this->rememberme = $this->rememberme;
+        $rememberme = $this->rememberme;
+        
         //echo "login: " . $login . " | password:" . $password . "</br>"; die;
-    
-        //Ищем пользователя по логину и паролю
         //Получаем хеш пароля
-        $passwhash = password_hash($password, PASSWORD_DEFAULT);
-        
+        //echo $password.'</br>';
+        //$passwhash = Yii::$app->getSecurity()->generatePasswordHash($password);
+        //var_dump($passwhash);die;
         //Ищем пользователя в базе по логину и хешу пароля
-        $user=self::findOne(['login' => $login], ['passwhash' => $passwhash]);
+        //$user = self::findOne(['login' => $login, 'passwhash' => $passwhash]);
         
-        //Если не найден - не аутентифиц
-        if (!isset($user)) {
-            echo 'Пользователь не найден';  die;
-            //throw new \yii\web\NotFoundHttpException('Пользователь не найден');
-            throw new \yii\web\NotAcceptableHttpException('Доступ запрещен');
+        $user = self::findByUsername($login);
+        $passwhash = $user->passwhash;
+        echo $passwhash;
+
+        if (Yii::$app->getSecurity()->validatePassword($password, $passwhash)) {
+            echo 'all good, logging user in';
         } else {
+            echo 'wrong password';
+        }
+        
+        die;
+
+        //Если не найден - не аутентифиц
+        if (isset($user) && $user->isactive) {
             //echo 'Пользователь по login и password в БД найден - доступ разрешен'.'</br>';
             //var_dump($user); die;
             $user->scenario = User::SCENARIO_LOGIN;
             //Доступ разрешен
             return Yii::$app->user->login($user, $user->rememberme ? 3600 * 24 * 30 : 0);
+        } else {
+            //echo 'Пользователь не найден'; die;
+            //throw new \yii\web\NotFoundHttpException('Пользователь не найден');
+            throw new \yii\web\NotAcceptableHttpException('Доступ запрещен');
         }
     }
 
     //Поиск по токену, отправляемому на указанный e-mail при регистрации пользователя
-    public static function findIdentityByAccessToken($emailtoken, $type = null) {
-        return self::findOne(['emailtoken' => $emailtoken]);
+    public static function findIdentityByActivateToken($emailtoken, $type = null) {
+
+        //Поиск пользователя по токену
+        $user = self::findOne(['emailtoken' => $emailtoken]);
+
+        //Если не найден - доступ запрещен
+        if (!$user) {
+            throw new \yii\web\NotAcceptableHttpException('Доступ запрещен');
+        } else {
+            //echo 'Пользователь по токену найден'.'</br>';
+            $user->scenario = User::SCENARIO_FIRSTACTIVATION;
+            //При первом входе - активация (простановка признака Active, удаление токена)
+            if ($user->firstActivate()) {
+                //echo 'Ваша учетная запись активирована'; die;
+                yii::$app->session->setFlash('regsuccess', 'Ваша учетная запись активирована');
+                //Доступ разрешен
+                return Yii::$app->user->login($user, $user->rememberme ? 3600 * 24 * 30 : 0);
+            } else {
+                //echo 'Ошибка активации'; die;
+                throw new \yii\web\NotAcceptableHttpException('Доступ запрещен');
+            }
+        }
     }
 
-    //ФУНКЦИИ ПОИСКА ПОЛЬЗОВАТЕЛЯ >>> ==================================================
-    //<<< ГЕТТЕРЫ ======================================================================
     public function getId() {
         return $this->id;
     }
 
-    //ГЕТТЕРЫ >>> ======================================================================
     //Установка значений вспомогательных полей при регистрации нового пользователя
     public function setFieldsval() {
-        $this->passwhash = password_hash($this->password, PASSWORD_DEFAULT);
+        $this->passwhash = Yii::$app->getSecurity()->generatePasswordHash($password);
         $this->emailtoken = md5($this->login . time());
         $this->role_id = 3;
         $this->created = date('Y-m-d H:i:s');
@@ -169,16 +222,17 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 //        $this->created = date('Y-m-d H:i:s');
 //        return parent::beforeValidate();
 //    }   
+//    
     //Активация пользователя при первом входе - по токену, отправленному на email
     public function firstActivate() {
-        echo 'Активация - firstActivate()' . '</br>';
+        //echo 'Активация - firstActivate()' . '</br>';
         //При первом входе - активация - простановка признака Active, удаление токена
         $this->isactive = true;
         $this->emailtoken = null;
 
         //Сохранение модели и возврат в контроллер флага успешно/неуспешно
-        var_dump($this->validate(), $this->getErrors(), $this->save());
-        echo '</br>';
+        //var_dump($this->validate(), $this->getErrors(), $this->save());
+        //echo '</br>';
         return $this->save();
     }
 
@@ -202,6 +256,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
     }
 
     public function validateAuthKey($authkey) {
+        
+    }
+
+    public static function findIdentityByAccessToken($token, $type = NULL) {
         
     }
 

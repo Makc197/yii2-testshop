@@ -132,7 +132,7 @@ use yii\helpers\Html;
                     </div><!-- /mainmenu-submenu -->
                 </li>
                 <li>
-                    <a href="/theme/credits.html">Credits</a>
+                    <a href="<?= Url::to('/site/credits') ?>">Credits</a>
                 </li>
                 <li>
                     <a href="/site/contact">Contact</a>

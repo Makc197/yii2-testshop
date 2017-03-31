@@ -19,11 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 $form = ActiveForm::begin([
     'method' => 'post',
-    'action' => '/user/create'
+    'action' => '/user/registration'
 ]);
 ?>
-
-
 
 <div class="section">
     <div class="container">
