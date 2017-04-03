@@ -49,7 +49,9 @@ $form = ActiveForm::begin([
                 </div>
 
                 <div class="form-group">
-                    <?= $form->field($model, 'birthday')->textInput() ?>
+                    <?= $form->field($model, 'birthday')->textInput()->widget(\yii\widgets\MaskedInput::className(),[
+                      'mask' => '99.99.9999'  
+                    ])?>
                 </div>
 
                 <div class="form-group">

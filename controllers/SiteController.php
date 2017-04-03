@@ -14,6 +14,7 @@ class SiteController extends _BaseController {
      * @return string
      */
     public function actionIndex() {
+        //var_dump(Yii::$app->user->identity->fBirthday); die;
         return $this->render('index');
     }
 

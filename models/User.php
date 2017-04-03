@@ -46,18 +46,19 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 //        return [
 //                [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'role_id', 'created', 'birthday'], 'required', 'on' => 'registration'],
 //                [['email'], 'email', 'on' => 'registration'],
+//                [['password'], 'validatePassword'],
 //                [['id', 'emailtoken', 'isactive'], 'safe','on' => 'registration', 'firstactivation'],
 //                [['birthday'], 'date', 'format' => 'php:d.m.Y', 'on' => 'registration'],
 //                [['reppassword'], 'myunique', 'on' => 'registration'], //myunique - самописный валидатор используем при регистрации
 //                [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200,'on' => 'registration'],
 //        ];
+//        
 //      Правила валидации - вариант2 - поля для проверки в сценарии заданы в function scenarios()
         return [
                 [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'role_id', 'created', 'birthday'], 'required'],
                 [['email'], 'email'],
-//              [['password'], 'validatePassword'],
-            [['id', 'emailtoken', 'isactive'], 'safe'],
-                [['birthday'], 'date', 'format' => 'php:d.m.Y'],
+                [['id', 'emailtoken', 'isactive'], 'safe'],
+                [['birthday'], 'date', 'format' => 'dd.mm.yyyy'],
                 [['reppassword'], 'passunique'], //passunique - самописный валидатор используем при регистрации
             [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200],
                 [['rememberme'], 'boolean'],
@@ -95,7 +96,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 
     //Валидатор, проверяющий уникальность логина
     public function loginunique($login) {
-        $user = self::findByUsername($login);
+        $user = $this->findByUsername($login);
         if (isset($user)) {
             $this->addError($login, 'Пользователь с таким Login уже существует. Придумайте другой.');
         }
@@ -108,7 +109,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 
     //Регистрация нового пользователя
     public function regnewuser() {
-        $this->scenario = User::SCENARIO_FIRSTACTIVATION;
+        $this->scenario = User::SCENARIO_REGISTRATION;
         //Установим значения вспомогательных полей
         $this->setFieldsval();
 
@@ -144,29 +145,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         $login = $this->login;
         $password = $this->password;
         $rememberme = $this->rememberme;
-        
         //echo "login: " . $login . " | password:" . $password . "</br>"; die;
-        //Получаем хеш пароля
-        //echo $password.'</br>';
-        //$passwhash = Yii::$app->getSecurity()->generatePasswordHash($password);
-        //var_dump($passwhash);die;
-        //Ищем пользователя в базе по логину и хешу пароля
-        //$user = self::findOne(['login' => $login, 'passwhash' => $passwhash]);
-        
-        $user = self::findByUsername($login);
-        $passwhash = $user->passwhash;
-        echo $passwhash;
 
-        if (Yii::$app->getSecurity()->validatePassword($password, $passwhash)) {
-            echo 'all good, logging user in';
-        } else {
-            echo 'wrong password';
-        }
-        
-        die;
+        $user = $this->findByUsername($login);
+        $passwhash = $user->passwhash;
 
         //Если не найден - не аутентифиц
-        if (isset($user) && $user->isactive) {
+        if (Yii::$app->getSecurity()->validatePassword($password, $passwhash) && $user->isactive) {
             //echo 'Пользователь по login и password в БД найден - доступ разрешен'.'</br>';
             //var_dump($user); die;
             $user->scenario = User::SCENARIO_LOGIN;
@@ -195,8 +180,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
             if ($user->firstActivate()) {
                 //echo 'Ваша учетная запись активирована'; die;
                 yii::$app->session->setFlash('regsuccess', 'Ваша учетная запись активирована');
-                //Доступ разрешен
-                return Yii::$app->user->login($user, $user->rememberme ? 3600 * 24 * 30 : 0);
+                return true;
             } else {
                 //echo 'Ошибка активации'; die;
                 throw new \yii\web\NotAcceptableHttpException('Доступ запрещен');
@@ -210,7 +194,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 
     //Установка значений вспомогательных полей при регистрации нового пользователя
     public function setFieldsval() {
-        $this->passwhash = Yii::$app->getSecurity()->generatePasswordHash($password);
+//        echo '<pre>';
+//        var_dump($this);
+//        var_dump($p = Yii::$app->getSecurity()->generatePasswordHash(NULL));
+//        var_dump(Yii::$app->getSecurity()->validatePassword($this->password, $p));  
+//        die;
+
+        $this->passwhash = Yii::$app->getSecurity()->generatePasswordHash($this->password);
         $this->emailtoken = md5($this->login . time());
         $this->role_id = 3;
         $this->created = date('Y-m-d H:i:s');
@@ -223,6 +213,18 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 //        return parent::beforeValidate();
 //    }   
 //    
+    public function beforeSave($insert) {
+        if (parent::beforeSave($insert)) {
+            $this->birthday = (new \DateTime($this->birthday))->format('Y-m-d');
+            return true;
+        }
+        return false;
+    }
+    
+    public function getFBirthday(){
+          return (new \DateTime($this->birthday))->format('d.m.Y');
+    }
+
     //Активация пользователя при первом входе - по токену, отправленному на email
     public function firstActivate() {
         //echo 'Активация - firstActivate()' . '</br>';

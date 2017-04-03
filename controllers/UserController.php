@@ -13,7 +13,11 @@ class UserController extends _BaseController {
         $user = new User();
 
         if ($user->load(Yii::$app->request->post()) && $user->findIdentityByLoginPassword()) {
-            return $this->goBack();
+//            return $this->goHome();
+//            return $this->goBack();
+//            return $this->redirect(['/user/show', 'id' => $id]);
+//            return $this->redirect('/user/show');
+            return $this->redirect('/');
         }
     }
 
@@ -23,7 +27,7 @@ class UserController extends _BaseController {
         $user = new User();
 
         if ($user->findIdentityByActivateToken($actkey)) {
-            return $this->goBack();
+            return $this->redirect('/');
         }
     }
 
@@ -32,7 +36,7 @@ class UserController extends _BaseController {
         $user = new User();
 
         if ($user->load(Yii::$app->request->post()) && $user->regnewuser()) {
-            return $this->goBack();
+            return $this->redirect('/');
         }
 
         return $this->render('create', [
