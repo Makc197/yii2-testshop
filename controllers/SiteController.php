@@ -74,6 +74,10 @@ class SiteController extends _BaseController {
         return $this->render('page-job-details');
     }
 
+    public function actionCredits() {
+        return $this->render('credits');
+    }
+
     public function actions() {
         return [
             'error' => [
@@ -93,16 +97,20 @@ class SiteController extends _BaseController {
      */
     public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+//          return $this->goHome();
+//          return $this->goBack();
+//          return $this->redirect(['/user/show', 'id' => $id]);
+//          return $this->redirect('/user/show');
+            return $this->redirect('/');
         }
 
         $user = new User();
-        $user->scenario = User::SCENARIO_LOGIN;
-        
+
         if ($user->load(Yii::$app->request->post()) && $user->findIdentityByLoginPassword()) {
-            return $this->goBack();
-        }        
-             
+//          return $this->goBack();
+            return $this->redirect('/');
+        }
+
         return $this->render('login', [
             'model' => $user,
         ]);
@@ -115,8 +123,8 @@ class SiteController extends _BaseController {
      */
     public function actionLogout() {
         Yii::$app->user->logout();
-
-        return $this->goHome();
+//      return $this->goHome();
+        return $this->redirect('/');
     }
 
     /**

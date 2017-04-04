@@ -3,6 +3,25 @@ body {
     height: 100%;
 }
 
+.maks-logout {
+    padding: 0px;
+    border: 0px;
+    color: #222;
+}
+
+.maks-logout:hover {
+    padding: 0px;
+    border: 0px;
+    color: #222;
+    text-decoration: none;
+}
+
+.breadcrumb {
+    background: none !important;
+    margin-bottom: 0;
+    font-size: 16px;
+}
+
 .wrap {
     min-height: 100%;
     height: auto;

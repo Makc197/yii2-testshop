@@ -5,7 +5,7 @@ body {
   background: url(../img/page-background.png);
 }
 .section {
-  padding: 30px 0;
+  padding: 10px 0;
   -webkit-transform: translateZ(0);
   -moz-transform: translateZ(0);
   -o-transform: translateZ(0);
@@ -101,7 +101,7 @@ a {
   color: #4f8db3;
 }
 a:hover {
-  color: #2f556d;
+  color: #9da7b1;
 }
 /*--------------------------------------------------------------------------
 +	Services Style
@@ -2519,8 +2519,11 @@ span.color-red {
 +	Extras Menu (Cart, Language, Login) Style
 --------------------------------------------------------------------------*/
 .menuextras {
-  font-size: 0.85em;
+  font-size: 1.1em;
   height: 30px;
+}
+.menuextras .extras li a:hover {
+  color: #9da7b1 !important;
 }
 .menuextras ul {
   margin: 0;

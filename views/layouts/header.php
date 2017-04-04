@@ -4,20 +4,6 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 ?>
 
-<style>
-    .maks-logout {
-        padding: 0px;
-        border: 0px;
-        color: #222;
-    }
-    .maks-logout:hover {
-        padding: 0px;
-        border: 0px;
-        color: #222;
-        text-decoration: none;
-    }
-</style>
-
 <!-- Navigation & Logo-->
 <div class="mainmenu-wrapper">
     <div class="container">
@@ -26,18 +12,6 @@ use yii\helpers\Html;
                 <ul>
                     <li class="shopping-cart-items"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> <a href="/shop/page-shopping-cart"><b>3 items</b></a></li>
 
-<!--<li><a href="<? Url::to('/site/login') ?>">Login</a></li>-->
-
-                    <!--<li>
-                        <php if (Yii::$app->user->isGuest) : ?>
-                            <a href="<= Url::to('/site/login') ?>">Login</a>
-                        <php else : ?>
-                            <a href="<= Url::to('/site/logout') ?>">
-                                Logout (<= Yii::$app->user->identity->login ?>)
-                            </a>
-                        <php endif; ?>
-                    </li>
-                    -->
                     <li>
                         <?= Html::beginForm(['/site/logout'], 'post') ?>
                         <?=

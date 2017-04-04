@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 $form = ActiveForm::begin([
     'method' => 'post',
-    'action' => '/user/auth'
+    'action' => '/site/login'
 ]);
 ?>
 

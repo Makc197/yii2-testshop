@@ -1,4 +1,4 @@
-<div class="footer">
+<!--<div class="footer">-->
     <div class="container">
         <div class="row">
             <div class="col-footer col-md-3 col-xs-6" style="height: 235px;">
@@ -45,4 +45,4 @@
             </div>
         </div>
     </div>
-</div>
+<!--</div>-->
