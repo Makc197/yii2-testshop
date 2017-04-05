@@ -25,7 +25,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
     public $rememberme = false;
 
     public static function tableName() {
-        return 'users';
+        return 'user';
     }
 
     const SCENARIO_LOGIN = 'login';
@@ -60,7 +60,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
                 [['id', 'emailtoken', 'isactive'], 'safe'],
                 [['birthday'], 'date', 'format' => 'dd.mm.yyyy'],
                 [['reppassword'], 'passunique'], //passunique - самописный валидатор используем при регистрации
-            [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200],
+                [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200],
                 [['rememberme'], 'boolean'],
                 [['login'], 'loginunique'],
         ];
