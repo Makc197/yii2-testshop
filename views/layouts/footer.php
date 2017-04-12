@@ -1,6 +1,9 @@
-<div class="footer">
-</div>
+<!--Вариант 1-->
+<!--<div class="footer">
+</div>-->
 
+
+<!--Вариант 2-->
 <!--<div class="container">
 
     <div class="row">

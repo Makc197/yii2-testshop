@@ -29,5 +29,10 @@ class UserController extends _BaseController {
             'model' => $user,
         ]);
     }
+    
+    //Регистрация нового пользователя
+    public function actionResetPassword() {
+        echo 'actionResetPassword';die;
+    }
 
 }

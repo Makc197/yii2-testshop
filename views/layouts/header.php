@@ -10,15 +10,15 @@ use yii\helpers\Html;
         <div class="menuextras">
             <div class="extras">
                 <ul>
-                    <li class="shopping-cart-items"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> <a href="/shop/page-shopping-cart"><b>3 items</b></a></li>
+                    <li class="shopping-cart-items"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> <a href="<?= Url::to('/shop/page-shopping-cart')?>"><b><?='0 товаров'?></b></a></li>
 
                     <li>
                         <?= Html::beginForm(['/site/logout'], 'post') ?>
                         <?=
                         Yii::$app->user->isGuest ?
-                        Html::a('Login', '/site/login') :
+                        Html::a('Вход', '/site/login') :
                         Html::submitButton(
-                        sprintf('Logout (%s)', Yii::$app->user->identity->login), ['class' => 'btn-link logout maks-logout']
+                        sprintf('Выход (%s)', Yii::$app->user->identity->login), ['class' => 'btn-link logout maks-logout']
                         );
                         ?>
                         <?= Html::endForm() ?>

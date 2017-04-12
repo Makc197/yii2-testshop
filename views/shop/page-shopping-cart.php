@@ -2,7 +2,7 @@
 
 use yii\helpers\Url;
 
-$this->title = 'Shopping Cart';
+$this->title = 'Корзина';
 ?>
 
 <div class="section">
@@ -11,8 +11,8 @@ $this->title = 'Shopping Cart';
             <div class="col-md-12">
                 <!-- Action Buttons -->
                 <div class="pull-right">
-                    <a href="#" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> UPDATE</a>
-                    <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> CHECK OUT</a>
+                    <a href="#" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Обновить</a>
+                    <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> Оформить покупку</a>
                 </div>
             </div>
         </div>
@@ -98,22 +98,20 @@ $this->title = 'Shopping Cart';
             <div class="col-md-4 col-md-offset-0 col-sm-6 col-sm-offset-6">
                 <table class="cart-totals">
                     <tr>
-                        <td><b>Shipping</b></td>
-                        <td>Free</td>
                     </tr>
                     <tr>
-                        <td><b>Discount</b></td>
+                        <td><b>Скидка</b></td>
                         <td>- $18.00</td>
                     </tr>
                     <tr class="cart-grand-total">
-                        <td><b>Total</b></td>
+                        <td><b>Итого</b></td>
                         <td><b>$163.55</b></td>
                     </tr>
                 </table>
                 <!-- Action Buttons -->
                 <div class="pull-right">
-                    <a href="#" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> UPDATE</a>
-                    <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> CHECK OUT</a>
+                    <a href="#" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Обновить</a>
+                    <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> Оформить покупку</a>
                 </div>
             </div>
         </div>

@@ -6,7 +6,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Login';
+$this->title = 'Вход';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -41,17 +41,17 @@ $form = ActiveForm::begin([
                     </div>
 
                     <div class="col-md-6">
-                        <?= Html::submitButton('Login', ['class' => 'btn pull-right', 'name' => 'login-button']) ?>                     
+                        <?= Html::submitButton('Вход', ['class' => 'btn pull-right', 'name' => 'login-button']) ?>                     
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <a href="page-password-reset.html" class="forgot-password">Forgot password?</a>
+                        <a href="/site/page-password-reset" class="forgot-password">Забыли пароль?</a>
                     </div>
 
                     <div class="col-md-6">
-                        <?= Html::a('Register new user', '/user/registration', ['class' => 'btn pull-right', 'name' => 'register-button']) ?>  
+                        <?= Html::a('Зарегистрироваться', '/user/registration', ['class' => 'btn pull-right', 'name' => 'register-button']) ?>  
                     </div>
                 </div>
 

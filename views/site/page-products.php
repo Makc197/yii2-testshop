@@ -33,7 +33,7 @@ $this->title = 'Каталог товаров';
                     </div>
                     <!-- Add to Cart Button -->
                     <div class="actions">
-                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Add to Cart</a>
+                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Добавить в корзину</a>
                     </div>
                 </div>
                 <!-- End Product -->
@@ -54,7 +54,7 @@ $this->title = 'Каталог товаров';
                         $999.99
                     </div>
                     <div class="actions">
-                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Add to Cart</a>
+                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Добавить в корзину</a>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@ $this->title = 'Каталог товаров';
                         $999.99
                     </div>
                     <div class="actions">
-                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Add to Cart</a>
+                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Добавить в корзину</a>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@ $this->title = 'Каталог товаров';
                         $999.99
                     </div>
                     <div class="actions">
-                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Add to Cart</a>
+                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Добавить в корзину</a>
                     </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@ $this->title = 'Каталог товаров';
                         $999.99
                     </div>
                     <div class="actions">
-                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Add to Cart</a>
+                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Добавить в корзину</a>
                     </div>
                 </div>
             </div>
@@ -143,7 +143,7 @@ $this->title = 'Каталог товаров';
                         $999.99
                     </div>
                     <div class="actions">
-                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Add to Cart</a>
+                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Добавить в корзину</a>
                     </div>
                 </div>
             </div>
@@ -164,7 +164,7 @@ $this->title = 'Каталог товаров';
                         $999.99
                     </div>
                     <div class="actions">
-                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Add to Cart</a>
+                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Добавить в корзину</a>
                     </div>
                 </div>
             </div>
@@ -184,7 +184,7 @@ $this->title = 'Каталог товаров';
                         $999.99
                     </div>
                     <div class="actions">
-                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Add to Cart</a>
+                        <a href="page-product-details" class="btn btn-small"><i class="icon-shopping-cart icon-white"></i> Добавить в корзину</a>
                     </div>
                 </div>
             </div>

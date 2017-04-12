@@ -26,7 +26,7 @@ class SiteController extends _BaseController {
         return $this->render('page-product-details');
     }
 
-       public function actionPagePortfolioItem() {
+    public function actionPagePortfolioItem() {
         return $this->render('page-portfolio-item');
     }
 
@@ -119,6 +119,10 @@ class SiteController extends _BaseController {
      */
     public function actionAbout() {
         return $this->render('about');
+    }
+
+    public function actionPagePasswordReset() {
+        return $this->render('page-password-reset');
     }
 
 }
