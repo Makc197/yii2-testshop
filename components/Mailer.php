@@ -24,11 +24,14 @@ class Mailer {
         $phpmailer->SMTPAuth = true;                               // Enable SMTP authentication
         $phpmailer->Username = 'maks@7jp.ru';                      // SMTP username
         $phpmailer->Password = 'passw0rd';                         // SMTP password
-        $phpmailer->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
-        $phpmailer->Port = 465;                                    // TCP port to connect to
+//      $phpmailer->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+//      $phpmailer->Port = 465;                                    // TCP port to connect to
+        $phpmailer->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+        $phpmailer->Port = 587;                                    // TCP port to connect to
+
         $phpmailer->CharSet = 'UTF-8';
         $phpmailer->isHTML(true);
-        
+
         $phpmailer->setFrom($this->from, $this->namefrom);
         $phpmailer->addAddress($this->to, $this->nameto);     // Add a recipient
 //      $phpmailer->addAddress('test@example.com');    // Name is optional
@@ -50,9 +53,9 @@ class Mailer {
 
         if (!$phpmailer->send()) {
             echo '<pre>';
-          echo 'Message could not be sent.';
-          echo 'Mailer Error: ' . $phpmailer->ErrorInfo;
-          die;
+            echo 'Message could not be sent.';
+            echo 'Mailer Error: ' . $phpmailer->ErrorInfo;
+            die;
             throw new \yii\web\ServerErrorHttpException($phpmailer->ErrorInfo);
         } else {
 //          echo 'Message has been sent';

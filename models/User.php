@@ -220,9 +220,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         }
         return false;
     }
-    
-    public function getFBirthday(){
-          return (new \DateTime($this->birthday))->format('d.m.Y');
+
+    public function getFBirthday() {
+        return (new \DateTime($this->birthday))->format('d.m.Y');
     }
 
     //Активация пользователя при первом входе - по токену, отправленному на email

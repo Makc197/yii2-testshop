@@ -18,44 +18,16 @@ class SiteController extends _BaseController {
         return $this->render('index');
     }
 
-    public function actionFeatures() {
-        return $this->render('features');
+    public function actionPageProducts() {
+        return $this->render('page-products');
     }
 
-    public function actionPageHomepageSample() {
-        return $this->render('page-homepage-sample');
+    public function actionPageProductDetails() {
+        return $this->render('page-product-details');
     }
 
-    public function actionPagePortfolioItem() {
+       public function actionPagePortfolioItem() {
         return $this->render('page-portfolio-item');
-    }
-
-    public function actionPageServices1Column() {
-        return $this->render('page-services-1-column');
-    }
-
-    public function actionPageServices3Columns() {
-        return $this->render('page-services-3-columns');
-    }
-
-    public function actionPageServices4Columns() {
-        return $this->render('page-services-4-columns');
-    }
-
-    public function actionPagePricing() {
-        return $this->render('page-pricing');
-    }
-
-    public function actionPageTeam() {
-        return $this->render('page-team');
-    }
-
-    public function actionPageVacancies() {
-        return $this->render('page-vacancies');
-    }
-
-    public function actionPageJobDetails() {
-        return $this->render('page-job-details');
     }
 
     public function actionPagePortfolio2Columns1() {
@@ -72,10 +44,6 @@ class SiteController extends _BaseController {
 
     public function actionPagePortfolio3Columns2() {
         return $this->render('page-job-details');
-    }
-
-    public function actionCredits() {
-        return $this->render('credits');
     }
 
     public function actions() {
@@ -136,8 +104,8 @@ class SiteController extends _BaseController {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->contact()) {
             Yii::$app->session->setFlash('regsuccess', 'Сообщение отправлено.');
-
-            return $this->refresh();
+//          return $this->refresh();
+            return $this->redirect('/');
         }
         return $this->render('contact', [
             'model' => $model,

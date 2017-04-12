@@ -85,29 +85,13 @@ $this->title = 'Shopping Cart';
             </div>
         </div>
         <div class="row">
-            <!-- Promotion Code -->
+          
             <div class="col-md-4  col-md-offset-0 col-sm-6 col-sm-offset-6">
-                <div class="cart-promo-code">
-                    <h6><i class="glyphicon glyphicon-gift"></i> Have a promotion code?</h6>
-                    <div class="input-group">
-                        <input class="form-control input-sm" id="appendedInputButton" type="text" value="">
-                        <span class="input-group-btn">
-                            <button class="btn btn-sm btn-grey" type="button">Apply</button>
-                        </span>
-                    </div>
-                </div>
+                
             </div>
-            <!-- Shipment Options -->
+            
             <div class="col-md-4 col-md-offset-0 col-sm-6 col-sm-offset-6">
-                <div class="cart-shippment-options">
-                    <h6><i class="glyphicon glyphicon-plane"></i> Shippment options</h6>
-                    <div class="input-append">
-                        <select class="form-control input-sm">
-                            <option value="1">Standard - FREE</option>
-                            <option value="2">Next day delivery - $10.00</option>
-                        </select>
-                    </div>
-                </div>
+                
             </div>
 
             <!-- Shopping Cart Totals -->

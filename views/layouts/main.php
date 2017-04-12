@@ -42,8 +42,8 @@ AppAsset::register($this);
             <div class="row">
                 <div class="container">
                     <div class="col-md-12">
-                        <h1><?= Html::encode($this->title) ?></h1>
-                        <h1><?= yii::$app->session->getFlash('regsuccess') == '' ? '' : '</br>' . yii::$app->session->getFlash('regsuccess') ?></h1>
+                        <!--<h1><= Html::encode($this->title) ?></h1>-->
+                        <h1><?= yii::$app->session->getFlash('regsuccess') == '' ? Html::encode($this->title) : yii::$app->session->getFlash('regsuccess') ?></h1>
                     </div>
                 </div>
             </div>    
@@ -60,9 +60,6 @@ AppAsset::register($this);
 
         <!-- Body -->
         <?= $content ?>
-
-        <!-- Our Clients -->
-        <?= $this->render('our-clients'); ?>
 
         <!-- Footer -->
         <?= $this->render('footer'); ?>

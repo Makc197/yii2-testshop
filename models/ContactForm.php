@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\Model;
 use app\components\Mailer;
 
@@ -26,7 +25,7 @@ class ContactForm extends Model {
                 [['name', 'email', 'subject', 'body'], 'required'],
             // email has to be a valid email address
             ['email', 'email'],
-            // verifyCode needs to be entered correctly
+        // verifyCode needs to be entered correctly
 //            ['verifyCode', 'captcha'],
         ];
     }
@@ -36,7 +35,11 @@ class ContactForm extends Model {
      */
     public function attributeLabels() {
         return [
-            'verifyCode' => 'Verification Code',
+            'verifyCode' => 'Проверочный код',
+            'name' => 'Ваше имя',
+            'email' => 'Ваш email',
+            'subject' => 'Тема письма',
+            'body' => 'Текст сообщения',
         ];
     }
 
@@ -47,14 +50,26 @@ class ContactForm extends Model {
      */
     public function contact() {
 
-        $mailer = new Mailer();
+//      $mailer = new Mailer();
+//      $mailer->to = $this->email;
+//      $mailer->nameto = $this->name;
+//      $mailer->subject = $this->subject;
+//      $mailer->body = $this->body;   
+//      return $mailer->sendmail();
 
-        $mailer->to = $this->email;
-        $mailer->nameto = $this->name;
-        $mailer->subject = $this->subject;
-        $mailer->body = $this->body;
+        $to = 'maks@7jp.ru';
+        $subject = $this->subject;
+        $message = "От кого: " . $this->name . " <" . $this->email . ">\r\n" .
+        "\r\n" . "Текст письма: " . "\r\n" . $this->body . "\r\n";
+        $headers = "From: " . $this->name . " <" . $this->email . ">\r\n" .
+        'Reply-To: ' . $to . "\r\n" .
+        'X-Mailer: PHP/' . phpversion();
 
-        return $mailer->sendmail();
+        if (mail($to, $subject, $message, $headers)) {
+            return true;
+        } else {
+            throw new \yii\web\ServerErrorHttpException("Ошибка отправки сообщения");
+        }
     }
 
 }
