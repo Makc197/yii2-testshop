@@ -47,7 +47,8 @@ $form = ActiveForm::begin([
 
                 <div class="row">
                     <div class="col-md-6">
-                        <a href="/site/page-password-reset" class="forgot-password">Забыли пароль?</a>
+                        <!--<a href="/user/page-password-reset" class="forgot-password">Забыли пароль?</a>-->
+                        <?= Html::a('Забыли пароль?', '/user/reqres-password', ['class' => 'forgot-password']) ?> 
                     </div>
 
                     <div class="col-md-6">

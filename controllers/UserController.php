@@ -12,7 +12,7 @@ class UserController extends _BaseController {
 
         $user = new User();
 
-        if ($user->findIdentityByActivateToken($actkey)) {
+        if ($user->userActivate($actkey)) {
             return $this->redirect('/');
         }
     }
@@ -20,7 +20,7 @@ class UserController extends _BaseController {
     //Регистрация нового пользователя
     public function actionRegistration() {
         $user = new User();
-
+        
         if ($user->load(Yii::$app->request->post()) && $user->regnewuser()) {
             return $this->redirect('/');
         }
@@ -29,10 +29,28 @@ class UserController extends _BaseController {
             'model' => $user,
         ]);
     }
-    
-    //Регистрация нового пользователя
-    public function actionResetPassword() {
-        echo 'actionResetPassword';die;
+
+    //Запрос на смену пароля 
+    public function actionReqresPassword() {
+        $user = new User();
+
+        if ( $user->load(Yii::$app->request->post()) && $user->reqrespassword()) {
+            return $this->redirect('/');
+        }
+
+        return $this->render('password-reset', [
+            'model' => $user,
+        ]);
+    }
+
+    //Сброс пароля пользователя
+    public function actionPasswordReset($actkey) {
+
+        $user = new User();
+
+        if ($user->passwordreset($actkey)) {
+            return $this->redirect('/');
+        }
     }
 
 }

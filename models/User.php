@@ -16,7 +16,6 @@ use \yii\helpers\Url;
  * @property string $login
  * @property string $passwhash
  * @property string $birthday
- * @property integer $role_id
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 
@@ -31,20 +30,22 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
     const SCENARIO_LOGIN = 'login';
     const SCENARIO_REGISTRATION = 'registration';
     const SCENARIO_FIRSTACTIVATION = 'firstactivation';
+    const SCENARIO_RESETPASSWORD = 'resetpassword';
 
     public function scenarios() {
         $scenarios = parent::scenarios();
         //Перечень полей, которые нужно проверять в сценарии - остальные поля исключаются
         $scenarios[self::SCENARIO_LOGIN] = ['login', 'password', 'rememberme'];
-        $scenarios[self::SCENARIO_REGISTRATION] = ['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'role_id', 'created', 'birthday'];
+        $scenarios[self::SCENARIO_REGISTRATION] = ['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'created', 'birthday'];
         $scenarios[self::SCENARIO_FIRSTACTIVATION] = ['emailtoken', 'isactive'];
+        $scenarios[self::SCENARIO_RESETPASSWORD] = ['email'];
         return $scenarios;
     }
 
     public function rules() {
 //        Правила валидации - вариант1 - с перечислением сценариев
 //        return [
-//                [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'role_id', 'created', 'birthday'], 'required', 'on' => 'registration'],
+//                [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'created', 'birthday'], 'required', 'on' => 'registration'],
 //                [['email'], 'email', 'on' => 'registration'],
 //                [['password'], 'validatePassword'],
 //                [['id', 'emailtoken', 'isactive'], 'safe','on' => 'registration', 'firstactivation'],
@@ -55,12 +56,12 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 //        
 //      Правила валидации - вариант2 - поля для проверки в сценарии заданы в function scenarios()
         return [
-                [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'role_id', 'created', 'birthday'], 'required'],
+                [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'birthday'], 'required'],
                 [['email'], 'email'],
                 [['id', 'emailtoken', 'isactive'], 'safe'],
                 [['birthday'], 'date', 'format' => 'dd.mm.yyyy'],
                 [['reppassword'], 'passunique'], //passunique - самописный валидатор используем при регистрации
-                [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200],
+            [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200],
                 [['rememberme'], 'boolean'],
                 [['login'], 'loginunique'],
         ];
@@ -79,7 +80,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
             'passwhash' => 'Passwhash',
             'password' => 'Пароль',
             'reppassword' => 'Пароль еще раз',
-            'role_id' => 'Роль',
             'emailtoken' => 'Auth token',
             'isactive' => 'Статус',
             'rememberme' => 'Запомнить'
@@ -110,16 +110,24 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
     //Регистрация нового пользователя
     public function regnewuser() {
         $this->scenario = User::SCENARIO_REGISTRATION;
+
         //Установим значения вспомогательных полей
-        $this->setFieldsval();
+        $this->passwhash = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+        $this->emailtoken = md5($this->login . time());
+        $this->created = date('Y-m-d H:i:s');
 
         // var_dump($this->validate(), $this->getErrors(), $this->save());
 
         if ($this->validate() && $this->save()) {
             $registurl = Url::toRoute(['user/acceptreg', 'actkey' => $this->emailtoken], true);
             //Отправка на e-mail пользователя ссылки с GET параметром где токен для аутентификации
-//          $user->sendEmail($registurl);
-//          yii::$app->session->setFlash('regsuccess', 'Пользователь ' . $this->login . ' зарегистрирован'.'</br>'.'Для подтверждения регистрации необходимо перейти по ссылке, отправленной на Ваш e-mail');
+            /* Yii::$app->mailer->compose()
+              ->setTo($this->email)
+              ->setFrom('TestYiiShop')
+              ->setSubject('Подтверждение регистрации')
+              ->setTextBody('Для подтверждения регистрации необходимо перейти по следующей ссылке ---> ' . $registurl)
+              ->send();
+              yii::$app->session->setFlash('regsuccess', 'Пользователь ' . $this->login . ' зарегистрирован' . '</br>' . 'Для подтверждения регистрации необходимо перейти по ссылке, отправленной на Ваш e-mail'); */
             yii::$app->session->setFlash('regsuccess', 'Пользователь ' . $this->login . ' зарегистрирован' . '</br>' . 'Для подтверждения регистрации необходимо перейти по ' . '<a href="' . $registurl . '">ссылке, отправленной на Ваш e-mail</a>');
             return true;
         } else {
@@ -127,9 +135,72 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         }
     }
 
+    public function userActivate($actkey) {
+        $user = $this->findIdentityByActivateToken($actkey);
+        $user->scenario = User::SCENARIO_FIRSTACTIVATION;
+
+        //Если не найден - доступ запрещен
+        if (empty($user)) {
+            throw new \yii\web\NotAcceptableHttpException('Доступ запрещен');
+        } else {
+            //echo 'Пользователь по токену найден'.'</br>';
+            //При первом входе - активация - простановка признака Active, удаление токена
+            $user->isactive = true;
+            $user->emailtoken = null;
+            //Сохранение модели и возврат в контроллер флага успешно/неуспешно
+            //var_dump($this->validate(), $this->getErrors(), $this->save());
+            if ($user->save()) {
+                yii::$app->session->setFlash('regsuccess', 'Ваша учетная запись активирована');
+                return true;
+            } else {
+                //echo 'Ошибка активации'; die;
+                throw new \yii\web\NotAcceptableHttpException('Доступ запрещен');
+            }
+        }
+    }
+
+    //Запрос на сброс пароля
+    public function reqrespassword() {
+
+        $this->scenario = User::SCENARIO_RESETPASSWORD;
+        if ($this->validate()) {
+            $user = $this->findByEmail($this->email);
+            $user->scenario = User::SCENARIO_RESETPASSWORD;
+        }
+
+        if (!empty($user)) {
+            //var_dump($user->attributes); die;
+            $user->emailtoken = md5($user->email . time());
+            $registurl = Url::toRoute(['user/password-reset', 'actkey' => $user->emailtoken], false);
+            //Отправка на e-mail пользователя ссылки с GET параметром где токен для аутентификации
+            yii::$app->session->setFlash('regsuccess', 'Для подтверждения смены пароля необходимо перейти ' . '<a href="' . $registurl . '">по данной ссылке</a>');
+            return $user->save();
+        } else {
+            return false;
+        }
+    }
+
+    //Сброс пароля
+    public function passwordreset($acttoken, $type = null) {
+        $user = $this->findIdentityByActivateToken($acttoken);
+        $user->scenario = User::SCENARIO_RESETPASSWORD;
+
+        if (!empty($user)) {
+            $passtoken = substr(md5($acttoken . time()), 10, 7);
+            $user->passwhash = Yii::$app->getSecurity()->generatePasswordHash($passtoken);
+            yii::$app->session->setFlash('regsuccess', 'Ваш новый пароль: ' . $passtoken . '</br>');
+            return $user->save();
+        }
+    }
+
     //Поиск по login(Username)
     public function findByUsername($login) {
         return self::findOne(['login' => $login]) ?? null;
+    }
+
+    //Поиск пользователя по e-mail
+    public function findByEmail($email) {
+        return self::findOne(['email' => $email]) ?? null;
     }
 
     //Поиск по ID
@@ -140,6 +211,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 
     //Поиск по логину и паролю при авторизации пользователя
     public function findIdentityByLoginPassword() {
+
         //Получаем данные из формы аутентификации - $login, $password
         //$password = Yii::$app->request->post('LoginForm')['login'];
         $login = $this->login;
@@ -148,13 +220,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         //echo "login: " . $login . " | password:" . $password . "</br>"; die;
 
         $user = $this->findByUsername($login);
+        $user->scenario = User::SCENARIO_LOGIN;
         $passwhash = $user->passwhash;
 
         //Если не найден - не аутентифиц
         if (Yii::$app->getSecurity()->validatePassword($password, $passwhash) && $user->isactive) {
             //echo 'Пользователь по login и password в БД найден - доступ разрешен'.'</br>';
             //var_dump($user); die;
-            $user->scenario = User::SCENARIO_LOGIN;
             //Доступ разрешен
             return Yii::$app->user->login($user, $user->rememberme ? 3600 * 24 * 30 : 0);
         } else {
@@ -166,26 +238,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 
     //Поиск по токену, отправляемому на указанный e-mail при регистрации пользователя
     public static function findIdentityByActivateToken($emailtoken, $type = null) {
-
         //Поиск пользователя по токену
-        $user = self::findOne(['emailtoken' => $emailtoken]);
-
-        //Если не найден - доступ запрещен
-        if (!$user) {
-            throw new \yii\web\NotAcceptableHttpException('Доступ запрещен');
-        } else {
-            //echo 'Пользователь по токену найден'.'</br>';
-            $user->scenario = User::SCENARIO_FIRSTACTIVATION;
-            //При первом входе - активация (простановка признака Active, удаление токена)
-            if ($user->firstActivate()) {
-                //echo 'Ваша учетная запись активирована'; die;
-                yii::$app->session->setFlash('regsuccess', 'Ваша учетная запись активирована');
-                return true;
-            } else {
-                //echo 'Ошибка активации'; die;
-                throw new \yii\web\NotAcceptableHttpException('Доступ запрещен');
-            }
-        }
+        return self::findOne(['emailtoken' => $emailtoken]);
     }
 
     public function getId() {
@@ -193,26 +247,12 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
     }
 
     //Установка значений вспомогательных полей при регистрации нового пользователя
-    public function setFieldsval() {
-//        echo '<pre>';
-//        var_dump($this);
-//        var_dump($p = Yii::$app->getSecurity()->generatePasswordHash(NULL));
-//        var_dump(Yii::$app->getSecurity()->validatePassword($this->password, $p));  
-//        die;
+    /*    public function beforeValidate() {
+      $this->passwhash = password_hash($this->password, PASSWORD_DEFAULT);
+      $this->created = date('Y-m-d H:i:s');
+      return parent::beforeValidate();
+      } */
 
-        $this->passwhash = Yii::$app->getSecurity()->generatePasswordHash($this->password);
-        $this->emailtoken = md5($this->login . time());
-        $this->role_id = 3;
-        $this->created = date('Y-m-d H:i:s');
-    }
-
-//    public function beforeValidate() {
-//        $this->passwhash = password_hash($this->password, PASSWORD_DEFAULT);      
-//        $this->role_id = 1;
-//        $this->created = date('Y-m-d H:i:s');
-//        return parent::beforeValidate();
-//    }   
-//    
     public function beforeSave($insert) {
         if (parent::beforeSave($insert)) {
             $this->birthday = (new \DateTime($this->birthday))->format('Y-m-d');
@@ -223,33 +263,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 
     public function getFBirthday() {
         return (new \DateTime($this->birthday))->format('d.m.Y');
-    }
-
-    //Активация пользователя при первом входе - по токену, отправленному на email
-    public function firstActivate() {
-        //echo 'Активация - firstActivate()' . '</br>';
-        //При первом входе - активация - простановка признака Active, удаление токена
-        $this->isactive = true;
-        $this->emailtoken = null;
-
-        //Сохранение модели и возврат в контроллер флага успешно/неуспешно
-        //var_dump($this->validate(), $this->getErrors(), $this->save());
-        //echo '</br>';
-        return $this->save();
-    }
-
-    //Отправка письма с токеном при регистрации пользователя
-    public function sendEmail($registurl) {
-        if ($this->validate()) {
-            Yii::$app->mailer->compose()
-            ->setTo($this->email)
-            ->setFrom('TestYiiShop')
-            ->setSubject('Подтверждение регистрации')
-            ->setTextBody('Для подтверждения регистрации необходимо перейти по следующей ссылке ---> ' . $registurl)
-            ->send();
-            return true;
-        }
-        return false;
     }
 
     //Пока не задействуем - просто реализуем интерфейс \yii\web\IdentityInterface

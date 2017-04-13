@@ -121,8 +121,4 @@ class SiteController extends _BaseController {
         return $this->render('about');
     }
 
-    public function actionPagePasswordReset() {
-        return $this->render('page-password-reset');
-    }
-
 }
