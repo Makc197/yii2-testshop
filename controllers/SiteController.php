@@ -73,9 +73,9 @@ class SiteController extends _BaseController {
         }
 
         $user = new User();
+        $user->scenario = User::SCENARIO_LOGIN;
 
-        if ($user->load(Yii::$app->request->post()) && $user->findIdentityByLoginPassword()) {
-//          return $this->goBack();
+        if ($user->load(Yii::$app->request->post()) && $user->validate()) {
             return $this->redirect('/');
         }
 

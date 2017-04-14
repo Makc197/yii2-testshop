@@ -56,9 +56,22 @@ $form = ActiveForm::begin([
                     </div>
                 </div>
 
+                <!-- Если есть ошибки - выводим модальное окно и отображаем ошибки -->
+                <?php if (!empty($model->errors)): ?>
+                    <!-- Рендер модального окна + передаем туда model -->
+                    <script type="text/javascript">
+                        $('.modal').modal({
+                            show: true
+                        })
+                    </script>
+                <?php endif ?>
+
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal">Small modal</button>
+
                 <div class="clearfix"></div>
             </div>
         </div>
     </div>
 </div>
 <?php ActiveForm::end(); ?>
+<?= $this->render('modals', ['model' => $model]) ?>

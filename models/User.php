@@ -64,6 +64,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
             [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200],
                 [['rememberme'], 'boolean'],
                 [['login'], 'loginunique'],
+                ['password', 'validatePassword'],
         ];
     }
 
@@ -86,6 +87,20 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         ];
     }
 
+    public function validatePassword($attribute) {
+
+        if (!$this->hasErrors()) {
+            $user = $this->findByUsername($this->login);
+
+            if ($user && Yii::$app->getSecurity()->validatePassword($this->password, $user->passwhash) && $user->isactive) {
+                //Доступ разрешен
+                return Yii::$app->user->login($user, $this->rememberme ? 3600 * 24 * 30 : 0);
+            } else {
+                $this->addError($attribute, 'Неправильный логин или пароль');
+            }
+        }
+    }
+
     //Валидатор, проверяющий идентичность 2х паролей
     public function passunique($attribute) {
 
@@ -102,8 +117,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         }
     }
 
-    //Валидатор, проверяющий пароль - Передаем функции пароль - получаем его хеш и сравниваем с хешем в базе данных 
-    public function validatePassword($password) {
+    //Валидатор, проверяющий пароль по хешу - Передаем функции пароль - получаем его хеш и сравниваем с хешем в базе данных 
+    public function validatePasswordhash($password) {
         return password_hash($password, PASSWORD_DEFAULT) === $this->passwhash;
     }
 
@@ -207,33 +222,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
     public static function findIdentity($id) {
         //return isset(self::findOne($id)) ? self::findOne($id) : null;
         return self::findOne($id) ?? null;
-    }
-
-    //Поиск по логину и паролю при авторизации пользователя
-    public function findIdentityByLoginPassword() {
-
-        //Получаем данные из формы аутентификации - $login, $password
-        //$password = Yii::$app->request->post('LoginForm')['login'];
-        $login = $this->login;
-        $password = $this->password;
-        $rememberme = $this->rememberme;
-        //echo "login: " . $login . " | password:" . $password . "</br>"; die;
-
-        $user = $this->findByUsername($login);
-        $user->scenario = User::SCENARIO_LOGIN;
-        $passwhash = $user->passwhash;
-
-        //Если не найден - не аутентифиц
-        if (Yii::$app->getSecurity()->validatePassword($password, $passwhash) && $user->isactive) {
-            //echo 'Пользователь по login и password в БД найден - доступ разрешен'.'</br>';
-            //var_dump($user); die;
-            //Доступ разрешен
-            return Yii::$app->user->login($user, $user->rememberme ? 3600 * 24 * 30 : 0);
-        } else {
-            //echo 'Пользователь не найден'; die;
-            //throw new \yii\web\NotFoundHttpException('Пользователь не найден');
-            throw new \yii\web\NotAcceptableHttpException('Доступ запрещен');
-        }
     }
 
     //Поиск по токену, отправляемому на указанный e-mail при регистрации пользователя
