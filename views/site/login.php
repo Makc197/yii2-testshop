@@ -55,18 +55,17 @@ $form = ActiveForm::begin([
                         <?= Html::a('Зарегистрироваться', '/user/registration', ['class' => 'btn pull-right', 'name' => 'register-button']) ?>  
                     </div>
                 </div>
-
+                
                 <!-- Если есть ошибки - выводим модальное окно и отображаем ошибки -->
-                <?php if (!empty($model->errors)): ?>
-                    <!-- Рендер модального окна + передаем туда model -->
-                    <script type="text/javascript">
-                        $('.modal').modal({
-                            show: true
-                        })
-                    </script>
-                <?php endif ?>
+                <!-- Рендер модального окна + передаем туда model -->           
+                <!-- Данные, которые кладем в js переменную надо сериализовать --> 
+                <script type="text/javascript">
+                    var modal_error = <?= empty($model->errors) ? 'false' : 'true' ?>,
+                        modal_title = 'Внимание',
+                        modal_error_view = '<?= $this->render('modal_error', compact('model')) ?>';
+                </script>
 
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal">Small modal</button>
+                <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal">Small modal</button>-->
 
                 <div class="clearfix"></div>
             </div>
