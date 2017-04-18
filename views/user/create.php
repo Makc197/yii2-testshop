@@ -5,6 +5,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\captcha\Captcha;
 
 $this->title = 'Регистрация пользователя. Введите данные.';
 $this->params['breadcrumbs'][] = $this->title;
@@ -49,9 +50,11 @@ $form = ActiveForm::begin([
                 </div>
 
                 <div class="form-group">
-                    <?= $form->field($model, 'birthday')->textInput()->widget(\yii\widgets\MaskedInput::className(),[
-                      'mask' => '99.99.9999'  
-                    ])?>
+                    <?=
+                    $form->field($model, 'birthday')->textInput()->widget(\yii\widgets\MaskedInput::className(), [
+                        'mask' => '99.99.9999'
+                    ])
+                    ?>
                 </div>
 
                 <div class="form-group">
@@ -60,6 +63,14 @@ $form = ActiveForm::begin([
 
                 <div class="form-group">
                     <?= $form->field($model, 'reppassword')->passwordInput() ?>
+                </div>
+
+                <div class="form-group">
+                    <?=
+                    $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+                        'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+                    ])
+                    ?>
                 </div>
 
             </div>

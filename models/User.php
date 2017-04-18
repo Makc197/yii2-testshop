@@ -22,6 +22,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
     public $password;
     public $reppassword;
     public $rememberme = false;
+    public $verifyCode;
 
     public static function tableName() {
         return 'user';
@@ -36,7 +37,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         $scenarios = parent::scenarios();
         //Перечень полей, которые нужно проверять в сценарии - остальные поля исключаются
         $scenarios[self::SCENARIO_LOGIN] = ['login', 'password', 'rememberme'];
-        $scenarios[self::SCENARIO_REGISTRATION] = ['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'created', 'birthday'];
+        $scenarios[self::SCENARIO_REGISTRATION] = ['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'created', 'birthday', 'captcha'];
         $scenarios[self::SCENARIO_FIRSTACTIVATION] = ['emailtoken', 'isactive'];
         $scenarios[self::SCENARIO_RESETPASSWORD] = ['email'];
         return $scenarios;
@@ -61,10 +62,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
                 [['id', 'emailtoken', 'isactive'], 'safe'],
                 [['birthday'], 'date', 'format' => 'dd.mm.yyyy'],
                 [['reppassword'], 'passunique'], //passunique - самописный валидатор используем при регистрации
-            [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200],
+                [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200],
                 [['rememberme'], 'boolean'],
                 [['login'], 'loginunique'],
                 ['password', 'validatePassword'],
+                ['verifyCode', 'captcha'],
         ];
     }
 
@@ -83,7 +85,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
             'reppassword' => 'Пароль еще раз',
             'emailtoken' => 'Auth token',
             'isactive' => 'Статус',
-            'rememberme' => 'Запомнить'
+            'rememberme' => 'Запомнить',
+            'verifyCode' => 'Проверочный код'
         ];
     }
 

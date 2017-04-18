@@ -36,28 +36,7 @@ AppAsset::register($this);
 
         <!-- Header Navigation & Logo-->
         <?= $this->render('header') ?>
-
-        <!-- Page Title -->
-        <div class="section section-breadcrumbs">
-            <div class="row">
-                <div class="container">
-                    <div class="col-md-12">
-                        <!--<h1><= Html::encode($this->title) ?></h1>-->
-                        <h1><?= yii::$app->session->getFlash('regsuccess') == '' ? Html::encode($this->title) : yii::$app->session->getFlash('regsuccess') ?></h1>
-                    </div>
-                </div>
-            </div>    
-            <div class="row">
-                <div class="container">
-                    <?=
-                    Breadcrumbs::widget([
-                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                    ])
-                    ?>
-                </div>
-            </div>
-        </div>
-
+      
         <!-- Body -->
         <?= $content ?>
 
@@ -71,6 +50,6 @@ AppAsset::register($this);
 
         <?php $this->endBody() ?>
     </body>
-        
+
 </html>
 <?php $this->endPage() ?>

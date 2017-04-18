@@ -19,21 +19,22 @@ class AppAsset extends AssetBundle {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'theme/css/bootstrap.min.css',
-        'theme/css/icomoon-social.css',
-        'theme/css/leaflet.css',
-        'theme/css/main.css',
-        'css/site.css',
-        'theme/plugins/custombox/dist/custombox.min.css'
+        '/css/site.css',
+        '/theme/css/bootstrap.min.css',
+        '/theme/css/icomoon-social.css',
+        '/theme/css/leaflet.css',
+        '/theme/css/main.css',
+        '/theme/plugins/custombox/dist/custombox.min.css'
     ];
     public $js = [
-        'theme/js/bootstrap.min.js',
-        'theme/js/jquery.fitvids.js',
-        'theme/js/jquery.sequence-min.js',
-        'theme/js/jquery.bxslider.js',
-        'theme/js/main-menu.js',
-        'theme/js/template.js',
-        'theme/plugins/custombox/dist/custombox.min.js'
+        '/js/base.js',
+        '/theme/js/bootstrap.min.js',
+        '/theme/js/jquery.fitvids.js',
+        '/theme/js/jquery.sequence-min.js',
+        '/theme/js/jquery.bxslider.js',
+        '/theme/js/main-menu.js',
+        '/theme/js/template.js',
+        '/theme/plugins/custombox/dist/custombox.min.js'
     ];
     public $depends = [
         'yii\bootstrap\BootstrapAsset',
