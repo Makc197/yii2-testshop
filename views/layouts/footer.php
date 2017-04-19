@@ -4,14 +4,14 @@
 
 
 <!--Вариант 2-->
-<!--<div class="container">
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="footer-copyright"></div>
-        </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="footer-copyright"></div>
     </div>
+</div>
 
+<div class="container">
     <div class="row">
         <div class="col-footer col-md-4 col-xs-6">
             <h3>Contacts</h3>
@@ -23,11 +23,10 @@
             </p>
         </div>
     </div>
+</div>
 
-    <div class="row">
+<!--    <div class="row">
         <div class="col-md-12">
             <div class="footer-copyright">© 2017</div>
         </div>
-    </div>
-
-</div>-->
+    </div>-->

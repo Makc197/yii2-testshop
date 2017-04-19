@@ -14,16 +14,29 @@ use yii\helpers\Html;
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="<?= Url::to('/') ?>">TEST SHOP</a>
+            <a class="navbar-brand" href="<?= Url::to('/') ?>">МаГаЗиН</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="<?= Url::to('/') ?>">Главная</a></li> 
+
+                <!--<li><a href="<= Url::to('/') ?>">Главная</a></li>--> 
+
                 <!--<li class="active">
                     <a href="/">
                         <span class="glyphicon glyphicon-home"></span>
                     </a>
                 </li>-->
+
+                <?php if (Yii::$app->user->can('admin')) : ?>
+                    <li class="dropdown"><a href="#"class="dropdown-toggle" data-toggle="dropdown">Администрирование<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="<?= Url::to('/site/page-products') ?>">Категория 1</a></li>
+                            <li><a href="<?= Url::to('/site/page-products') ?>">Категория 2</a></li>
+                            <li><a href="<?= Url::to('/site/page-products') ?>">Категория 3</a></li>
+                            <li><a href="<?= Url::to('/site/page-products') ?>">Категория 4</a></li>
+                        </ul>                              
+                    </li>    
+                <?php endif ?>
 
                 <li class="dropdown"><a href="#"class="dropdown-toggle" data-toggle="dropdown">Theme examples<b class="caret"></b></a>
                     <ul class="dropdown-menu">

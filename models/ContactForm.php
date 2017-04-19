@@ -50,26 +50,23 @@ class ContactForm extends Model {
      */
     public function contact() {
 
-//      $mailer = new Mailer();
-//      $mailer->to = $this->email;
-//      $mailer->nameto = $this->name;
-//      $mailer->subject = $this->subject;
-//      $mailer->body = $this->body;   
-//      return $mailer->sendmail();
-
-        $to = 'maks@7jp.ru';
-        $subject = $this->subject;
-        $message = "От кого: " . $this->name . " <" . $this->email . ">\r\n" .
-        "\r\n" . "Текст письма: " . "\r\n" . $this->body . "\r\n";
-        $headers = "From: " . $this->name . " <" . $this->email . ">\r\n" .
-        'Reply-To: ' . $to . "\r\n" .
-        'X-Mailer: PHP/' . phpversion();
-
-        if (mail($to, $subject, $message, $headers)) {
-            return true;
-        } else {
-            throw new \yii\web\ServerErrorHttpException("Ошибка отправки сообщения");
-        }
+        $emailto = 'maks@7jp.ru';   // Отправка всегда на свой ящик - maks@7jp.ru от себя- maks@7jp.ru
+        $nameto = 'TestShop Admin'; // Для отображения в письме
+        $subject = $this->subject;  // Тема письма - указана пользователем
+        $namefrom = $this->name; // От кого - имя указанное пользователем
+        $emailfrom = $this->email; // От кого - email указанный пользователем
+        $body = $this->body; // Тело письма
+//v1 - Отправка почты через \PHPMailer - реализация в классе MailerSmtp()     
+//      $mailer = new MailerSmtp();
+//v2 - Отправка почты через функцию mailer - реализация в классе Mailer()
+        $mailer = new Mailer();
+        $mailer->emailto = $emailto;
+        $mailer->nameto = $nameto;
+        $mailer->subject = $subject;
+        $mailer->namefrom = $namefrom;
+        $mailer->emailfrom = $emailfrom;
+        $mailer->body = $body;
+        return $mailer->sendmail();
     }
 
 }
