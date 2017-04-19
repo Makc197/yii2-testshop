@@ -7,6 +7,11 @@ $config = [
     'language' => 'ru',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'modules' => [
+        'root' => [
+            'class' => 'app\modules\root\Module',
+        ],
+    ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -24,11 +29,6 @@ $config = [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
-        ],
-        'modules' => [
-            'root' => [
-                'class' => 'app\modules\root\Module',
-            ],
         ],
 //        'mailer' => [
 //            'class' => 'yii\swiftmailer\Mailer',
