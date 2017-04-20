@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 
-$this->title = 'Добро пожаловать в наш магазин';
+$this->title = 'Добро пожаловать в МаГаЗиН';
 ?>
 
 <!-- Homepage Slider -->

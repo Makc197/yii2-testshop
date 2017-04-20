@@ -14,12 +14,11 @@
 <div class="container">
     <div class="row">
         <div class="col-footer col-md-4 col-xs-6">
-            <h3>Contacts</h3>
+            <h3>Контакты:</h3>
             <p class="contact-us-details">
-                <b>Address:</b> 123 Fake Street, LN1 2ST, London, United Kingdom<br>
-                <b>Phone:</b> +44 123 654321<br>
-                <b>Fax:</b> +44 123 654321<br>
-                <b>Email:</b> <a href="mailto:getintoutch@yourcompanydomain.com">getintoutch@yourcompanydomain.com</a>
+                <b>Адрес:</b> г. Москва, Улица, Дом<br>
+                <b>Телефон:</b> +44 123 654321<br>
+                <b>Email:</b> <a href="mailto:name@yourcompanydomain.com">getintoutch@yourcompanydomain.com</a>
             </p>
         </div>
     </div>

@@ -40,12 +40,12 @@ AppAsset::register($this);
         <!-- Page Title -->
         <div class="section section-breadcrumbs">
             <div class="row">
-                <div class="container">
+                <!--<div class="container">-->
                     <div class="col-md-12">
                         <!--<h1><= Html::encode($this->title) ?></h1>-->
                         <h1><?= yii::$app->session->getFlash('regsuccess') == '' ? Html::encode($this->title) : yii::$app->session->getFlash('regsuccess') ?></h1>
                     </div>
-                </div>
+                <!--</div>-->
             </div>    
             <div class="row">
                 <div class="container">

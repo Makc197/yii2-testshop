@@ -30,10 +30,7 @@ use yii\helpers\Html;
                 <?php if (Yii::$app->user->can('admin')) : ?>
                     <li class="dropdown"><a href="#"class="dropdown-toggle" data-toggle="dropdown">Администрирование<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="<?= Url::to('/site/page-products') ?>">Категория 1</a></li>
-                            <li><a href="<?= Url::to('/site/page-products') ?>">Категория 2</a></li>
-                            <li><a href="<?= Url::to('/site/page-products') ?>">Категория 3</a></li>
-                            <li><a href="<?= Url::to('/site/page-products') ?>">Категория 4</a></li>
+                            <li><a href="<?= Url::to('/root/product') ?>">Товары (добавление/редактирование)</a></li>
                         </ul>                              
                     </li>    
                 <?php endif ?>

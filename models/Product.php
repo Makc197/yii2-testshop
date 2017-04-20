@@ -19,73 +19,67 @@ use Yii;
  * @property OrderProduct[] $orderProducts
  * @property Order[] $orders
  */
-class Product extends \yii\db\ActiveRecord
-{
+class Product extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'product';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['description'], 'string'],
-            [['price', 'sale'], 'number'],
-            [['count'], 'integer'],
-            [['title'], 'string', 'max' => 250],
+                [['description'], 'string'],
+                [['price', 'sale'], 'number'],
+                [['count'], 'integer'],
+                [['title'], 'string', 'max' => 250],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
-            'title' => 'Title',
-            'description' => 'Description',
-            'price' => 'Price',
-            'sale' => 'Sale',
-            'id' => 'ID',
-            'count' => 'Count',
+            'id' => '№',
+            'title' => 'Наименование',
+            'description' => 'Описание товара',
+            'price' => 'Цена',
+            'sale' => 'Цена со скидкой',
+            'count' => 'Количество на складе',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMmCategoryProducts()
-    {
+    public function getMmCategoryProducts() {
         return $this->hasMany(MmCategoryProduct::className(), ['product_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCategories()
-    {
+    public function getCategories() {
         return $this->hasMany(Category::className(), ['id' => 'category_id'])->viaTable('mm_category_product', ['product_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrderProducts()
-    {
+    public function getOrderProducts() {
         return $this->hasMany(OrderProduct::className(), ['product_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrders()
-    {
+    public function getOrders() {
         return $this->hasMany(Order::className(), ['id' => 'order_id'])->viaTable('order_product', ['product_id' => 'id']);
     }
+
 }
