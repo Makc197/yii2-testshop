@@ -25,15 +25,29 @@ $this->params['breadcrumbs'][] = $this->title;
             GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
+                'pager' => [
+                    'options' => ['class' => 'pagination pagination-lg'],
+                    'nextPageLabel' => 'Вперед',
+                    'prevPageLabel' => 'Назад'
+                ],
+                'layout' => '{summary}{items}<div class="pagination-wrapper">{pager}</div>',
                 'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
-                    'id',
+//                  ['class' => 'yii\grid\SerialColumn'],
+                    [
+                        'attribute' => 'id',
+                        'headerOptions' => ['width' => '80'],
+                    ],
                     'title',
                     'description:ntext',
                     'price',
                     'sale',
                     // 'count',
-                    ['class' => 'yii\grid\ActionColumn'],
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'header' => 'Действия',
+                        'headerOptions' => ['width' => '80'],
+                        'template' => '{view} {update} {delete} {link}',
+                    ],
                 ],
             ]);
             ?>

@@ -10,25 +10,23 @@ use app\models\Product;
 /**
  * ProductSearch represents the model behind the search form about `app\models\Product`.
  */
-class ProductSearch extends Product
-{
+class ProductSearch extends Product {
+
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['title', 'description'], 'safe'],
-            [['price', 'sale'], 'number'],
-            [['id', 'count'], 'integer'],
+                [['title', 'description'], 'safe'],
+                [['price', 'sale'], 'number'],
+                [['id', 'count'], 'integer'],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -40,14 +38,16 @@ class ProductSearch extends Product
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = Product::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 20,
+            ],
         ]);
 
         $this->load($params);
@@ -67,8 +67,9 @@ class ProductSearch extends Product
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }
+
 }

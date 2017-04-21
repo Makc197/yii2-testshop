@@ -6,9 +6,7 @@
 <!--Вариант 2-->
 
 <div class="row">
-    <div class="col-md-12">
-        <div class="footer-copyright"></div>
-    </div>
+    <div class="footer-copyright"></div>
 </div>
 
 <div class="container">
