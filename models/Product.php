@@ -21,6 +21,8 @@ use Yii;
  */
 class Product extends \yii\db\ActiveRecord {
 
+    public $category_id;
+
     /**
      * @inheritdoc
      */
@@ -35,7 +37,7 @@ class Product extends \yii\db\ActiveRecord {
         return [
                 [['description'], 'string'],
                 [['price', 'sale'], 'number'],
-                [['count'], 'integer'],
+                [['count', 'category_id'], 'integer'],
                 [['title'], 'string', 'max' => 250],
         ];
     }
@@ -54,6 +56,11 @@ class Product extends \yii\db\ActiveRecord {
         ];
     }
 
+    public static function find() {
+        return parent::find()->orderBy(['id'=>SORT_ASC]);
+    }
+    
+    
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -80,6 +87,18 @@ class Product extends \yii\db\ActiveRecord {
      */
     public function getOrders() {
         return $this->hasMany(Order::className(), ['id' => 'order_id'])->viaTable('order_product', ['product_id' => 'id']);
+    }
+
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+        
+        if (!$category = $this->mmCategoryProducts) {
+            $category = new MmCategoryProduct();
+        }
+        
+        $category->product_id = $this->id;
+        $category->category_id = $this->category_id;
+        $category->save();
     }
 
 }

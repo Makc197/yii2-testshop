@@ -15,8 +15,8 @@
             <h3>Контакты:</h3>
             <p class="contact-us-details">
                 <b>Адрес:</b> г. Москва, Улица, Дом<br>
-                <b>Телефон:</b> +44 123 654321<br>
-                <b>Email:</b> <a href="mailto:name@yourcompanydomain.com">getintoutch@yourcompanydomain.com</a>
+                <b>Телефон:</b> +00 123 678901<br>
+                <b>Email:</b> <a href="mailto:name@yourcompanydomain.ru">name@yourcompanydomain.ru</a>
             </p>
         </div>
     </div>

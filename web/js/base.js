@@ -1,5 +1,5 @@
 $('.logout_link').on('click', function(event){
     event.preventDefault();
-    console.log("test");
+//  console.log("test");
     $('#logout_form').submit();
 });

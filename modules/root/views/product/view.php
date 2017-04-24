@@ -36,6 +36,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $model,
                 'attributes' => [
                     'title',
+                        [
+                        'label' => 'Категория',
+                        'format' => 'raw',
+                        'value' => function($data) {
+                            $categories = [];
+                            foreach ($data->categories as $category) {
+                                $categories[] = $category->name;
+                            }
+                            return implode('<br>', $categories);
+                        }
+                    ],
                     'description:ntext',
                     'price',
                     'sale',
