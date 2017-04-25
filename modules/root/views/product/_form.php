@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use app\models\Category;
-
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -15,9 +14,20 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <?= $form->errorSummary($model); ?>
+
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->all(), 'id', 'name')) ?>
+    <div class="form-group field-product-title">
+        <label class="control-label" for="product-title">Категория</label>
+        <?= Html::dropDownList(
+            'Product[category_id][]', 
+            ArrayHelper::map($model->mmCategoryProducts, 'category_id', 'category_id'), 
+            ArrayHelper::map(Category::find()->all(), 'id', 'name'), 
+            ['multiple' => 'multiple', 'id' => 'product-category', 'class' => 'form-control']
+        ) ?>
+        <div class="help-block"></div>
+    </div>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
@@ -28,7 +38,9 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'count')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Внести изменения', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Внести изменения', 
+        ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']
+        ) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

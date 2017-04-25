@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
+use app\models\Category;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ProductSearch */
@@ -16,10 +18,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="product-index">
 
             <!--<h1><= Html::encode($this->title) ?></h1>-->
-            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+            <?php //  echo $this->render('_search', ['model' => $searchModel]); ?>
+       
             <p>
-                <?= Html::a('Создать запись в базе', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Создать запись в базе', ['create'], ['class' => 'btn btn-success']) ?>
             </p>
             <?=
             GridView::widget([
@@ -33,15 +35,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'layout' => '{summary}{items}<div class="pagination-wrapper">{pager}</div>',
                 'columns' => [
 //                  ['class' => 'yii\grid\SerialColumn'],
-                    [
+                        [
                         'attribute' => 'id',
                         'headerOptions' => ['width' => '80'],
                     ],
                     'title',
-                    [
+                        [
                         'header' => 'Категория',
+                        'attribute' => 'category',
+                        'filter' => ArrayHelper::map(Category::find()->all(), 'id', 'name'),
                         'format' => 'raw',
-                        'value' => function($data){
+                        'value' => function($data) {
                             $categories = [];
                             foreach ($data->categories as $category) {
                                 $categories[] = $category->name;

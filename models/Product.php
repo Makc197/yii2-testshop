@@ -37,7 +37,8 @@ class Product extends \yii\db\ActiveRecord {
         return [
                 [['description'], 'string'],
                 [['price', 'sale'], 'number'],
-                [['count', 'category_id'], 'integer'],
+                [['count'], 'integer'],
+                ['category_id', 'safe'],
                 [['title'], 'string', 'max' => 250],
         ];
     }
@@ -57,10 +58,9 @@ class Product extends \yii\db\ActiveRecord {
     }
 
     public static function find() {
-        return parent::find()->orderBy(['id'=>SORT_ASC]);
+        return parent::find()->orderBy(['id' => SORT_ASC]);
     }
-    
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -91,14 +91,18 @@ class Product extends \yii\db\ActiveRecord {
 
     public function afterSave($insert, $changedAttributes) {
         parent::afterSave($insert, $changedAttributes);
-        
-        if (!$category = $this->mmCategoryProducts) {
-            $category = new MmCategoryProduct();
+
+        if ($category = MmCategoryProduct::findAll(['product_id' => $this->id])) {
+            foreach ($category as $item)
+                $item->delete();
         }
-        
-        $category->product_id = $this->id;
-        $category->category_id = $this->category_id;
-        $category->save();
+
+        foreach ($this->category_id as $newcategory) {
+            $category = new MmCategoryProduct();
+            $category->product_id = $this->id;
+            $category->category_id = $newcategory;
+            $category->save();
+        }
     }
 
 }

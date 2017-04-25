@@ -12,12 +12,14 @@ use app\models\Product;
  */
 class ProductSearch extends Product {
 
+    public $category;
+
     /**
      * @inheritdoc
      */
     public function rules() {
         return [
-                [['title', 'description'], 'safe'],
+                [['title', 'description', 'category'], 'safe'],
                 [['price', 'sale'], 'number'],
                 [['id', 'count'], 'integer'],
         ];
@@ -68,6 +70,13 @@ class ProductSearch extends Product {
 
         $query->andFilterWhere(['like', 'title', $this->title])
         ->andFilterWhere(['like', 'description', $this->description]);
+
+
+        $query->joinWith([
+            'categories' => function($query){
+                $query->andFilterWhere(['category.id' => $this->category]);
+            }
+        ]);
 
         return $dataProvider;
     }
