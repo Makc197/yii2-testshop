@@ -22,6 +22,7 @@ use Yii;
 class Product extends \yii\db\ActiveRecord {
 
     public $category_id;
+    public $imageFiles;
 
     /**
      * @inheritdoc
@@ -40,6 +41,7 @@ class Product extends \yii\db\ActiveRecord {
                 [['count'], 'integer'],
                 ['category_id', 'safe'],
                 [['title'], 'string', 'max' => 250],
+                [['imageFiles'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 4],
         ];
     }
 
@@ -55,6 +57,27 @@ class Product extends \yii\db\ActiveRecord {
             'sale' => 'Цена со скидкой',
             'count' => 'Количество на складе',
         ];
+    }
+
+    public function upload() {
+
+        if (empty($this->imageFiles))
+            return;
+        
+        $n = 0;
+
+        foreach ($this->imageFiles as $img) {
+            $filename = date('d.m.Y') . rand(100, 999) . '.' . $img->extension;
+            $path = Yii::getAlias('@webroot/img/products/');
+
+            if ($img->saveAs($path . $filename)) {
+                $img_obj = new Image;
+                $img_obj->img = $filename;
+                $img_obj->product_id = $this->id;
+                $img_obj->pos = $n++;
+                $img_obj->save();
+            }
+        }
     }
 
     public static function find() {
