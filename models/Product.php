@@ -41,7 +41,7 @@ class Product extends \yii\db\ActiveRecord {
                 [['count'], 'integer'],
                 ['category_id', 'safe'],
                 [['title'], 'string', 'max' => 250],
-                [['imageFiles'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 4],
+                [['imageFiles'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 15],
         ];
     }
 
@@ -56,6 +56,7 @@ class Product extends \yii\db\ActiveRecord {
             'price' => 'Цена',
             'sale' => 'Цена со скидкой',
             'count' => 'Количество на складе',
+            'imageFiles' => 'Изображения товара'
         ];
     }
 
@@ -63,7 +64,7 @@ class Product extends \yii\db\ActiveRecord {
 
         if (empty($this->imageFiles))
             return;
-        
+
         $n = 0;
 
         foreach ($this->imageFiles as $img) {
@@ -110,6 +111,10 @@ class Product extends \yii\db\ActiveRecord {
      */
     public function getOrders() {
         return $this->hasMany(Order::className(), ['id' => 'order_id'])->viaTable('order_product', ['product_id' => 'id']);
+    }
+
+    public function getImages() {
+        return $this->hasMany(Image::className(), ['product_id' => 'id']);
     }
 
     public function afterSave($insert, $changedAttributes) {

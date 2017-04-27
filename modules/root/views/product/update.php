@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Product */
 
-$this->title = 'Товар. Внесение изменений: ' . $model->title;
+$this->title = 'Товар. Внесение изменений: ' . $model->title . ' (Арт.: '.str_pad($model->id, 8, "0", STR_PAD_LEFT).')'; 
 $this->params['breadcrumbs'][] = ['label' => 'Администрирование', 'url' => ['/root/product']];
 $this->params['breadcrumbs'][] = ['label' => 'Товары', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];

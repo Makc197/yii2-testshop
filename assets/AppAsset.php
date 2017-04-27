@@ -24,6 +24,8 @@ class AppAsset extends AssetBundle {
         '/theme/css/icomoon-social.css',
         '/theme/css/leaflet.css',
         '/theme/css/main.css',
+        '/theme/plugins/owlcarousel/dist/assets/owl.carousel.min.css',
+        '/theme/plugins/owlcarousel/dist/assets/owl.theme.default.min.css',
         '/theme/plugins/custombox/dist/custombox.min.css'
     ];
     public $js = [
@@ -34,6 +36,8 @@ class AppAsset extends AssetBundle {
         '/theme/js/jquery.bxslider.js',
         '/theme/js/main-menu.js',
         '/theme/js/template.js',
+        '/theme/plugins/owlcarousel/dist/owl.carousel.min.js',
+        '/theme/plugins/owlcarousel/dist/owl.carousel.js',
         '/theme/plugins/custombox/dist/custombox.min.js'
     ];
     public $depends = [

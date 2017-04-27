@@ -11,7 +11,7 @@ use app\models\Category;
 
 $this->title = 'Товары';
 $this->params['breadcrumbs'][] = ['label' => 'Администрирование', 'url' => ['/root/product']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $this->title; 
 ?>
 <div class="section">
     <div class="container">
