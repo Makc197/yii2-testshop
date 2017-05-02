@@ -54,7 +54,7 @@ $path = Yii::getAlias('@web/img/products/');
                     <input type="hidden" name="Product[imageFiles][]" value="">
                     <input type="file" id="product-imagefiles" name="Product[imageFiles][]" multiple="" accept="image/*">
                     <span class="icon-span-filestyle glyphicon glyphicon-folder-open"></span> 
-                    <span class="buttonText">  Прикрепить изображение</span>
+                    <span class="buttonText">  Добавить изображение</span>
                 </label>
             </div>
         </div>
