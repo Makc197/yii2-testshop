@@ -60,6 +60,25 @@ class Product extends \yii\db\ActiveRecord {
         ];
     }
 
+    public function ajaximgupload($base64img) {
+
+        $filename = date('d.m.Y') . random_int(0, PHP_INT_MAX) . '.' . 'jpg';
+        $path = Yii::getAlias('@webroot/img/products/');
+        $output_file = $path . $filename;
+
+        $ifp = fopen($output_file, "wb");
+        fwrite($ifp, base64_decode($base64img, true));
+        fclose($ifp);
+
+        if (is_file($output_file)) {
+            $img_obj = new Image;
+            $img_obj->img = $filename;
+            $img_obj->product_id = $this->id;
+            $img_obj->pos = $n++;
+            $img_obj->save();
+        }
+    }
+
     public function upload() {
 
         if (empty($this->imageFiles))
@@ -68,7 +87,7 @@ class Product extends \yii\db\ActiveRecord {
         $n = 0;
 
         foreach ($this->imageFiles as $img) {
-            $filename = date('d.m.Y') . rand(100, 999) . '.' . $img->extension;
+            $filename = date('d.m.Y') . random_int(0, PHP_INT_MAX) . '.' . $img->extension;
             $path = Yii::getAlias('@webroot/img/products/');
 
             if ($img->saveAs($path . $filename)) {

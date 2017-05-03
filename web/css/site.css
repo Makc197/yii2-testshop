@@ -16,12 +16,16 @@ body {
 }
 
 .item-remove {
-    height: 10px;
-    width: 10px;
+    height: 18px;
+    width: 14px;
     background-color: #FF0000;
     position: absolute;
     top: 0px;
     right: 0px;
+}
+
+.item-remove:hover {
+    background-color:#ac2925;
 }
 
 .file-upload input[type="file"]{

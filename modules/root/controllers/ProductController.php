@@ -82,8 +82,6 @@ class ProductController extends Controller {
     public function actionUpdate($id) {
         $model = $this->findModel($id);
 
-//        var_dump($model);die;
-
         if ($model->load(Yii::$app->request->post())) {
 
             $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
@@ -92,12 +90,24 @@ class ProductController extends Controller {
                 $model->upload();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
-            
         } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionAjaxUpdate($id) {
+        $base64_string = Yii::$app->request->post()['img'];
+
+        $model = $this->findModel($id);
+
+        if ($model) {
+            $model->ajaximgupload($base64_string);
+            return "Изображение загружено";
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
     /**

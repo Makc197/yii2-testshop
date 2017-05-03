@@ -12,10 +12,10 @@ $path = Yii::getAlias('@web/img/products/');
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="product-form">
+<div class="product-form" product_id="<?= $model->id ?>">
     <div class="col-lg-7">
 
-        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data', 'id'=>'productform']]); ?>
 
         <?= $form->errorSummary($model); ?>
 
@@ -51,13 +51,15 @@ $path = Yii::getAlias('@web/img/products/');
         <div class="form-group field-product-imagefiles">
             <div class="file-upload">
                 <label>
-                    <input type="hidden" name="Product[imageFiles][]" value="">
-                    <input type="file" id="product-imagefiles" name="Product[imageFiles][]" multiple="" accept="image/*">
+                    <!--<input type="hidden" name="Product[imageFiles][]" value="">-->
+                    <input type="file" form="fakeform" id="product-imagefiles" name="Product[imageFiles][]" multiple="" accept="image/*">
                     <span class="icon-span-filestyle glyphicon glyphicon-folder-open"></span> 
                     <span class="buttonText">  Добавить изображение</span>
                 </label>
             </div>
+            <span id="result_div_id1"></span>
         </div>
+                
 
         <!--    <div class="form-group">
                     <div class="bootstrap-filestyle input-group">
@@ -75,6 +77,7 @@ $path = Yii::getAlias('@web/img/products/');
                 <?php foreach ($model->images as $image) : ?>
                     <div class="item">
                         <?= Html::img($path . $image->img, []) ?>
+                        <div class="item-remove"><span class="glyphicon glyphicon-trash"></span></div>
                     </div>
                 <?php endforeach ?>
             </div>
