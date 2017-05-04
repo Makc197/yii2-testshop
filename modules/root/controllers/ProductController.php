@@ -5,6 +5,7 @@ namespace app\modules\root\controllers;
 use Yii;
 use app\models\Product;
 use app\models\ProductSearch;
+use app\models\Image;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
@@ -97,14 +98,26 @@ class ProductController extends Controller {
         }
     }
 
+    public function actionAjaxImgremove() {
+        $imgid = Yii::$app->request->post()['imgid'];
+        $imgmodel = findImgModel($imgid);
+        
+        /** @TODO: Надо дописать ф-ю удаления картинки из базы
+        
+    }
+
+    /** @TODO: Надо определять расширение файла по заголовку Base64 */
     public function actionAjaxUpdate($id) {
         $base64_string = Yii::$app->request->post()['img'];
 
         $model = $this->findModel($id);
 
         if ($model) {
-            $model->ajaximgupload($base64_string);
-            return "Изображение загружено";
+            $fileid = $model->ajaximgupload($base64_string);
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return ["id" => $fileid];
+            //Перезагружаем страницу чтобы сгенерить дивы с правильными идентификаторами - чтобы можно было удалить выбранные изображения
+//            return $this->redirect(['/root/product/update', 'id' => $model->id]);
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
@@ -132,6 +145,14 @@ class ProductController extends Controller {
     protected function findModel($id) {
         if (($model = Product::findOne($id)) !== null) {
             return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    
+     protected function findImgModel($imgid) {
+        if (($imgmodel = Image::findOne($imgid)) !== null) {
+            return $imgmodel;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

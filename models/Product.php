@@ -76,6 +76,7 @@ class Product extends \yii\db\ActiveRecord {
             $img_obj->product_id = $this->id;
             $img_obj->pos = $n++;
             $img_obj->save();
+            return $img_obj->id;
         }
     }
 

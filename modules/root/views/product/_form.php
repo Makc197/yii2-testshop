@@ -15,7 +15,7 @@ $path = Yii::getAlias('@web/img/products/');
 <div class="product-form" product_id="<?= $model->id ?>">
     <div class="col-lg-7">
 
-        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data', 'id'=>'productform']]); ?>
+        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data', 'id' => 'productform']]); ?>
 
         <?= $form->errorSummary($model); ?>
 
@@ -59,7 +59,7 @@ $path = Yii::getAlias('@web/img/products/');
             </div>
             <span id="result_div_id1"></span>
         </div>
-                
+
 
         <!--    <div class="form-group">
                     <div class="bootstrap-filestyle input-group">
@@ -73,9 +73,9 @@ $path = Yii::getAlias('@web/img/products/');
                 </div> -->
 
         <div class="form-group">
-             <div class="owl-theme owl-carousel">
+            <div class="owl-theme owl-carousel">
                 <?php foreach ($model->images as $image) : ?>
-                    <div class="item">
+                    <div class="item"  id="<?= $image->id ?>">
                         <?= Html::img($path . $image->img, []) ?>
                         <div class="item-remove"><span class="glyphicon glyphicon-trash"></span></div>
                     </div>
