@@ -14,34 +14,31 @@ use Yii;
  *
  * @property Product $product
  */
-class Image extends \yii\db\ActiveRecord
-{
+class Image extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'image';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['product_id', 'img'], 'required'],
-            [['product_id', 'pos'], 'integer'],
-            [['img'], 'string'],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
+                [['product_id', 'img'], 'required'],
+                [['product_id', 'pos'], 'integer'],
+                [['img'], 'string'],
+                [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'product_id' => 'Product ID',
@@ -53,8 +50,14 @@ class Image extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProduct()
-    {
+    public function getProduct() {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
+
+    public function removeimagefile($imgfilename) {
+        $path = Yii::getAlias('@webroot/img/products/');
+        $imgfile = $path . $imgfilename;
+        return unlink($imgfile);
+    }
+
 }

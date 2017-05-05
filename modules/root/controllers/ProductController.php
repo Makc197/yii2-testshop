@@ -100,24 +100,31 @@ class ProductController extends Controller {
 
     public function actionAjaxImgremove() {
         $imgid = Yii::$app->request->post()['imgid'];
-        $imgmodel = findImgModel($imgid);
-        
-        /** @TODO: Надо дописать ф-ю удаления картинки из базы
-        
+        $imgmodel = $this->findImgModel($imgid);
+        $imgfilename = $imgmodel->img;
+
+        if ($imgmodel->removeimagefile($imgfilename)) {
+            $retstr = 'Файл ' . $imgfilename . ' удален --> удаляем строку из таблицы';
+            $imgmodel->delete();
+            $retstr = $retstr . '</br>' . 'Строка с id=' . $imgid . ' удалена из таблицы images';
+        }
+
+        return $retstr;
+
+        /** @TODO: Надо дописать ф-ю удаления картинки из базы */
     }
 
     /** @TODO: Надо определять расширение файла по заголовку Base64 */
     public function actionAjaxUpdate($id) {
         $base64_string = Yii::$app->request->post()['img'];
-
         $model = $this->findModel($id);
 
         if ($model) {
             $fileid = $model->ajaximgupload($base64_string);
             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             return ["id" => $fileid];
-            //Перезагружаем страницу чтобы сгенерить дивы с правильными идентификаторами - чтобы можно было удалить выбранные изображения
-//            return $this->redirect(['/root/product/update', 'id' => $model->id]);
+            //Перезагружаем страницу чтобы сгенерить div с правильными идентификаторами - чтобы можно было удалить выбранные изображения
+            //return $this->redirect(['/root/product/update', 'id' => $model->id]);
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
@@ -149,8 +156,8 @@ class ProductController extends Controller {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
-     protected function findImgModel($imgid) {
+
+    protected function findImgModel($imgid) {
         if (($imgmodel = Image::findOne($imgid)) !== null) {
             return $imgmodel;
         } else {

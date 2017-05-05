@@ -60,8 +60,9 @@ function AjaxFormRequest(result_id, dataURL, url) {
                     .trigger('add.owl.carousel', [img_tag, 0])
                     .trigger('refresh.owl.carousel');
             img_tag.parent().attr('id', $id);
-            img_tag.parent().append($('<div class="item-remove"><span class="glyphicon glyphicon-trash"></span></div>'));
-
+            var remdiv = $('<div class="item-remove"><span class="glyphicon glyphicon-trash"></span></div>');
+            remdiv.on('click', removeimg);
+            img_tag.parent().append(remdiv);
         },
         error: function (response) { //Если ошибка 
             document.getElementById(result_id).innerHTML = 'Ошибка при отправке формы';
@@ -70,17 +71,21 @@ function AjaxFormRequest(result_id, dataURL, url) {
 }
 
 //Функция удаления изображения ajax запросом
-$('.item-remove').on('click', function removeimg(e) {
+$('.item-remove').on('click', removeimg);
+
+function removeimg(e) {
 //  $(".owl-carousel").trigger('remove.owl.carousel', 0);
     var div = $(e.target).parent().parent();
+    console.log(empty(div.attr('id')));
+    var result_id = 'result_div_id1'; // div куда выводим сообщение
 //  Ajax запрос на сервер для удаление картинки из базы
     $.ajax({
         url: '/root/product/ajax-imgremove', //Адрес экшена
         type: "POST", //Тип запроса 
         dataType: "html", //Тип данных 
-        data: {imgid: div.id}, // В экшен передаем id картинки которую удалим на сервере
+        data: {imgid: div.attr('id')}, // В экшен передаем id картинки которую удалим на сервере
         success: function (response) {  // Если удачно, то удаляем картинку со страницы    
-            document.getElementById(result_id).innerHTML = '';
+            document.getElementById(result_id).innerHTML = response;
             div.remove();
         },
         error: function (response) { //Если ошибка 
@@ -88,7 +93,22 @@ $('.item-remove').on('click', function removeimg(e) {
         }
     });
 
-});
+}
+
+function empty(e) {
+    switch (e) {
+        case "":
+        case 0:
+        case "0":
+        case null:
+        case false:
+        case typeof this == "undefined":
+            return true;
+        default:
+            return false;
+    }
+}
+
 
 // Настройки карусели
 $(document).ready(function () {
