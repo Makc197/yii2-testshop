@@ -43,7 +43,15 @@ class SiteController extends _BaseController {
     }
 
     public function actionPagePortfolio3Columns2() {
+        return $this->render('page-portfolio-3-columns-2');
+    }
+
+    public function actionPageJobDetails() {
         return $this->render('page-job-details');
+    }
+
+    public function actionPageShoppingCart() {
+        return $this->render('page-shopping-cart');
     }
 
     public function actions() {

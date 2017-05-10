@@ -15,31 +15,28 @@ use Yii;
  * @property MmCategoryProduct[] $mmCategoryProducts
  * @property Product[] $products
  */
-class Category extends \yii\db\ActiveRecord
-{
+class Category extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'category';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['name', 'techname'], 'string', 'max' => 250],
+                [['name', 'techname'], 'string', 'max' => 250],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'name' => 'Name',
@@ -51,16 +48,21 @@ class Category extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMmCategoryProducts()
-    {
+    public function getMmCategoryProducts() {
         return $this->hasMany(MmCategoryProduct::className(), ['category_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProducts()
-    {
+    public function getProducts() {
         return $this->hasMany(Product::className(), ['id' => 'product_id'])->viaTable('mm_category_product', ['category_id' => 'id']);
     }
+
+    public static function getAllcategories() {
+        if ($category = Category::find()->all()) {
+            return $category;
+        }
+    }
+
 }

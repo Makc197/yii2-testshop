@@ -2,6 +2,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+use app\models\Category;
 ?>
 
 <!-- Navigation & Logo-->
@@ -20,7 +21,6 @@ use yii\helpers\Html;
             <ul class="nav navbar-nav navbar-left">
 
                 <!--<li><a href="<= Url::to('/') ?>">Главная</a></li>--> 
-
                 <!--<li class="active">
                     <a href="/">
                         <span class="glyphicon glyphicon-home"></span>
@@ -37,13 +37,14 @@ use yii\helpers\Html;
 
                 <li class="dropdown"><a href="#"class="dropdown-toggle" data-toggle="dropdown">Theme examples<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-
                         <li><a href="<?= Url::to('/site/page-portfolio-2-columns-1') ?>">Portfolio (2 Columns, Option 1)</a></li>
                         <li><a href="<?= Url::to('/site/page-portfolio-2-columns-2') ?>">Portfolio (2 Columns, Option 2)</a></li>
                         <li><a href="<?= Url::to('/site/page-portfolio-3-columns-1') ?>">Portfolio (3 Columns, Option 1)</a></li>
                         <li><a href="<?= Url::to('/site/page-portfolio-3-columns-2') ?>">Portfolio (3 Columns, Option 2)</a></li>
+                        <li><a href="<?= Url::to('/site/page-job-details') ?>">Page job details</a></li>
                         <li><a href="<?= Url::to('/site/page-portfolio-item') ?>">Portfolio Item (Project) Description</a></li>
-
+                        <li><a href="<?= Url::to('/site/page-products') ?>">Products catalog</a></li>
+                        <li><a href="<?= Url::to('/site/page-shopping-cart') ?>">Shopping cart</a></li>
                         <li class="divider"></li>
                         <li><a href="#">Отдельная ссылка</a></li>
                         <li class="divider"></li>
@@ -53,12 +54,19 @@ use yii\helpers\Html;
 
                 <li class="dropdown"><a href="#"class="dropdown-toggle" data-toggle="dropdown">Каталог товаров<b class="caret"></b></a>
                     <ul class="dropdown-menu">
+                        <?php
+                        if ($categories = Category::getAllcategories()) {
 
-                        <li><a href="<?= Url::to('/site/page-products') ?>">Категория 1</a></li>
-                        <li><a href="<?= Url::to('/site/page-products') ?>">Категория 2</a></li>
-                        <li><a href="<?= Url::to('/site/page-products') ?>">Категория 3</a></li>
-                        <li><a href="<?= Url::to('/site/page-products') ?>">Категория 4</a></li>
-
+                            foreach ($categories as $item) {
+                                echo '<li><a href="' . Url::to(['/shop/page-products', 'category_id' => $item ["id"]]) . '">' . $item ["name"] . '</a></li>';
+                            }
+                        }
+                        ?>
+                        <li class="divider"></li>
+                        <li><a href="<?= Url::to('/shop/page-products-tmpl') ?>">Категория 1</a></li>
+                        <li><a href="<?= Url::to('/shop/page-products-tmpl') ?>">Категория 2</a></li>
+                        <li><a href="<?= Url::to('/shop/page-products-tmpl') ?>">Категория 3</a></li>
+                        <li><a href="<?= Url::to('/shop/page-products-tmpl') ?>">Категория 4</a></li>
                         <li class="divider"></li>
                         <li><a href="#">Отдельная ссылка</a></li>
                     </ul>
