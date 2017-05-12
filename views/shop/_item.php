@@ -1,20 +1,31 @@
+<?php
+
+use \yii\helpers\Url;
+
+$emptyimg='/img/emptyimg.jpg';
+$imgsrc = @$model->images[0]["img"];
+//$var = condition ? exp1 : exp2;
+$imgpath = isset($imgsrc) ? '/img/products/' . $imgsrc : $emptyimg;
+
+?>
+
 <div class = "col-md-3 col-sm-6">
     <!--Product -->
     <div class = "shop-item">
 
         <!--Product Image -->
         <div class = "shop-item-image">
-            <a href = "page-product-details"><img src = "/img/product1.jpg" alt = "Item Name"></a>
+            <a href = "<?= Url::to(['/shop/page-product-details', 'id' => $model->id]) ?>"><img src = "<?= $imgpath ?>" alt = "Item Name"></a>
         </div>
 
         <!--Product Title -->
         <div class = "title">
-            <h3><a href = "page-product-details">Lorem ipsum dolor</a></h3>
+            <h3><a href = "<?= Url::to(['/shop/page-product-details', 'id' => $model->id]) ?>"><?= $model->title ?></a></h3>
         </div>
 
         <!--Product Price-->
         <div class = "price">
-            $999.99
+            <?= $model->price ?>
         </div>
 
         <!--Add to Cart Button -->

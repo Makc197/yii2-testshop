@@ -3,6 +3,7 @@
 use yii\widgets\ListView;
 
 $this->title = 'Каталог товаров. Категория ' . $category->name;
+
 ?>
 
 <div class="eshop-section section">
