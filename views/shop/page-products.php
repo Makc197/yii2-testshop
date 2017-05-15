@@ -3,12 +3,11 @@
 use yii\widgets\ListView;
 
 $this->title = 'Каталог товаров. Категория ' . $category->name;
-
 ?>
 
 <div class="eshop-section section">
     <div class="container">
-        <div class="row">
+        <!--<div class="row">-->
             <?=
             ListView::widget([
                 'dataProvider' => $dataProvider,
@@ -18,9 +17,10 @@ $this->title = 'Каталог товаров. Категория ' . $category-
                     'nextPageLabel' => 'Вперед',
                     'prevPageLabel' => 'Назад'
                 ],
-                'layout' => '{summary}<div class="row">{items}</div><div class="pagination-wrapper">{pager}</div>',
+                'layout' => '{summary}{items}<div class="pagination-wrapper">{pager}</div>',
+//                'layout' => '{summary}<div class="row">{items}</div><div class="pagination-wrapper">{pager}</div>',
             ]);
             ?>
-        </div>
+        <!--</div>-->
     </div>
 </div>

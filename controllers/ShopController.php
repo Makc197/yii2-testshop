@@ -16,7 +16,7 @@ class ShopController extends _BaseController {
         $dataProvider = new ActiveDataProvider([
             'query' => Product::find()->joinWith('mmCategoryProducts')->andWhere(['category_id' => $category_id])->andWhere(['visibility' => 1])->orderBy(['updated' => SORT_DESC]),
             'pagination' => [
-                'pageSize' => 8,
+                'pageSize' => 12,
             ],
         ]);
         return $this->render('page-products', ['category' => $category, 'dataProvider' => $dataProvider]);
