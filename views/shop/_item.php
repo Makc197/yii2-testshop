@@ -8,7 +8,7 @@ $imgsrc = @$model->images[0]["img"];
 $imgpath = isset($imgsrc) ? '/img/products/' . $imgsrc : $emptyimg;
 ?>
 
-<div class = "col-md-4 col-sm-6">
+<div class = "col-lg-3 col-md-4 col-sm-6">
     <!--Product -->
     <div class = "shop-item">
 

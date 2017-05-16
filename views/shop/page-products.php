@@ -17,8 +17,8 @@ $this->title = 'Каталог товаров. Категория ' . $category-
                     'nextPageLabel' => 'Вперед',
                     'prevPageLabel' => 'Назад'
                 ],
-                'layout' => '{summary}{items}<div class="pagination-wrapper">{pager}</div>',
-//                'layout' => '{summary}<div class="row">{items}</div><div class="pagination-wrapper">{pager}</div>',
+//                'layout' => '{summary}{items}<div class="pagination-wrapper">{pager}</div>',
+                'layout' => '{summary}<div class="row">{items}</div><div class="pagination-wrapper">{pager}</div>',
             ]);
             ?>
         <!--</div>-->

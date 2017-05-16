@@ -56,17 +56,11 @@ use app\models\Category;
                     <ul class="dropdown-menu">
                         <?php
                         if ($categories = Category::getAllcategories()) {
-
                             foreach ($categories as $item) {
                                 echo '<li><a href="' . Url::to(['/shop/page-products', 'category_id' => $item ["id"]]) . '">' . $item ["name"] . '</a></li>';
                             }
                         }
                         ?>
-                        <li class="divider"></li>
-                        <li><a href="<?= Url::to('/shop/page-products-tmpl') ?>">Категория 1</a></li>
-                        <li><a href="<?= Url::to('/shop/page-products-tmpl') ?>">Категория 2</a></li>
-                        <li><a href="<?= Url::to('/shop/page-products-tmpl') ?>">Категория 3</a></li>
-                        <li><a href="<?= Url::to('/shop/page-products-tmpl') ?>">Категория 4</a></li>
                         <li class="divider"></li>
                         <li><a href="#">Отдельная ссылка</a></li>
                     </ul>
@@ -82,6 +76,7 @@ use app\models\Category;
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
+
                 <!--<li>
                     <?
                     Yii::$app->user->isGuest ?
