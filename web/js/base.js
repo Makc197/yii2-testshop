@@ -109,11 +109,9 @@ function empty(e) {
     }
 }
 
-
 // Настройки карусели
 $(document).ready(function () {
 
-// Responsive    
     $('.owl-carousel').owlCarousel({
         items: 2,
         loop: true,
@@ -125,10 +123,10 @@ $(document).ready(function () {
                 items: 1
             },
             600: {
-                items: 2
+                items: 1 //2
             },
             1000: {
-                items: 2
+                items: 1 //2
             }
         }
     });

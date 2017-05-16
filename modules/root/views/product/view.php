@@ -16,10 +16,23 @@ $path = Yii::getAlias('@web/img/products/');
 
 <div class="section">
     <div class="container">
-        <div class="product-view">
+        <div class="row">
+            <!-- Product Image & Available Colors -->
+            <div class="col-lg-4 col-md-5 col-sm-6">
+                <!--<div class="product-image-large">-->
+                <div class="form-group">
+                    <div class="owl-theme owl-carousel">
+                        <?php foreach ($model->images as $image) : ?>
+                            <div class="item">
+                                <?= Html::img($path . $image->img, []) ?>
+                            </div>
+                        <?php endforeach ?>
+                    </div>
+                </div>
+                <!--</div>-->             
+            </div>
 
-            <div class="col-lg-7">
-                <!--<h1><= Html::encode($this->title) ?></h1>-->
+            <div class="col-lg-3 col-md-5 col-sm-6 product-details">
                 <p>
                     <?= Html::a('Внести изменения', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                     <?=
@@ -33,41 +46,88 @@ $path = Yii::getAlias('@web/img/products/');
                     ?>
                 </p>
 
-                <?=
-                DetailView::widget([
-                    'model' => $model,
-                    'attributes' => [
-                        'title',
-                            [
-                            'label' => 'Категория',
-                            'format' => 'raw',
-                            'value' => function($data) {
-                                $categories = [];
-                                foreach ($data->categories as $category) {
-                                    $categories[] = $category->name;
-                                }
-                                return implode('<br>', $categories);
-                            }
-                        ],
-                        'description:ntext',
-                        'price',
-                        'sale',
-                        'id',
-                        'count',
-                    ],
-                ])
-                ?>
+                <h4><?= $this->title ?></h4>
 
-                <div class="form-group">
-                    <div class="owl-theme owl-carousel">
-                        <?php foreach ($model->images as $image) : ?>
-                            <div class="item">
-                                <?= Html::img($path . $image->img, []) ?>
+                <table class="shop-item-selections">
+
+                    <tr>
+                        <td><b>Цена: </b></td>
+                        <td>
+                            <div class="price">
+                                <span class="price-was"><?= $model->price ?></span> <?= $model->sale ?>
                             </div>
-                        <?php endforeach ?>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><b>Остаток (шт): </b></td>
+                        <td>
+                            <?= $model->count ?>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><b>Категория: </b></td>
+                        <td>
+                            <?php
+                            $categories = [];
+                            foreach ($model->categories as $category) {
+                                $categories[] = $category->name;
+                            }
+                            echo implode('<br>', $categories);
+                            ?>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+            <!-- End Product Summary & Options -->
+        </div>
+
+        <div class="row">
+            <!-- Full Description & Specification -->
+            <div class="col-lg-7 col-md-10">
+                <div class="tabbable">
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs product-details-nav">
+                        <li class="active"><a href="#tab1" data-toggle="tab">Описание</a></li>
+                        <li><a href="#tab2" data-toggle="tab">Доп. информация по товару</a></li>
+                    </ul>
+                    <!-- Tab Content (Full Description) -->
+                    <div class="tab-content product-detail-info">
+                        <div class="tab-pane active" id="tab1">
+                            <?= $model->description ?>
+                        </div>
+                        <!-- Tab Content (Specification) -->
+                        <div class="tab-pane" id="tab2">
+                            <?=
+                            DetailView::widget([
+                                'model' => $model,
+                                'attributes' => [
+                                    'title',
+                                        [
+                                        'label' => 'Категория',
+                                        'format' => 'raw',
+                                        'value' => function($data) {
+                                            $categories = [];
+                                            foreach ($data->categories as $category) {
+                                                $categories[] = $category->name;
+                                            }
+                                            return implode('<br>', $categories);
+                                        }
+                                    ],
+                                    'price',
+                                    'sale',
+                                    'id',
+                                    'count',
+                                ],
+                            ])
+                            ?>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- End Full Description & Specification -->
         </div>
     </div>
 </div>

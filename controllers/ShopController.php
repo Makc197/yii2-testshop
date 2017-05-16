@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\Product;
+use app\models\ProductSearch;
+use app\models\Image;
 use app\models\Category;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
@@ -22,16 +24,45 @@ class ShopController extends _BaseController {
         return $this->render('page-products', ['category' => $category, 'dataProvider' => $dataProvider]);
     }
 
-    public function actionPageProductsTmpl() {
-        return $this->render('page-products-tmpl');
-    }
+    public function actionPageProductDetails($id) {
+        //1 - Product model
+        $model = $this->findProductModel($id);
 
-    public function actionPageProductDetails() {
-        return $this->render('page-product-details');
+        //2 - ImageModel
+//        $imgmodel = $this->findImgModel($imgid);
+//        $imgfilename = $imgmodel->img;
+
+
+        return $this->render('page-product-details', [
+            'model' => $model
+        ]);
     }
 
     public function actionPageShoppingCart() {
         return $this->render('page-shopping-cart');
+    }
+
+    /**
+     * Finds the Product model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Product the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findProductModel($id) {
+        if (($model = Product::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    protected function findImgModel($imgid) {
+        if (($imgmodel = Image::findOne($imgid)) !== null) {
+            return $imgmodel;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 
 }

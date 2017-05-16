@@ -80,6 +80,7 @@ class ProductController extends Controller {
      * @param integer $id
      * @return mixed
      */
+    
     public function actionUpdate($id) {
         $model = $this->findModel($id);
 
@@ -111,7 +112,6 @@ class ProductController extends Controller {
 
         return $retstr;
 
-        /** @TODO: Надо дописать ф-ю удаления картинки из базы */
     }
 
     /** @TODO: Надо определять расширение файла по заголовку Base64 */
