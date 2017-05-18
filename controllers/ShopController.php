@@ -3,43 +3,37 @@
 namespace app\controllers;
 
 use app\models\Product;
-use app\models\ProductSearch;
-use app\models\Image;
 use app\models\Category;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
-class ShopController extends _BaseController {
+class ShopController extends _Modal {
+
+    public static $model_name = 'app\models\CartItem';
+
+//    public $enableCsrfValidation = false;
 
     public function actionPageProducts($category_id) {
         if (!$category = Category::findOne($category_id)) {
             throw new NotFoundHttpException('Category does not exist.');
         }
+
         $dataProvider = new ActiveDataProvider([
             'query' => Product::find()->joinWith('mmCategoryProducts')->andWhere(['category_id' => $category_id])->andWhere(['visibility' => 1])->orderBy(['updated' => SORT_DESC]),
             'pagination' => [
                 'pageSize' => 12,
             ],
         ]);
+
         return $this->render('page-products', ['category' => $category, 'dataProvider' => $dataProvider]);
     }
 
-    public function actionPageProductDetails($id) {
-        //1 - Product model
-        $model = $this->findProductModel($id);
-
-        //2 - ImageModel
-//        $imgmodel = $this->findImgModel($imgid);
-//        $imgfilename = $imgmodel->img;
-
+    public function actionPageProductDetails($product_id) {
+        $model = $this->findProductModel($product_id);
 
         return $this->render('page-product-details', [
             'model' => $model
         ]);
-    }
-
-    public function actionPageShoppingCart() {
-        return $this->render('page-shopping-cart');
     }
 
     /**
@@ -49,20 +43,26 @@ class ShopController extends _BaseController {
      * @return Product the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findProductModel($id) {
-        if (($model = Product::findOne($id)) !== null) {
+    protected function findProductModel($product_id) {
+        if (($model = Product::findOne($product_id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 
-    protected function findImgModel($imgid) {
-        if (($imgmodel = Image::findOne($imgid)) !== null) {
-            return $imgmodel;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
+    public function actionPageShoppingCart() {
+        return $this->render('page-shopping-cart');
+    }
+
+    //Добавление товара в корзину - данный метод вызывается через Ajax запрос - см base.js
+    //Один из вариантов реализации - сейчас не используем
+    //Сейчас использ вариант с _modal_form - добавление товара в сессию в app\model\CartItem
+    public function actionAddProductToCart($product_id) {
+        //$product_id = Yii::$app->request->post('product_id');
+        $model = $this->findProductModel($product_id);
+        return 'Добавление в корзину товара ' . $model->title;
+        //@TODO Реализовать добавление товара в сессию
     }
 
 }

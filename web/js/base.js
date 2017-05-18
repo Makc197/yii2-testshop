@@ -4,7 +4,6 @@ $('.logout_link').on('click', function (event) {
 //  console.log("test logout_link");
     $('#logout_form').submit();
 });
-
 //Перехватываем событие на изменение fileinput
 $('#product-imagefiles').on('change', function (event) {
 //  event.preventDefault();
@@ -23,7 +22,6 @@ $('#product-imagefiles').on('change', function (event) {
             var dataURL = reader.result;
             AjaxFormRequest('result_div_id1', dataURL, '/root/product/ajax-update?id=' + $('.product-form').attr("product_id"));
         };
-
         reader.readAsDataURL($img);
     }
 
@@ -49,13 +47,11 @@ function AjaxFormRequest(result_id, dataURL, url) {
         success: function (response) { //Если все нормально 
             document.getElementById(result_id).innerHTML = '';
             var $id = JSON.parse(response).id;
-
             //Если удачно - добавляем картинку в карусель и прописываем идентиф в блоке для возможности удаления
             var img_tag = $('<img>');
             //img_tag.data('filename',$img.name);
             //img_tag.attr("data-fn", $img.name);
             img_tag[0].src = dataURL;
-
             $('.owl-carousel')
                     .trigger('add.owl.carousel', [img_tag, 0])
                     .trigger('refresh.owl.carousel');
@@ -72,7 +68,6 @@ function AjaxFormRequest(result_id, dataURL, url) {
 
 //Функция удаления изображения ajax запросом
 $('.item-remove').on('click', removeimg);
-
 function removeimg(e) {
 //  $(".owl-carousel").trigger('remove.owl.carousel', 0);
     var div = $(e.target).parent().parent();
@@ -92,8 +87,31 @@ function removeimg(e) {
             document.getElementById(result_id).innerHTML = 'Ошибка при отправке формы';
         }
     });
-
 }
+
+//Функция добавления товара в корзину
+//Перехватываем событие нажатия на кнопку Добавить в корзину
+$('.add-to-cart').on('click', function (event) {
+    event.preventDefault();
+    console.log("test add-to-cart");
+    var div = $(event.target).parent();
+    console.log(div.attr('id'));
+    var result_id = 'result_div_id1'; // div куда выводим сообщение
+    //  Ajax запрос на сервер для добавления товара в корзину (в сессию)
+    $.ajax({
+        url: '/shop/add-product-to-cart', //Адрес экшена
+        type: "GET", //Тип запроса 
+        dataType: "html", //Тип данных 
+        data: {product_id: div.attr('id')}, // В экшен передаем id продукта который добавляем в корзину
+        success: function (response) {
+            document.getElementById(result_id).innerHTML = response;
+            div.remove();
+        },
+        error: function (response) { //Если ошибка 
+            document.getElementById(result_id).innerHTML = 'Ошибка при отправке формы';
+        }
+    });
+});
 
 function empty(e) {
     switch (e) {
@@ -117,7 +135,6 @@ $(document).ready(function () {
         loop: true,
         margin: 10,
         nav: true,
-
         responsive: {
             0: {
                 items: 1
@@ -130,5 +147,13 @@ $(document).ready(function () {
             }
         }
     });
+});
 
+$(function () {
+    $('[data-toggle = modal]').on('click', function (e) {
+        var $target = $(this);
+        if ($url = $target.data("modal_url")) {
+            $($target.data("target") + ' .modal-body').load($url);
+        }
+    })
 });

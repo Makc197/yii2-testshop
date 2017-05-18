@@ -17,13 +17,13 @@ $categoryid = yii::$app->request->get('category_id');
         <div class = "center-item">
             <!--Product Image -->
             <div class = "shop-item-image">
-                <a href = "<?= Url::to(['/shop/page-product-details', 'id' => $model->id, 'category_id' => $categoryid]) ?>"><img src = "<?= $imgpath ?>" alt = "Item Name"></a>
+                <a href = "<?= Url::to(['/shop/page-product-details', 'product_id' => $model->id, 'category_id' => $categoryid]) ?>"><img src = "<?= $imgpath ?>" alt = "Item Name"></a>
             </div>
         </div>
 
         <!--Product Title -->
         <div class = "title">
-            <h3><a href = "<?= Url::to(['/shop/page-product-details', 'id' => $model->id, 'category_id' => $categoryid]) ?>"><?= $model->title ?></a></h3>
+            <h3><a href = "<?= Url::to(['/shop/page-product-details', 'product_id' => $model->id, 'category_id' => $categoryid]) ?>"><?= $model->title ?></a></h3>
         </div>
 
         <!--Product Price-->
@@ -32,8 +32,8 @@ $categoryid = yii::$app->request->get('category_id');
         </div>
 
         <!--Add to Cart Button -->
-        <div class = "actions">
-            <a href = "page-product-details" class = "btn btn-small"><i class = "icon-shopping-cart icon-white"></i> Добавить в корзину</a>
+        <div class = "actions" id="<?= $model->id ?>">
+            <a href = "<?= Url::to(['/shop/add-product-to-cart', 'product_id' => $model->id]) ?>" class = "btn btn-small"><i class = "icon-shopping-cart icon-white"></i> Добавить в корзину</a>
         </div>
 
         <!--End Product -->

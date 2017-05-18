@@ -6,7 +6,6 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 
-
 class _BaseController extends Controller {
 
     public function behaviors() {
