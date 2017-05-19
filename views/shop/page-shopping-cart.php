@@ -1,12 +1,21 @@
 <?php
 
 use yii\helpers\Url;
+use app\models\Product;
 
 $this->title = 'Корзина';
 ?>
 
 <div class="section">
     <div class="container">
+
+        <span id="result_div_id1">
+            <?php
+            $session = Yii::$app->session;
+            var_dump($session['cart']);
+            ?>
+        </span>
+
         <div class="row">
             <div class="col-md-12">
                 <!-- Action Buttons -->

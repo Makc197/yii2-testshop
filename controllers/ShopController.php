@@ -52,7 +52,15 @@ class ShopController extends _Modal {
     }
 
     public function actionPageShoppingCart() {
-        return $this->render('page-shopping-cart');
+        //Ищем все товары, необходимые для формирования корзины
+        //Кладем их в массив $products_arr 
+        //затем передаем этот массив на страницу корзины
+        $products_arr = [];
+
+
+        return $this->render('page-shopping-cart', [
+            'products' => $products_arr
+        ]);
     }
 
     //Добавление товара в корзину - данный метод вызывается через Ajax запрос - см base.js

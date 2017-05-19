@@ -1,6 +1,6 @@
 <?php
 
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use yii\helpers\Html;
 
@@ -15,13 +15,10 @@ $form = ActiveForm::begin(
 $chartitem = $model;
 ?>
 
-<h3>Добавление товара в корзину</h3>
-<h4>Укажите необходимое количество</h4>
+<h5>Укажите необходимое количество</h5>
 <?= $form->field($chartitem, 'id')->hiddenInput(['value' => $id])->label(false); ?>
-<?= $form->field($chartitem, 'count'); ?>
+<?= $form->field($chartitem, 'count')->textInput()->label(false); ?>
 
-<?= Html::submitButton('Подтвердить', ['class' => 'btn btn-success']); ?>
+<?= Html::submitButton('Подтвердить', ['class' => 'btn btn-success modal-submit', 'data-target' => '#ModalWindow']); ?>
 
 <?php ActiveForm::end(); ?>
-
-

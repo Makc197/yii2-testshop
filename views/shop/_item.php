@@ -1,6 +1,7 @@
 <?php
 
-use \yii\helpers\Url;
+use yii\helpers\Url;
+use yii\helpers\Html;
 
 $emptyimg = '/img/emptyimg.jpg';
 $imgsrc = @$model->images[0]["img"];
@@ -33,9 +34,22 @@ $categoryid = yii::$app->request->get('category_id');
 
         <!--Add to Cart Button -->
         <div class = "actions" id="<?= $model->id ?>">
-            <a href = "<?= Url::to(['/shop/add-product-to-cart', 'product_id' => $model->id]) ?>" class = "btn btn-small"><i class = "icon-shopping-cart icon-white"></i> Добавить в корзину</a>
+            <!--<a href = "<= Url::to(['/shop/add-product-to-cart', 'product_id' => $model->id]) ?>" class = "btn btn-small"><i class = "icon-shopping-cart icon-white"></i> Добавить в корзину</a>-->
+            <?=
+            //По нажатии кнопки отрисовка модального окна через Bootstrap data-togle 
+            //передаем ajax запросом через data-modal_url  product_id в /shop/modal - см base.js
+            Html::button(
+            '<i class = "icon-shopping-cart icon-white"></i> Добавить в корзину', [
+                'class' => 'btn  btn-primary',
+                'data-toggle' => 'modal',
+                'data-modal_url' => Url::to(
+                ['/shop/modal', 'id' => $model->id]
+                ),
+                'data-target' => '#ModalWindow',
+            ]
+            );
+            ?>
         </div>
-
         <!--End Product -->
     </div>
 </div>

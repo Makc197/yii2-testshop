@@ -37,35 +37,40 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="col-lg-3 col-md-5 col-sm-6 product-details">
                 <!--Add to Cart Button -->
-                
+
                 <!-- Здесь синхронный запрос при нажатии кнопки - передаем в контроллер product_id -->
                 <!--<div class = "actions add-to-cart" id="<= $model->id ?>">-->
                     <!--<a href = "<= Url::to(['/shop/add-product-to-cart', 'product_id' => $model->id]) ?>" class = "btn btn-small"><i class = "icon-shopping-cart icon-white"></i> Добавить в корзину</a>-->
                 <!--</div>-->
-                
+
                 <!-- Здесь ajax запрос при нажатии кнопки - см base.js -->
                 <!--<div class = "actions add-to-cart" id="<= $model->id ?>">-->
                     <!--<a class = "btn btn-small"><i class = "icon-shopping-cart icon-white"></i> Добавить в корзину</a>-->
                 <!--</div>-->
-            
-                
+
+
                 <?=
                 //По нажатии кнопки отрисовка модального окна через Bootstrap data-togle 
                 //передаем ajax запросом через data-modal_url  product_id в /shop/modal - см base.js
-                        
                 Html::button(
-                '<i class="fa fa-pencil">Добавить в корзину</i>', [
+                '<span class="fa fa-pencil">Добавить в корзину</span>', [
                     'class' => 'btn  btn-primary',
                     'data-toggle' => 'modal',
                     'data-modal_url' => Url::to(
-                    ['/shop/modal', 'id' => $model->id ]
+                    ['/shop/modal', 'id' => $model->id]
                     ),
                     'data-target' => '#ModalWindow',
                 ]
                 );
                 ?>
 
-                <span id="result_div_id1"></span>
+                </br>
+                <span id="result_div_id1">
+                    <?php
+                    $session = Yii::$app->session;
+                    var_dump($session['cart']);
+                    ?>
+                </span>
 
                 <h4>
                     </br>
@@ -156,10 +161,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
-<?php Modal::begin(
-    [
-        'id'   => 'ModalWindow',
-        'size' => Modal::SIZE_LARGE,
-    ]
+<?php
+Modal::begin(
+[
+    'id' => 'ModalWindow',
+    'size' => Modal::SIZE_SMALL,
+]
 );
-Modal::end(); ?>
+Modal::end();
+?>
