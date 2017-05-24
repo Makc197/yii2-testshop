@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Product;
 use app\models\Category;
 use yii\data\ActiveDataProvider;
@@ -56,11 +57,20 @@ class ShopController extends _Modal {
         //Кладем их в массив $products_arr 
         //затем передаем этот массив на страницу корзины
         $products_arr = [];
+        $products_arr = array_keys(Yii::$app->session['cart']);
+        $callback = function($item) {
+            return $item != 'lifetime';
+        };
+        $products_arr = array_filter($products_arr, $callback);
 
-
-        return $this->render('page-shopping-cart', [
-            'products' => $products_arr
+        $dataProvider = new ActiveDataProvider([
+            'query' => Product::find()->joinWith('mmCategoryProducts')->andWhere(['in', 'id', $products_arr])->andWhere(['visibility' => 1])->orderBy(['updated' => SORT_DESC]),
+            'pagination' => [
+                'pageSize' => 12,
+            ],
         ]);
+
+        return $this->render('page-shopping-cart', ['dataProvider' => $dataProvider]);
     }
 
     //Добавление товара в корзину - данный метод вызывается через Ajax запрос - см base.js

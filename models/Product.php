@@ -136,6 +136,10 @@ class Product extends \yii\db\ActiveRecord {
     public function getImages() {
         return $this->hasMany(Image::className(), ['product_id' => 'id']);
     }
+    
+      public function getCartCount() {
+          return yii::$app->session['cart'][$this->id]['count'];
+      }
 
     public function afterSave($insert, $changedAttributes) {
         parent::afterSave($insert, $changedAttributes);

@@ -48,7 +48,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     <!--<a class = "btn btn-small"><i class = "icon-shopping-cart icon-white"></i> Добавить в корзину</a>-->
                 <!--</div>-->
 
-
                 <?=
                 //По нажатии кнопки отрисовка модального окна через Bootstrap data-togle 
                 //передаем ajax запросом через data-modal_url  product_id в /shop/modal - см base.js

@@ -1,7 +1,7 @@
 <?php
 
+use yii\widgets\ListView;
 use yii\helpers\Url;
-use app\models\Product;
 
 $this->title = 'Корзина';
 ?>
@@ -12,9 +12,10 @@ $this->title = 'Корзина';
         <span id="result_div_id1">
             <?php
             $session = Yii::$app->session;
-            var_dump($session['cart']);
+//          var_dump($session['cart']);
             ?>
         </span>
+
 
         <div class="row">
             <div class="col-md-12">
@@ -25,11 +26,26 @@ $this->title = 'Корзина';
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <!-- Shopping Cart Items -->
                 <table class="shopping-cart">
                     <!-- Shopping Cart Item -->
+                    <?=
+                    ListView::widget([
+                        'dataProvider' => $dataProvider,
+                        'itemView' => '_cart_item',
+                        'pager' => [
+                            'options' => ['class' => 'pagination pagination-lg'],
+                            'nextPageLabel' => 'Вперед',
+                            'prevPageLabel' => 'Назад'
+                        ],
+                        'layout' => '{summary}<div class="row">{items}</div><div class="pagination-wrapper">{pager}</div>',
+                    ]);
+                    ?>
+
+
                     <tr>
                         <!-- Shopping Cart Item Image -->
                         <td class="image"><a href="<?= Url::to('/site/page-product-details') ?>"><img src="/img/product1.jpg" alt="Item Name"></a></td>
@@ -54,6 +70,7 @@ $this->title = 'Корзина';
                         </td>
                     </tr>
                     <!-- End Shopping Cart Item -->
+
                     <tr>
                         <td class="image"><a href="<?= Url::to('/site/page-product-details') ?>"><img src="/img/product2.jpg" alt="Item Name"></a></td>
                         <td>
@@ -72,6 +89,7 @@ $this->title = 'Корзина';
                             <a href="#" class="btn btn-xs btn-grey"><i class="glyphicon glyphicon-trash"></i></a>
                         </td>
                     </tr>
+
                     <tr>
                         <td class="image"><a href="<?= Url::to('/site/page-product-details') ?>"><img src="/img/product3.jpg" alt="Item Name"></a></td>
                         <td>
@@ -89,6 +107,9 @@ $this->title = 'Корзина';
                             <a href="#" class="btn btn-xs btn-grey"><i class="glyphicon glyphicon-trash"></i></a>
                         </td>
                     </tr>
+
+
+
                 </table>
                 <!-- End Shopping Cart Items -->
             </div>
