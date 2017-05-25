@@ -27,8 +27,8 @@ class CartItem extends \yii\base\Model {
         ];
     }
 
+    //В сессии в массив Cart записываем массив по продукту - добавляем товар в корзину
     public function save() {
-        //В сессии в массив Cart пишем массив по продукту
         $session = Yii::$app->session;
         $product_id = $this->id;
         $cart = $session['cart'];
@@ -39,8 +39,15 @@ class CartItem extends \yii\base\Model {
         return true;
     }
 
+    //В сессии в массиве Cart удаляем массив по продукту - удаляем товар из корзины
+    public function remove($id) {
+        
+    }
+
+    //Метод поиска товара в корзине (session['cart']) по id товара
     public static function findOne($id) {
         //@TODO Реализовать метод поиска товара в сессии
+        
         //Если в сессиии нет -  return new self(['id'=>$id])
         return new self(['id' => $id]);
     }

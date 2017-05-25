@@ -51,6 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?=
                 //По нажатии кнопки отрисовка модального окна через Bootstrap data-togle 
                 //передаем ajax запросом через data-modal_url  product_id в /shop/modal - см base.js
+                //$('[data-toggle = modal]')        
                 Html::button(
                 '<span class="fa fa-pencil">Добавить в корзину</span>', [
                     'class' => 'btn  btn-primary',
@@ -63,12 +64,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 );
                 ?>
 
-                </br>
                 <span id="result_div_id1">
-                    <?php
-                    $session = Yii::$app->session;
-                    var_dump($session['cart']);
-                    ?>
+                  
                 </span>
 
                 <h4>

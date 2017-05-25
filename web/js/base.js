@@ -93,7 +93,7 @@ function removeimg(e) {
 //Перехватываем событие нажатия на кнопку Добавить в корзину
 $('.add-to-cart').on('click', function (event) {
     event.preventDefault();
-    console.log("test add-to-cart");
+//    console.log("test add-to-cart");
     var div = $(event.target).parent();
     console.log(div.attr('id'));
     var result_id = 'result_div_id1'; // div куда выводим сообщение
@@ -109,6 +109,32 @@ $('.add-to-cart').on('click', function (event) {
         },
         error: function (response) { //Если ошибка 
             document.getElementById(result_id).innerHTML = 'Ошибка при отправке формы';
+        }
+    });
+});
+
+//Функция удаления товара из корзины
+//Перехватываем событие нажатия на кнопку Удалить из корзины
+$('.remove-cart-item').on('click', function (event) {
+    event.preventDefault();
+    console.log("test remove-cart-item");
+    var div = $(event.target).parent().parent();
+    console.log(div.attr('id'));
+    //var result_id = 'result_div_id1'; // div куда выводим сообщение
+    //Ajax запрос на сервер
+    $.ajax({
+        url: '/shop/remove-cart-item', //Адрес экшена
+        type: "GET", //Тип запроса 
+        dataType: "html", //Тип данных 
+        data: {product_id: div.attr('id')}, // В экшене передаем id продукта, который удаляем из корзины
+        success: function (response) {
+            //document.getElementById(result_id).innerHTML = response;
+            div.parent().remove();
+            console.log(response);
+        },
+        error: function (response) { //Если ошибка 
+            //document.getElementById(result_id).innerHTML = 'Ошибка при отправке формы';
+            console.log('Ошибка при отправке формы');
         }
     });
 });
@@ -157,7 +183,6 @@ $(function () {
         }
     })
 });
-
 
 $(function () {
     $('.modal-submit').on('click', function (e) {

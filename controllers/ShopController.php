@@ -12,7 +12,7 @@ class ShopController extends _Modal {
 
     public static $model_name = 'app\models\CartItem';
 
-//    public $enableCsrfValidation = false;
+//  public $enableCsrfValidation = false;
 
     public function actionPageProducts($category_id) {
         if (!$category = Category::findOne($category_id)) {
@@ -57,11 +57,13 @@ class ShopController extends _Modal {
         //Кладем их в массив $products_arr 
         //затем передаем этот массив на страницу корзины
         $products_arr = [];
-        $products_arr = array_keys(Yii::$app->session['cart']);
-        $callback = function($item) {
-            return $item != 'lifetime';
-        };
-        $products_arr = array_filter($products_arr, $callback);
+        if (Yii::$app->session['cart']) {
+            $products_arr = array_keys(Yii::$app->session['cart']);
+            $callback = function($item) {
+                return $item != 'lifetime';
+            };
+            $products_arr = array_filter($products_arr, $callback);
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => Product::find()->joinWith('mmCategoryProducts')->andWhere(['in', 'id', $products_arr])->andWhere(['visibility' => 1])->orderBy(['updated' => SORT_DESC]),
@@ -73,14 +75,53 @@ class ShopController extends _Modal {
         return $this->render('page-shopping-cart', ['dataProvider' => $dataProvider]);
     }
 
-    //Добавление товара в корзину - данный метод вызывается через Ajax запрос - см base.js
-    //Один из вариантов реализации - сейчас не используем
+    //Добавление товара в корзину - Один из вариантов реализации - сейчас не используем
+    //Данный метод сейчас вызывается через Ajax запрос  - см base.js - $('[data-toggle = modal]')
     //Сейчас использ вариант с _modal_form - добавление товара в сессию в app\model\CartItem
     public function actionAddProductToCart($product_id) {
         //$product_id = Yii::$app->request->post('product_id');
         $model = $this->findProductModel($product_id);
         return 'Добавление в корзину товара ' . $model->title;
         //@TODO Реализовать добавление товара в сессию
+    }
+
+    //Данный метод сейчас вызывается через Ajax запрос - см base.js - $('.remove-cart-item')
+    //$product_id передаем через GET 
+    public function actionRemoveCartItem($product_id) {
+        //Если параметры передавать через POST
+        //$product_id = Yii::$app->request->post('$product_id'); 
+        $model = $this->findProductModel($product_id);
+        //@TODO Реализовать удаление товара из сессии
+
+        echo $product_id;
+
+        $session = Yii::$app->session['cart'];
+
+        var_dump($session);
+        echo('=======================');
+
+        if ($session) {
+            $arrkeys = array_keys($session);
+            
+            $callback = function($val, $key) {
+                echo ' |  ';
+                echo $product_id; //Не видна здесь ????
+                echo '   ';
+                echo $key;
+                echo '   ';
+                echo $key != $product_id;
+
+                return $key != $product_id;
+            };
+
+            $session = array_filter($session, $callback, ARRAY_FILTER_USE_BOTH);
+        }
+
+        var_dump($session);
+
+        Yii::$app->session['cart'] = $session;
+
+        return 'Удаление товара из корзины: ' . $model->title;
     }
 
 }

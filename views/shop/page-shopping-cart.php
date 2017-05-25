@@ -18,7 +18,7 @@ $this->title = 'Корзина';
 
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <!-- Action Buttons -->
                 <div class="pull-right">
                     <a href="#" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Обновить</a>
@@ -28,9 +28,10 @@ $this->title = 'Корзина';
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <!-- Shopping Cart Items -->
                 <table class="shopping-cart">
+                    
                     <!-- Shopping Cart Item -->
                     <?=
                     ListView::widget([
@@ -44,31 +45,6 @@ $this->title = 'Корзина';
                         'layout' => '{summary}<div class="row">{items}</div><div class="pagination-wrapper">{pager}</div>',
                     ]);
                     ?>
-
-
-                    <tr>
-                        <!-- Shopping Cart Item Image -->
-                        <td class="image"><a href="<?= Url::to('/site/page-product-details') ?>"><img src="/img/product1.jpg" alt="Item Name"></a></td>
-                        <!-- Shopping Cart Item Description & Features -->
-                        <td>
-                            <div class="cart-item-title"><a href="<?= Url::to('/site/page-product-details') ?>">LOREM IPSUM DOLOR</a></div>
-                            <div class="feature color">
-                                Color: <span class="color-white"></span>
-                            </div>
-                            <div class="feature">Size: <b>XXL</b></div>
-                        </td>
-                        <!-- Shopping Cart Item Quantity -->
-                        <td class="quantity">
-                            <input class="form-control input-sm input-micro" type="text" value="1">
-                        </td>
-                        <!-- Shopping Cart Item Price -->
-                        <td class="price">$999.99</td>
-                        <!-- Shopping Cart Item Actions -->
-                        <td class="actions">
-                            <a href="#" class="btn btn-xs btn-grey"><i class="glyphicon glyphicon-pencil"></i></a>
-                            <a href="#" class="btn btn-xs btn-grey"><i class="glyphicon glyphicon-trash"></i></a>
-                        </td>
-                    </tr>
                     <!-- End Shopping Cart Item -->
 
                     <tr>
@@ -109,23 +85,14 @@ $this->title = 'Корзина';
                     </tr>
 
 
-
                 </table>
                 <!-- End Shopping Cart Items -->
             </div>
         </div>
         <div class="row">
 
-            <div class="col-md-4  col-md-offset-0 col-sm-6 col-sm-offset-6">
-
-            </div>
-
-            <div class="col-md-4 col-md-offset-0 col-sm-6 col-sm-offset-6">
-
-            </div>
-
             <!-- Shopping Cart Totals -->
-            <div class="col-md-4 col-md-offset-0 col-sm-6 col-sm-offset-6">
+            <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-6">
                 <table class="cart-totals">
                     <tr>
                     </tr>
