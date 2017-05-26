@@ -16,12 +16,11 @@ $this->title = 'Корзина';
             ?>
         </span>
 
-
         <div class="row">
             <div class="col-md-8">
                 <!-- Action Buttons -->
                 <div class="pull-right">
-                    <a href="#" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Обновить</a>
+                    <a href="<?= Url::to('/shop/page-shopping-cart') ?>" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Обновить</a>
                     <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> Оформить покупку</a>
                 </div>
             </div>
@@ -31,7 +30,6 @@ $this->title = 'Корзина';
             <div class="col-md-8">
                 <!-- Shopping Cart Items -->
                 <table class="shopping-cart">
-                    
                     <!-- Shopping Cart Item -->
                     <?=
                     ListView::widget([
@@ -46,51 +44,12 @@ $this->title = 'Корзина';
                     ]);
                     ?>
                     <!-- End Shopping Cart Item -->
-
-                    <tr>
-                        <td class="image"><a href="<?= Url::to('/site/page-product-details') ?>"><img src="/img/product2.jpg" alt="Item Name"></a></td>
-                        <td>
-                            <div class="cart-item-title"><a href="<?= Url::to('/site/page-product-details') ?>">LOREM IPSUM DOLOR</a></div>
-                            <div class="feature color">
-                                Color: <span class="color-orange"></span>
-                            </div>
-                            <div class="feature">Size: <b>XXL</b></div>
-                        </td>
-                        <td class="quantity">
-                            <input class="form-control input-sm input-micro" type="text" value="1">
-                        </td>
-                        <td class="price">$999.99</td>
-                        <td class="actions">
-                            <a href="#" class="btn btn-xs btn-grey"><i class="glyphicon glyphicon-pencil"></i></a>
-                            <a href="#" class="btn btn-xs btn-grey"><i class="glyphicon glyphicon-trash"></i></a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="image"><a href="<?= Url::to('/site/page-product-details') ?>"><img src="/img/product3.jpg" alt="Item Name"></a></td>
-                        <td>
-                            <div class="cart-item-title"><a href="<?= Url::to('/site/page-product-details') ?>">LOREM IPSUM DOLOR</a></div>
-                            <div class="feature color">
-                            </div>
-                            <div class="feature">Size: <b>XXL</b></div>
-                        </td>
-                        <td class="quantity">
-                            <input class="form-control input-sm input-micro" type="text" value="1">
-                        </td>
-                        <td class="price">$999.99</td>
-                        <td class="actions">
-                            <a href="#" class="btn btn-xs btn-grey"><i class="glyphicon glyphicon-pencil"></i></a>
-                            <a href="#" class="btn btn-xs btn-grey"><i class="glyphicon glyphicon-trash"></i></a>
-                        </td>
-                    </tr>
-
-
                 </table>
                 <!-- End Shopping Cart Items -->
             </div>
         </div>
-        <div class="row">
 
+        <div class="row">
             <!-- Shopping Cart Totals -->
             <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-6">
                 <table class="cart-totals">
@@ -107,7 +66,7 @@ $this->title = 'Корзина';
                 </table>
                 <!-- Action Buttons -->
                 <div class="pull-right">
-                    <a href="#" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Обновить</a>
+                    <a href="<?= Url::to('/shop/page-shopping-cart') ?>" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Обновить</a>
                     <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> Оформить покупку</a>
                 </div>
             </div>

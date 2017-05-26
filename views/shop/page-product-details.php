@@ -161,7 +161,7 @@ $this->params['breadcrumbs'][] = $this->title;
 Modal::begin(
 [
     'id' => 'ModalWindow',
-    'size' => Modal::SIZE_SMALL,
+    'size' => Modal::SIZE_SMALL,        
 ]
 );
 Modal::end();

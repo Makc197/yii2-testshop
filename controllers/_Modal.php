@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: MIKEk8
- * Date: 04.05.2017
- * Time: 18:38
- */
-
 namespace app\controllers;
 
 use yii\web\Response;

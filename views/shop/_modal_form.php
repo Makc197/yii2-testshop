@@ -15,7 +15,7 @@ $form = ActiveForm::begin(
 $chartitem = $model;
 ?>
 
-<h5>Укажите необходимое количество</h5>
+<h5><?= isset($chartitem->count) ? 'В корзине уже есть такой товар. Измените количество товара в корзине:' : 'Укажите необходимое количество:'; ?></h5>
 <?= $form->field($chartitem, 'id')->hiddenInput(['value' => $id])->label(false); ?>
 <?= $form->field($chartitem, 'count')->textInput()->label(false); ?>
 

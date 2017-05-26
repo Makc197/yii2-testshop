@@ -91,36 +91,19 @@ class ShopController extends _Modal {
         //Если параметры передавать через POST
         //$product_id = Yii::$app->request->post('$product_id'); 
         $model = $this->findProductModel($product_id);
-        //@TODO Реализовать удаление товара из сессии
-
-        echo $product_id;
-
         $session = Yii::$app->session['cart'];
-
-        var_dump($session);
-        echo('=======================');
 
         if ($session) {
             $arrkeys = array_keys($session);
-            
-            $callback = function($val, $key) {
-                echo ' |  ';
-                echo $product_id; //Не видна здесь ????
-                echo '   ';
-                echo $key;
-                echo '   ';
-                echo $key != $product_id;
 
+            $callback = function($key) use ($product_id) {
                 return $key != $product_id;
             };
 
-            $session = array_filter($session, $callback, ARRAY_FILTER_USE_BOTH);
+            $session = array_filter($session, $callback, ARRAY_FILTER_USE_KEY);
         }
 
-        var_dump($session);
-
         Yii::$app->session['cart'] = $session;
-
         return 'Удаление товара из корзины: ' . $model->title;
     }
 

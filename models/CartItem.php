@@ -39,17 +39,16 @@ class CartItem extends \yii\base\Model {
         return true;
     }
 
-    //В сессии в массиве Cart удаляем массив по продукту - удаляем товар из корзины
-    public function remove($id) {
-        
-    }
-
     //Метод поиска товара в корзине (session['cart']) по id товара
-    public static function findOne($id) {
-        //@TODO Реализовать метод поиска товара в сессии
-        
-        //Если в сессиии нет -  return new self(['id'=>$id])
-        return new self(['id' => $id]);
+    public static function findOne($product_id) {
+        $cart_item = Yii::$app->session['cart'][$product_id];
+
+        If ($cart_item) {
+            return new self(['id' => $product_id,'count' => $cart_item['count']]);
+        }
+
+        //Если в сессиии нет искомого продукта - return new self(['id'=>$id])
+        return new self(['id' => $product_id]);
     }
 
 }
