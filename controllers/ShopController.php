@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Product;
 use app\models\Category;
+use app\models\Cart;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
@@ -56,15 +57,9 @@ class ShopController extends _Modal {
         //Ищем все товары, необходимые для формирования корзины
         //Кладем их в массив $products_arr 
         //затем передаем этот массив на страницу корзины
-        $products_arr = [];
-        if (Yii::$app->session['cart']) {
-            $products_arr = array_keys(Yii::$app->session['cart']);
-            $callback = function($item) {
-                return $item != 'lifetime';
-            };
-            $products_arr = array_filter($products_arr, $callback);
-        }
-
+       
+        $products_arr = Cart::allcartitems();
+        
         $dataProvider = new ActiveDataProvider([
             'query' => Product::find()->joinWith('mmCategoryProducts')->andWhere(['in', 'id', $products_arr])->andWhere(['visibility' => 1])->orderBy(['updated' => SORT_DESC]),
             'pagination' => [
@@ -83,28 +78,6 @@ class ShopController extends _Modal {
         $model = $this->findProductModel($product_id);
         return 'Добавление в корзину товара ' . $model->title;
         //@TODO Реализовать добавление товара в сессию
-    }
-
-    //Данный метод сейчас вызывается через Ajax запрос - см base.js - $('.remove-cart-item')
-    //$product_id передаем через GET 
-    public function actionRemoveCartItem($product_id) {
-        //Если параметры передавать через POST
-        //$product_id = Yii::$app->request->post('$product_id'); 
-        $model = $this->findProductModel($product_id);
-        $session = Yii::$app->session['cart'];
-
-        if ($session) {
-            $arrkeys = array_keys($session);
-
-            $callback = function($key) use ($product_id) {
-                return $key != $product_id;
-            };
-
-            $session = array_filter($session, $callback, ARRAY_FILTER_USE_KEY);
-        }
-
-        Yii::$app->session['cart'] = $session;
-        return 'Удаление товара из корзины: ' . $model->title;
     }
 
 }

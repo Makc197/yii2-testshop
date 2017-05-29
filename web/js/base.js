@@ -123,7 +123,7 @@ $('.remove-cart-item').on('click', function (event) {
     //var result_id = 'result_div_id1'; // div куда выводим сообщение
     //Ajax запрос на сервер
     $.ajax({
-        url: '/shop/remove-cart-item', //Адрес экшена
+        url: '/cart/remove-cart-item', //Адрес экшена
         type: "GET", //Тип запроса 
         dataType: "html", //Тип данных 
         data: {product_id: div.attr('id')}, // В экшене передаем id продукта, который удаляем из корзины
