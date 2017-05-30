@@ -14,13 +14,14 @@ class Cart extends \yii\base\Model {
     //
     //Функция возвращающая массив товаров из корзины
     public static function allcartitems() {
-        $products_arr = [];
-        if (Yii::$app->session['cart']) {
-            $products_arr = array_keys(Yii::$app->session['cart']);
-            $callback = function($item) {
-                return $item != 'lifetime';
-            };
-            return $products_arr = array_filter($products_arr, $callback);
+        $products_arr = array_keys(Yii::$app->session['cart']);
+        $callback = function($item) {
+            return $item != 'lifetime';
+        };
+        $products_arr = array_filter($products_arr, $callback);
+
+        if ($products_arr) {
+            return $products_arr;
         } else {
 //            throw new MyException(null,'В корзине отсутствуют товары');
             throw new HttpException(null, 'В корзине отсутствуют товары');

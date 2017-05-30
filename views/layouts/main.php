@@ -5,6 +5,7 @@ use app\assets\AppAsset;
 use yii\widgets\Breadcrumbs;
 
 AppAsset::register($this);
+//echo Html::csrfMetaTags();
 ?>
 
 <?php $this->beginPage() ?>

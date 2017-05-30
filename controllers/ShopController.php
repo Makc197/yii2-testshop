@@ -59,14 +59,13 @@ class ShopController extends _Modal {
         //затем передаем этот массив на страницу корзины
        
         $products_arr = Cart::allcartitems();
-        
         $dataProvider = new ActiveDataProvider([
-            'query' => Product::find()->joinWith('mmCategoryProducts')->andWhere(['in', 'id', $products_arr])->andWhere(['visibility' => 1])->orderBy(['updated' => SORT_DESC]),
+            'query' => Product::find()->andWhere(['in', 'id', $products_arr])->andWhere(['visibility' => 1])->orderBy(['updated' => SORT_DESC]),
             'pagination' => [
                 'pageSize' => 12,
             ],
         ]);
-
+        
         return $this->render('page-shopping-cart', ['dataProvider' => $dataProvider]);
     }
 

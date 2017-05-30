@@ -19,7 +19,7 @@ $categoryid = yii::$app->request->get('category_id');
     </td>
     <!-- Shopping Cart Item Quantity -->
     <td class="quantity">
-        <input class="form-control input-sm input-micro" type="text" value="<?= $model->cartCount ?>">
+        <input class="cart-item-count form-control input-sm input-micro" id="<?= $model->id ?>" type="text" value="<?= $model->cartCount ?>">
     </td>
     <!-- Shopping Cart Item Price -->
     <td class="price"><?= $model->price ?></td>

@@ -4,6 +4,7 @@ $('.logout_link').on('click', function (event) {
 //  console.log("test logout_link");
     $('#logout_form').submit();
 });
+
 //Перехватываем событие на изменение fileinput
 $('#product-imagefiles').on('change', function (event) {
 //  event.preventDefault();
@@ -138,6 +139,51 @@ $('.remove-cart-item').on('click', function (event) {
         }
     });
 });
+
+//Перехватываем событие при изменении количества товара в корзине
+$('.cart-item-count').on('change', function (event) {
+    event.preventDefault();
+    console.log("test onchange cart-item-count");
+    var inp = $(this);
+    console.log(inp);
+    console.log(inp.attr('id'));
+    console.log(inp.val());
+    var result_id = 'result_div_id1'; // div куда выводим сообщение
+    //Ajax запрос на сервер
+    $.ajax({
+        url: '/cart/update-cart-item-count', //Адрес экшена
+        type: "POST", //Тип запроса 
+        dataType: "html", //Тип данных 
+        data: {product_id: inp.attr('id'),
+            product_count: inp.val()},
+        success: function (response) {
+            recalctotalprice();
+            document.getElementById(result_id).innerHTML = response;
+            console.log(response);
+        },
+        error: function (response) { //Если ошибка 
+            document.getElementById(result_id).innerHTML = 'Ошибка при отправке формы';
+            console.log('Ошибка при отправке формы');
+        }
+    });
+});
+
+//Функция пересчета итоговой суммы
+function recalctotalprice() {
+    $.ajax({
+        url: '/cart/recalc-total-price', //Адрес экшена
+        dataType: "html", //Тип данных 
+        success: function (response) {
+            $('#total-price').html(response);
+            document.getElementById('total-price').innerHTML = response;
+            console.log(response);
+        },
+        error: function (response) { //Если ошибка 
+            document.getElementById(result_id).innerHTML = 'Ошибка при отправке формы';
+            console.log('Ошибка при отправке формы');
+        }
+    });
+}
 
 function empty(e) {
     switch (e) {

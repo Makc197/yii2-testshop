@@ -9,19 +9,21 @@ $this->title = 'Корзина';
 <div class="section">
     <div class="container">
 
-        <span id="result_div_id1">
-            <?php
-            $session = Yii::$app->session;
-//          var_dump($session['cart']);
-            ?>
-        </span>
-
         <div class="row">
             <div class="col-md-8">
                 <!-- Action Buttons -->
                 <div class="pull-right">
-                    <a href="<?= Url::to('/shop/page-shopping-cart') ?>" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Обновить</a>
+                    <a href="<?= Url::to('/shop/page-shopping-cart') ?>" class="recalc-total-price btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Пересчитать</a>
                     <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> Оформить покупку</a>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="pull-right">
+                    <span id="result_div_id1">
+                    </span>
                 </div>
             </div>
         </div>
@@ -56,18 +58,18 @@ $this->title = 'Корзина';
                     <tr>
                     </tr>
                     <tr>
-                        <td><b>Скидка</b></td>
-                        <td>- $18.00</td>
+<!--                    <td><b>Скидка</b></td>
+                        <td>- $18.00</td>-->
                     </tr>
                     <tr class="cart-grand-total">
                         <td><b>Итого</b></td>
-                        <td><b>$163.55</b></td>
+                        <td><b><span id="total-price">$163.55</span></b></td>
                     </tr>
                 </table>
                 <!-- Action Buttons -->
                 <div class="pull-right">
-                    <a href="<?= Url::to('/shop/page-shopping-cart') ?>" class="btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Обновить</a>
-                    <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> Оформить покупку</a>
+                    <a href="<?= Url::to('/cart/recalc-total-price') ?>" class="recalc-total-price btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Пересчитать</a>
+                    <a href="#" class="btn"><i class="recalc-total-price glyphicon glyphicon-shopping-cart icon-white"></i> Оформить покупку</a>
                 </div>
             </div>
         </div>
