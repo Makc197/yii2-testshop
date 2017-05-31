@@ -13,7 +13,7 @@ $this->title = 'Корзина';
             <div class="col-md-8">
                 <!-- Action Buttons -->
                 <div class="pull-right">
-                    <a href="<?= Url::to('/shop/page-shopping-cart') ?>" class="recalc-total-price btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Пересчитать</a>
+                    <a href="<?= Url::to('/cart/page-shopping-cart') ?>" class="recalc-total-price btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Пересчитать</a>
                     <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> Оформить покупку</a>
                 </div>
 
@@ -63,12 +63,12 @@ $this->title = 'Корзина';
                     </tr>
                     <tr class="cart-grand-total">
                         <td><b>Итого</b></td>
-                        <td><b><span id="total-price">$163.55</span></b></td>
+                        <td><b><span id="total-price"><?= $arrprice['totalprice_all'] ?></span></b></td>
                     </tr>
                 </table>
                 <!-- Action Buttons -->
                 <div class="pull-right">
-                    <a href="<?= Url::to('/cart/recalc-total-price') ?>" class="recalc-total-price btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Пересчитать</a>
+                    <a href="<?= Url::to('/cart/page-shopping-cart') ?>" class="recalc-total-price btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Пересчитать</a>
                     <a href="#" class="btn"><i class="recalc-total-price glyphicon glyphicon-shopping-cart icon-white"></i> Оформить покупку</a>
                 </div>
             </div>

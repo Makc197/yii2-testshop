@@ -96,7 +96,7 @@ use app\models\Category;
                 </li>
 
                 <li>
-                    <a href="<?= Url::to('/shop/page-shopping-cart') ?>">
+                    <a href="<?= Url::to('/cart/page-shopping-cart') ?>">
                         <span class="glyphicon glyphicon-shopping-cart"></span>
                         <?= '(100 руб)' ?>
                     </a>

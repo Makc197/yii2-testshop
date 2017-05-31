@@ -1,7 +1,6 @@
 //Перехватываем событие нажатия на кнопку Logout
 $('.logout_link').on('click', function (event) {
     event.preventDefault();
-//  console.log("test logout_link");
     $('#logout_form').submit();
 });
 
@@ -13,7 +12,6 @@ $('#product-imagefiles').on('change', function (event) {
     for (var $i = 0; $i < $count; $i++)
     {
         loadImage($r.files[$i]); //Вызов функции загрузки изображения
-//      console.log($r.files[$i].name);
     }
 
 //Функция загрузки изображений на стороне клиента через Fileinput
@@ -72,7 +70,6 @@ $('.item-remove').on('click', removeimg);
 function removeimg(e) {
 //  $(".owl-carousel").trigger('remove.owl.carousel', 0);
     var div = $(e.target).parent().parent();
-    console.log(empty(div.attr('id')));
     var result_id = 'result_div_id1'; // div куда выводим сообщение
 //  Ajax запрос на сервер для удаление картинки из базы
     $.ajax({
@@ -94,9 +91,7 @@ function removeimg(e) {
 //Перехватываем событие нажатия на кнопку Добавить в корзину
 $('.add-to-cart').on('click', function (event) {
     event.preventDefault();
-//    console.log("test add-to-cart");
     var div = $(event.target).parent();
-    console.log(div.attr('id'));
     var result_id = 'result_div_id1'; // div куда выводим сообщение
     //  Ajax запрос на сервер для добавления товара в корзину (в сессию)
     $.ajax({
@@ -118,13 +113,11 @@ $('.add-to-cart').on('click', function (event) {
 //Перехватываем событие нажатия на кнопку Удалить из корзины
 $('.remove-cart-item').on('click', function (event) {
     event.preventDefault();
-    console.log("test remove-cart-item");
     var div = $(event.target).parent().parent();
-    console.log(div.attr('id'));
     //var result_id = 'result_div_id1'; // div куда выводим сообщение
     //Ajax запрос на сервер
     $.ajax({
-        url: '/cart/remove-cart-item', //Адрес экшена
+        url: '/cart/ajax-remove-cart-item', //Адрес экшена
         type: "GET", //Тип запроса 
         dataType: "html", //Тип данных 
         data: {product_id: div.attr('id')}, // В экшене передаем id продукта, который удаляем из корзины
@@ -132,6 +125,7 @@ $('.remove-cart-item').on('click', function (event) {
             //document.getElementById(result_id).innerHTML = response;
             div.parent().remove();
             console.log(response);
+            recalctotalprice();
         },
         error: function (response) { //Если ошибка 
             //document.getElementById(result_id).innerHTML = 'Ошибка при отправке формы';
@@ -143,15 +137,11 @@ $('.remove-cart-item').on('click', function (event) {
 //Перехватываем событие при изменении количества товара в корзине
 $('.cart-item-count').on('change', function (event) {
     event.preventDefault();
-    console.log("test onchange cart-item-count");
     var inp = $(this);
-    console.log(inp);
-    console.log(inp.attr('id'));
-    console.log(inp.val());
     var result_id = 'result_div_id1'; // div куда выводим сообщение
     //Ajax запрос на сервер
     $.ajax({
-        url: '/cart/update-cart-item-count', //Адрес экшена
+        url: '/cart/ajax-update-cart-item-count', //Адрес экшена
         type: "POST", //Тип запроса 
         dataType: "html", //Тип данных 
         data: {product_id: inp.attr('id'),
@@ -171,12 +161,11 @@ $('.cart-item-count').on('change', function (event) {
 //Функция пересчета итоговой суммы
 function recalctotalprice() {
     $.ajax({
-        url: '/cart/recalc-total-price', //Адрес экшена
+        url: '/cart/ajax-recalc-total-price', //Адрес экшена
         dataType: "html", //Тип данных 
         success: function (response) {
             $('#total-price').html(response);
             document.getElementById('total-price').innerHTML = response;
-            console.log(response);
         },
         error: function (response) { //Если ошибка 
             document.getElementById(result_id).innerHTML = 'Ошибка при отправке формы';

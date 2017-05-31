@@ -9,7 +9,7 @@ use yii\web\HttpException;
 class Cart extends \yii\base\Model {
 
     //Модель Корзины  
-    //аботаем с корзиной посредством массива $_SESSION 
+    //работаем с корзиной посредством массива $_SESSION 
     //добавление записи о товаре в сессию происходит в CartItem
     //
     //Функция возвращающая массив товаров из корзины
@@ -23,7 +23,7 @@ class Cart extends \yii\base\Model {
         if ($products_arr) {
             return $products_arr;
         } else {
-//            throw new MyException(null,'В корзине отсутствуют товары');
+//          throw new MyException(null,'В корзине отсутствуют товары');
             throw new HttpException(null, 'В корзине отсутствуют товары');
         }
     }
