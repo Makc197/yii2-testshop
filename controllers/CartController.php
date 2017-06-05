@@ -6,6 +6,7 @@ use Yii;
 use app\models\Product;
 use yii\data\ActiveDataProvider;
 use app\models\Cart;
+use yii\web\HttpException;
 
 class CartController extends _BaseController {
 
@@ -21,17 +22,20 @@ class CartController extends _BaseController {
         //Ищем все товары, необходимые для формирования корзины
         //Кладем их в массив $products_arr 
         //затем передаем этот массив на страницу корзины
-        $arrprice = $this->recalcpricearr();
+        $arrprice = Cart::recalcpricearr($this->session); //Функция пересчета Итоговой суммы
         //$totalprice_all = $arrprice['totalprice_all'];
         $products_arr = Cart::allcartitems();
-        $dataProvider = new ActiveDataProvider([
-            'query' => Product::find()->andWhere(['in', 'id', $products_arr])->andWhere(['visibility' => 1])->orderBy(['updated' => SORT_DESC]),
-            'pagination' => [
-                'pageSize' => 12,
-            ],
-        ]);
+        if ($products_arr) {
+            $dataProvider = new ActiveDataProvider([
+                'query' => Product::find()->andWhere(['in', 'id', $products_arr])->andWhere(['visibility' => 1])->orderBy(['updated' => SORT_DESC]),
+                'pagination' => [
+                    'pageSize' => 12,
+                ],
+            ]);
 
-        return $this->render('page-shopping-cart', ['dataProvider' => $dataProvider, 'arrprice' => $arrprice]);
+            return $this->render('page-shopping-cart', ['dataProvider' => $dataProvider, 'arrprice' => $arrprice]);
+        }
+        throw new HttpException(null, 'В корзине отсутствуют товары');
     }
 
     //Добавление товара в корзину - Один из вариантов реализации - сейчас не используем
@@ -75,31 +79,9 @@ class CartController extends _BaseController {
     }
 
     public function actionAjaxRecalcTotalPrice() {
-        $arrprice = $this->recalcpricearr();
+        $arrprice = Cart::recalcpricearr($this->session); //Функция пересчета Итоговой суммы
         $totalprice_all = $arrprice['totalprice_all'];
         return $totalprice_all;
-    }
-
-    //Функция пересчета Итоговой суммы
-    public function recalcpricearr() {
-//      Формируем массив итоговых цен - по каждой позиции и
-//      итоговой суммы перебором массива $this->session
-//      По $product_id ищем продукт и берем его цену  
-        $products_arr = Cart::allcartitems();
-
-        foreach ($products_arr as $key => $product_id) {
-            $product_count = $this->session[$product_id]['count'];
-
-            if (($productmodel = Product::findOne($product_id)) !== null) {
-                $productprice = $productmodel->price;
-            }
-
-            $totalprice_product = $productprice * $product_count;
-            $arrprice[$product_id] = $totalprice_product;
-            $totalprice_all = $totalprice_all + $totalprice_product;
-        }
-        $arrprice['totalprice_all'] = $totalprice_all;
-        return $arrprice;
     }
 
     //Добавление товара по кнопке '+' и пересчет Итоговой суммы

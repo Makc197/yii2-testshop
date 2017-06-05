@@ -59,11 +59,11 @@ $this->title = 'Корзина';
                     </tr>
                     <tr>
 <!--                    <td><b>Скидка</b></td>
-                        <td>- $18.00</td>-->
+                        <td></td>-->
                     </tr>
                     <tr class="cart-grand-total">
                         <td><b>Итого</b></td>
-                        <td><b><span id="total-price"><?= $arrprice['totalprice_all'] ?></span></b></td>
+                        <td><b><span class="cart-total-price"><?= $arrprice['totalprice_all'] ?></span></b></td>
                     </tr>
                 </table>
                 <!-- Action Buttons -->

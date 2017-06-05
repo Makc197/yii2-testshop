@@ -164,8 +164,8 @@ function recalctotalprice() {
         url: '/cart/ajax-recalc-total-price', //Адрес экшена
         dataType: "html", //Тип данных 
         success: function (response) {
-            $('#total-price').html(response);
-            document.getElementById('total-price').innerHTML = response;
+            $('.cart-total-price').html(response);
+//          document.getElementById('total-price').innerHTML = response;
         },
         error: function (response) { //Если ошибка 
             document.getElementById(result_id).innerHTML = 'Ошибка при отправке формы';

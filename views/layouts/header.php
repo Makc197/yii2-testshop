@@ -3,6 +3,7 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use app\models\Category;
+use app\models\Cart;
 ?>
 
 <!-- Navigation & Logo-->
@@ -97,8 +98,11 @@ use app\models\Category;
 
                 <li>
                     <a href="<?= Url::to('/cart/page-shopping-cart') ?>">
-                        <span class="glyphicon glyphicon-shopping-cart"></span>
-                        <?= '(100 руб)' ?>
+                        <span class="cart-total-price glyphicon glyphicon-shopping-cart"><?php
+                            if ($arrprice = Cart::recalcpricearr(Yii::$app->session['cart'])) {
+                                echo $arrprice['totalprice_all'];
+                            }
+                            ?></span>
                     </a>
                 </li>
             </ul>
