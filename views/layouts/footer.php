@@ -11,7 +11,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-footer col-md-4 col-xs-6">
+        <div class="col-footer col-md-12 col-xs-12">
             <h3>Контакты:</h3>
             <p class="contact-us-details">
                 <b>Адрес:</b> г. Москва, Улица, Дом<br>

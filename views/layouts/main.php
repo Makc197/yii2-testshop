@@ -35,43 +35,55 @@ AppAsset::register($this);
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
 
-        <!-- Header Navigation & Logo-->
-        <?= $this->render('header') ?>
+        <div id="wrapper">
 
-        <!-- Page Title -->
-        <div class="section section-breadcrumbs">
-            <div class="row">
-                <div class="container">
-                    <div class="col-md-12">
-                        <!--<h1><= Html::encode($this->title) ?></h1>-->
-                        <h1><?= yii::$app->session->getFlash('regsuccess') == '' ? Html::encode($this->title) : yii::$app->session->getFlash('regsuccess') ?></h1>
+            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+
+
+                <!-- Header Navigation & Logo-->
+                <?= $this->render('header') ?>
+
+                <!--Left Menu-->
+                <?= $this->render('leftmenu') ?>                
+
+            </nav>
+
+            <div id="page-wrapper">
+                <!-- Page Title -->
+                <div class="section section-breadcrumbs">
+                    <div class="row">
+                        <div class="container">
+                            <div class="col-md-12">
+                                <!--<h1><= Html::encode($this->title) ?></h1>-->
+                                <h1><?= yii::$app->session->getFlash('regsuccess') == '' ? Html::encode($this->title) : yii::$app->session->getFlash('regsuccess') ?></h1>
+                            </div>
+                        </div>
+                    </div>    
+                    <div class="row">
+                        <div class="container">
+                            <?=
+                            Breadcrumbs::widget([
+                                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                            ])
+                            ?>
+                        </div>
                     </div>
                 </div>
-            </div>    
-            <div class="row">
-                <div class="container">
-                    <?=
-                    Breadcrumbs::widget([
-                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                    ])
-                    ?>
-                </div>
+
+                <!-- Body -->
+                <?= $content ?>
+
+                <!-- Footer -->
+                <?= $this->render('footer'); ?>
+
             </div>
+            <!-- /#page-wrapper -->
+
         </div>
-
-        <!-- Body -->
-        <?= $content ?>
-
-        <!-- Footer -->
-        <?= $this->render('footer'); ?>
-
-        <!-- Javascripts -->
-        <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
-        <!--<script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>-->
-        <!--<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>-->
 
         <?php $this->endBody() ?>
     </body>
 
 </html>
 <?php $this->endPage() ?>
+

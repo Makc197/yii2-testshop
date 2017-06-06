@@ -11,7 +11,7 @@ $imgpath = isset($imgsrc) ? '/img/products/' . $imgsrc : $emptyimg;
 $categoryid = yii::$app->request->get('category_id');
 ?>
 
-<div class = "col-lg-3 col-md-4 col-sm-6">
+<div class = "col-lg-4 col-md-6 col-sm-12">
     <!--Product -->
     <div class = "shop-item">
 

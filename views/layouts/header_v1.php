@@ -2,91 +2,110 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+use app\models\Category;
+use app\models\Cart;
 ?>
 
 <!-- Navigation & Logo-->
-<div class="mainmenu-wrapper">
+<div class="navbar navbar-default" role="navigation">
     <div class="container">
-        <div class="menuextras">
-            <div class="extras">
-                <ul>
-                    <li class="shopping-cart-items"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> <a href="<?= Url::to('/shop/page-shopping-cart') ?>"><b><?= '0 товаров' ?></b></a></li>
-
-                    <li>
-                        <?= Html::beginForm(['/site/logout'], 'post') ?>
-                        <?=
-                        Yii::$app->user->isGuest ?
-                        Html::a('Вход', '/site/login') :
-                        Html::submitButton(
-                        sprintf('Выход (%s)', Yii::$app->user->identity->login), ['class' => 'btn-link logout maks-logout']
-                        );
-                        ?>
-                        <?= Html::endForm() ?>
-                    </li>
-
-                </ul>
-            </div>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="<?= Url::to('/') ?>">МаГаЗиН</a>
         </div>
-        <nav id="mainmenu" class="mainmenu">
-            <ul>
-                <li class="logo-wrapper"><a href="<?= Url::to('/site/index') ?>"><img src="/img/mPurpose-logo.png" alt="Multipurpose Twitter Bootstrap Template"></a></li>
-                <li class="active">
-                    <a href="<?= Url::to('/site/index') ?>">
-                        <span class="glyphicon glyphicon-home" style="font-size: 20px;"></span>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-left">
+
+                <!--<li><a href="<= Url::to('/') ?>">Главная</a></li>--> 
+                <!--<li class="active">
+                    <a href="/">
+                        <span class="glyphicon glyphicon-home"></span>
                     </a>
-                </li>
+                </li>-->
 
                 <?php if (Yii::$app->user->can('admin')) : ?>
-                    <li class="has-submenu">
-                        <a href="#">Admin menu</a>
-                        <div class="mainmenu-submenu">
-                            <div class="mainmenu-submenu-inner"> 
-                                <div>
-                                    <ul>
-                                        <li><a href="<?= Url::to('/site/page-products') ?>">Категория 1</a></li>
-                                        <li><a href="<?= Url::to('/site/page-products') ?>">Категория 2</a></li>
-                                        <li><a href="<?= Url::to('/site/page-products') ?>">Категория 3</a></li>
-                                        <li><a href="<?= Url::to('/site/page-products') ?>">Категория 4</a></li>
-                                    </ul>                              
-                                </div>
-                            </div>
-                        </div>
+                    <li class="dropdown"><a href="#"class="dropdown-toggle" data-toggle="dropdown">Администрирование<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="<?= Url::to('/root/product') ?>">Товары (добавление/редактирование)</a></li>
+                        </ul>                              
                     </li>    
                 <?php endif ?>
-                <li class="has-submenu">
-                    <a href="#">Каталог товаров</a>
-                    <div class="mainmenu-submenu">
-                        <div class="mainmenu-submenu-inner"> 
-                            <div>
-                                <h4>Категории товаров</h4>
-                                <ul>
-                                    <li><a href="<?= Url::to('/site/page-products') ?>">Категория 1</a></li>
-                                    <li><a href="<?= Url::to('/site/page-products') ?>">Категория 2</a></li>
-                                    <li><a href="<?= Url::to('/site/page-products') ?>">Категория 3</a></li>
-                                    <li><a href="<?= Url::to('/site/page-products') ?>">Категория 4</a></li>
 
-                                </ul>                              
-                            </div>
-                            <div>
-                                <h4>Theme examples</h4>
-                                <ul>
-                                    <li><a href="<?= Url::to('/site/page-portfolio-2-columns-1') ?>">Portfolio (2 Columns, Option 1)</a></li>
-                                    <li><a href="<?= Url::to('/site/page-portfolio-2-columns-2') ?>">Portfolio (2 Columns, Option 2)</a></li>
-                                    <li><a href="<?= Url::to('/site/page-portfolio-3-columns-1') ?>">Portfolio (3 Columns, Option 1)</a></li>
-                                    <li><a href="<?= Url::to('/site/page-portfolio-3-columns-2') ?>">Portfolio (3 Columns, Option 2)</a></li>
-                                    <li><a href="<?= Url::to('/site/page-portfolio-item') ?>">Portfolio Item (Project) Description</a></li>
-                                </ul>                             
-                            </div>                         
-                        </div><!-- /mainmenu-submenu-inner -->
-                    </div><!-- /mainmenu-submenu -->
+                <li class="dropdown"><a href="#"class="dropdown-toggle" data-toggle="dropdown">Theme examples<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?= Url::to('/site/page-portfolio-2-columns-1') ?>">Portfolio (2 Columns, Option 1)</a></li>
+                        <li><a href="<?= Url::to('/site/page-portfolio-2-columns-2') ?>">Portfolio (2 Columns, Option 2)</a></li>
+                        <li><a href="<?= Url::to('/site/page-portfolio-3-columns-1') ?>">Portfolio (3 Columns, Option 1)</a></li>
+                        <li><a href="<?= Url::to('/site/page-portfolio-3-columns-2') ?>">Portfolio (3 Columns, Option 2)</a></li>
+                        <li><a href="<?= Url::to('/site/page-job-details') ?>">Page job details</a></li>
+                        <li><a href="<?= Url::to('/site/page-portfolio-item') ?>">Portfolio Item (Project) Description</a></li>
+                        <li><a href="<?= Url::to('/site/page-products') ?>">Products catalog</a></li>
+                        <li><a href="<?= Url::to('/site/page-shopping-cart') ?>">Shopping cart</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Отдельная ссылка</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Еще одна отдельная ссылка</a></li>
+                    </ul>
                 </li>
+
+                <li class="dropdown"><a href="#"class="dropdown-toggle" data-toggle="dropdown">Каталог товаров<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <?php
+                        if ($categories = Category::getAllcategories()) {
+                            foreach ($categories as $item) {
+                                echo '<li><a href="' . Url::to(['/shop/page-products', 'category_id' => $item ["id"]]) . '">' . $item ["name"] . '</a></li>';
+                            }
+                        }
+                        ?>
+                        <li class="divider"></li>
+                        <li><a href="#">Отдельная ссылка</a></li>
+                    </ul>
+                </li>
+
                 <li>
                     <a href="<?= Url::to('/site/about') ?>">О нас</a>
                 </li>
+
                 <li>
                     <a href="<?= Url::to('/site/contact') ?>">Форма обратной связи</a>
                 </li>
             </ul>
-        </nav>
+
+            <ul class="nav navbar-nav navbar-right">
+
+                <!--<li>
+                    <?
+                    Yii::$app->user->isGuest ?
+                    Html::a('Вход', Url::to('/site/login')) :
+                    Html::a(sprintf('Выход (%s)', Yii::$app->user->identity->login), Url::to('/site/logout'));
+                    ?>
+                </li>-->
+
+                <li>
+                    <!--logout - перехватываем событие js - см \js\base.js-->
+                    <?= Html::beginForm(['/site/logout'], 'post', ['id' => 'logout_form']) ?>
+                    <?= Html::endForm() ?>
+                    <?=
+                    Yii::$app->user->isGuest ? Html::a('Вход', Url::to('/site/login')) :
+                    Html::a(sprintf('Выход (%s)', Yii::$app->user->identity->login), '#', ['class' => 'logout_link'])
+                    ?>
+                </li>
+
+                <li>
+                    <a href="<?= Url::to('/cart/page-shopping-cart') ?>">
+                        <span class="cart-total-price glyphicon glyphicon-shopping-cart"><?php
+                            if ($arrprice = Cart::recalcpricearr(Yii::$app->session['cart'])) {
+                                echo $arrprice['totalprice_all'];
+                            }
+                            ?></span>
+                    </a>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
     </div>
 </div>

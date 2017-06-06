@@ -8,11 +8,6 @@ use app\models\ContactForm;
 
 class SiteController extends _BaseController {
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
     public function actionIndex() {
         //var_dump(Yii::$app->user->identity->fBirthday); die;
         return $this->render('index');
@@ -66,11 +61,6 @@ class SiteController extends _BaseController {
         ];
     }
 
-    /**
-     * Login action.
-     *
-     * @return string
-     */
     public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
 //          return $this->goHome();
@@ -92,22 +82,20 @@ class SiteController extends _BaseController {
         ]);
     }
 
-    /**
-     * Logout action.
-     *
-     * @return string
-     */
     public function actionLogout() {
         Yii::$app->user->logout();
 //      return $this->goHome();
         return $this->redirect('/');
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return string
-     */
+    public function actionAbout() {
+        return $this->render('about');
+    }
+
+    public function actionContacts() {
+        return $this->render('contacts');
+    }
+
     public function actionContact() {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->contact()) {
@@ -118,15 +106,6 @@ class SiteController extends _BaseController {
         return $this->render('contact', [
             'model' => $model,
         ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout() {
-        return $this->render('about');
     }
 
 }
