@@ -44,9 +44,6 @@ use app\models\Cart;
             </a>
         </li>
 
-        <li>
-            <span class="header-spacer">
-        </li>
 
         <!--<li>
             <?

@@ -10,7 +10,8 @@ use app\models\Product;
 //добавление записи о товаре в сессию происходит в CartItem
 class Cart extends \yii\base\Model {
 
-    //Функция allcartitems возвращает массив товаров из корзины
+    //Функция allcartitems возвращает массив id товаров из корзины
+    //для запроса ActiveRecord - Product::find()->andWhere(['in', 'id', $products_arr])
     public static function allcartitems() {
         if (Yii::$app->session['cart']) {
             $products_arr = array_keys(Yii::$app->session['cart']);
@@ -26,11 +27,11 @@ class Cart extends \yii\base\Model {
         return false;
     }
 
-//Функция recalcpricearr возвращает 
-//массив итоговых цен по каждой позиции и
-//итоговую суммы корзины  
+    //Функция recalcpricearr возвращает 
+    //массив итоговых цен по каждой позиции и
+    //итоговую суммы корзины  
     public static function recalcpricearr($session) {
- 
+
         if ($products_arr = self::allcartitems()) {
             //перебор массива $products_arr
             //По $product_id ищем продукт и берем его цену
@@ -39,12 +40,17 @@ class Cart extends \yii\base\Model {
 
                 if (($productmodel = Product::findOne($product_id)) !== null) {
                     $productprice = $productmodel->price;
+                    $producttitle = $productmodel->title;
+                    $arrprice[$product_id]['count'] = $product_count;
+                    $arrprice[$product_id]['price'] = $productprice;
+                    $arrprice[$product_id]['title'] = $producttitle;
+                    $totalprice_product = $productprice * $product_count;
+                    $arrprice[$product_id]['totalprice_product'] = $totalprice_product;
                 }
 
-                $totalprice_product = $productprice * $product_count;
-                $arrprice[$product_id] = $totalprice_product;
                 $totalprice_all = $totalprice_all + $totalprice_product;
             }
+
             $arrprice['totalprice_all'] = $totalprice_all;
             return $arrprice;
         }

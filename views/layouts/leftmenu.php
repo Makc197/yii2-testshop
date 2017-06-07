@@ -21,7 +21,7 @@ use app\models\Category;
 
             <?php if (Yii::$app->user->can('admin')) : ?>
                 <li>
-                    <a href="#"><i class="fa fa-wrench fa-fw"></i> Администрирование<span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-cog fa-fw"></i> Администрирование<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="<?= Url::to('/root/product') ?>"> Товары</a></li>
                     </ul>
@@ -31,7 +31,7 @@ use app\models\Category;
 
             <!--Каталог товаров-->
             <li>
-                <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Каталог товаров<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa fa-shopping-bag fa-fw"></i> Каталог товаров<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <?php
                     if ($categories = Category::getAllcategories()) {

@@ -38,8 +38,8 @@ $categoryid = yii::$app->request->get('category_id');
             <?=
             //По нажатии кнопки отрисовка модального окна через Bootstrap data-togle 
             //передаем ajax запросом через data-modal_url  product_id в /shop/modal - см base.js
-            Html::button(
-            '<i class = "icon-shopping-cart icon-white"></i> Добавить в корзину', [
+            Html::a(
+            '<i class = "icon-shopping-cart icon-white"></i> Добавить в корзину', "#", [
                 'class' => 'btn  btn-primary',
                 'data-toggle' => 'modal',
                 'data-modal_url' => Url::to(

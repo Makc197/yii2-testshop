@@ -1,3 +1,4 @@
+
 //Перехватываем событие нажатия на кнопку Logout
 $('.logout_link').on('click', function (event) {
     event.preventDefault();
@@ -219,11 +220,11 @@ $(function () {
     })
 });
 
-$(function () {
-    $('.modal-submit').on('click', function (e) {
-        var $target = $(this);
-        //Ajax запрос на actionAdd
-        //Пересчитываем модалку с другим контентом - сообщение Товар добавлен в корзину
-        $($target.data("target") + ' .modal-body').html('<h5>Товар добавлен в корзину</h5>');
-    })
-});
+//$(function () {
+//    $('.modal-submit').on('click', function (e) {
+//        var $target = $(this);
+//        //Ajax запрос на actionAdd
+//        //Пересчитываем модалку с другим контентом - сообщение Товар добавлен в корзину
+//        $($target.data("target") + ' .modal-body').html('<h5>Товар добавлен в корзину</h5>');
+//    })
+//});

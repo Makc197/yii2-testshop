@@ -53,16 +53,16 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'phone' => 'Phone',
+            'name' => 'ФИО',
+            'phone' => 'Телефон',
             'email' => 'Email',
-            'zipcode' => 'Zipcode',
-            'city' => 'City',
-            'street' => 'Street',
-            'house' => 'House',
-            'build' => 'Build',
-            'room' => 'Room',
-            'delivery_type' => 'Delivery Type',
+            'zipcode' => 'Индекс',
+            'city' => 'Город',
+            'street' => 'Улица',
+            'house' => 'Дом',
+            'build' => 'Корпус',
+            'room' => 'Квартира',
+            'delivery_type' => 'Тип доставки',
             'user_id' => 'User ID',
         ];
     }

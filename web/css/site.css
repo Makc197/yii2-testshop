@@ -8,7 +8,7 @@ body {
 }
 
 .header-spacer {
-    padding: 30px;
+    padding: 15px;
 }
 
 .container {
@@ -116,7 +116,15 @@ body {
 
 .section-breadcrumbs {
     margin-bottom: 0 !important;
-    background: rgba(0, 0, 0, 0.68) !important;
+    background: rgb(238, 238, 238) !important;
+}
+
+.summary {
+    padding-left: 15px !important;
+}
+
+.site-contact p {
+    padding-left: 15px;
 }
 
 .navbar-nav>li>a {

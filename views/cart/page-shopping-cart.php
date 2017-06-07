@@ -10,17 +10,16 @@ $this->title = 'Корзина';
     <div class="container">
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <!-- Action Buttons -->
                 <div class="pull-right">
                     <a href="<?= Url::to('/cart/page-shopping-cart') ?>" class="recalc-total-price btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Пересчитать</a>
-                    <a href="#" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> Оформить покупку</a>
+                    <a href="<?= Url::to('/order/create-order') ?>" class="btn"><i class="glyphicon glyphicon-shopping-cart icon-white"></i> Оформить покупку</a>
                 </div>
-
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="pull-right">
                     <span id="result_div_id1">
                     </span>
@@ -29,7 +28,7 @@ $this->title = 'Корзина';
         </div>
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <!-- Shopping Cart Items -->
                 <table class="shopping-cart">
                     <!-- Shopping Cart Item -->
@@ -53,7 +52,7 @@ $this->title = 'Корзина';
 
         <div class="row">
             <!-- Shopping Cart Totals -->
-            <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-6">
+            <div class="col-md-6 col-md-offset-6 col-sm-6 col-sm-offset-6">
                 <table class="cart-totals">
                     <tr>
                     </tr>
@@ -69,7 +68,7 @@ $this->title = 'Корзина';
                 <!-- Action Buttons -->
                 <div class="pull-right">
                     <a href="<?= Url::to('/cart/page-shopping-cart') ?>" class="recalc-total-price btn btn-grey"><i class="glyphicon glyphicon-refresh"></i> Пересчитать</a>
-                    <a href="#" class="btn"><i class="recalc-total-price glyphicon glyphicon-shopping-cart icon-white"></i> Оформить покупку</a>
+                    <a href="<?= Url::to('/order/create-order') ?>" class="btn"><i class="recalc-total-price glyphicon glyphicon-shopping-cart icon-white"></i> Оформить покупку</a>
                 </div>
             </div>
         </div>
