@@ -24,33 +24,35 @@ use Yii;
  * @property OrderProduct[] $orderProducts
  * @property Product[] $products
  */
-class Order extends \yii\db\ActiveRecord
-{
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
+class Order extends \yii\db\ActiveRecord {
+
+    public static function tableName() {
         return 'order';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
+    const SCENARIO_CREATENEW = 'CREATENEW';
+    const SCENARIO_POSTDELIVERY = 'POSTDELIVERY';
+    const SCENARIO_COURIERDELIVERY = 'COURIERDELIVERY';
+
+    public function scenarios() {
+        $scenarios = parent::scenarios();
+        //Перечень полей, которые нужно проверять в сценарии - остальные поля исключаются
+        $scenarios[self::SCENARIO_CREATENEW] = ['name', 'phone', 'delivery_type'];
+        $scenarios[self::SCENARIO_POSTDELIVERY] = ['name', 'phone', 'zipcode', 'city', 'street', 'house', 'build', 'room', 'delivery_type'];
+        $scenarios[self::SCENARIO_COURIERDELIVERY] = ['name', 'phone', 'city', 'street', 'house', 'build', 'room', 'delivery_type'];
+        return $scenarios;
+    }
+
+    public function rules() {
         return [
-            [['name', 'phone', 'email', 'zipcode', 'city', 'street', 'house', 'build', 'room', 'delivery_type'], 'string'],
-            [['user_id'], 'integer'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+                [['name', 'phone', 'email', 'zipcode', 'city', 'street', 'house', 'build', 'room'], 'string'],
+                [['name', 'phone', 'email', 'zipcode', 'city', 'street', 'house', 'build', 'room', 'delivery_type'], 'required'],
+                [['user_id', 'delivery_type'], 'integer'],
+                [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'name' => 'ФИО',
@@ -67,27 +69,51 @@ class Order extends \yii\db\ActiveRecord
         ];
     }
 
+    public function createNewOrder() {
+        $this->load(Yii::$app->request->post());
+
+        switch ($this->delivery_type) {
+            case 1:
+                $this->scenario = self::SCENARIO_COURIERDELIVERY;
+                break;
+
+            case 2:
+                $this->scenario = Order::SCENARIO_POSTDELIVERY;
+                break;
+
+            default:
+                $this->scenario = Order::SCENARIO_CREATENEW;
+                $this->validate();
+                return false;
+        }
+
+        //Записываем значение полей из заказа 
+        //var_dump($this->validate(), $this->getErrors(), $this->save());
+        if ($this->validate() & $this->save()) {
+            yii::$app->session->setFlash('regsuccess', 'Заказ оформлен');
+            return true;
+        }
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrderProducts()
-    {
+    public function getOrderProducts() {
         return $this->hasMany(OrderProduct::className(), ['order_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProducts()
-    {
+    public function getProducts() {
         return $this->hasMany(Product::className(), ['id' => 'product_id'])->viaTable('order_product', ['order_id' => 'id']);
     }
+
 }

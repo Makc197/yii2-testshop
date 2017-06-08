@@ -41,11 +41,12 @@ class Cart extends \yii\base\Model {
                 if (($productmodel = Product::findOne($product_id)) !== null) {
                     $productprice = $productmodel->price;
                     $producttitle = $productmodel->title;
-                    $arrprice[$product_id]['count'] = $product_count;
-                    $arrprice[$product_id]['price'] = $productprice;
-                    $arrprice[$product_id]['title'] = $producttitle;
+                    $arrprice['cart'][$product_id]['count'] = $product_count;
+                    $arrprice['cart'][$product_id]['price'] = $productprice;
+                    $arrprice['cart'][$product_id]['title'] = $producttitle;
+                    $arrprice['cart'][$product_id]['article'] = str_pad($product_id, 8, "0", STR_PAD_LEFT);
                     $totalprice_product = $productprice * $product_count;
-                    $arrprice[$product_id]['totalprice_product'] = $totalprice_product;
+                    $arrprice['cart'][$product_id]['totalprice_product'] = $totalprice_product;
                 }
 
                 $totalprice_all = $totalprice_all + $totalprice_product;
