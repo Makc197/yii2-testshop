@@ -13,18 +13,23 @@ class OrderController extends _BaseController {
     public function actionCreateOrder($id = null) {
         $order = $id ? Order::findOne($id) : new Order();
 
-        //Если создается новый заказ - загрузка массива $_POST, валидация, сохранение, редирект на главную
-        if ($order->createNewOrder()) {
+        //Массив товаров в корзине
+        $arrprice = Cart::recalcpricearr(Yii::$app->session['cart']);
+
+        //Если создается новый заказ и в корзине присутствуют товары -  
+        //загрузка массива $_POST, валидация, сохранение, редирект на главную
+        if ($id == null && $arrprice && $order->createNewOrder($arrprice)) {
+            //Очищение корзины при успешном оформлении заказа
             Yii::$app->session->remove('cart');
             return $this->redirect('/');
         }
 
         //Рендер страницы оформления заказа если в корзине присутствуют товары
-        if ($arrprice = Cart::recalcpricearr(Yii::$app->session['cart'])) {
+        if ($arrprice) {
             $dataProvider = new ArrayDataProvider([
                 'allModels' => $arrprice['cart'],
                 'pagination' => [
-                    'pageSize' => 3,
+                    'pageSize' => 5,
                 ],
             ]);
 

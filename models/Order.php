@@ -38,8 +38,8 @@ class Order extends \yii\db\ActiveRecord {
         $scenarios = parent::scenarios();
         //Перечень полей, которые нужно проверять в сценарии - остальные поля исключаются
         $scenarios[self::SCENARIO_CREATENEW] = ['name', 'phone', 'delivery_type'];
-        $scenarios[self::SCENARIO_POSTDELIVERY] = ['name', 'phone', 'zipcode', 'city', 'street', 'house', 'build', 'room', 'delivery_type'];
-        $scenarios[self::SCENARIO_COURIERDELIVERY] = ['name', 'phone', 'city', 'street', 'house', 'build', 'room', 'delivery_type'];
+        $scenarios[self::SCENARIO_POSTDELIVERY] = ['name', 'phone', 'zipcode', 'city', 'street', 'house', 'delivery_type'];
+        $scenarios[self::SCENARIO_COURIERDELIVERY] = ['name', 'phone', 'city', 'street', 'house', 'delivery_type'];
         return $scenarios;
     }
 
@@ -48,6 +48,7 @@ class Order extends \yii\db\ActiveRecord {
                 [['name', 'phone', 'email', 'zipcode', 'city', 'street', 'house', 'build', 'room'], 'string'],
                 [['name', 'phone', 'email', 'zipcode', 'city', 'street', 'house', 'build', 'room', 'delivery_type'], 'required'],
                 [['user_id', 'delivery_type'], 'integer'],
+                [['order_number'], 'safe'],
                 [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -66,10 +67,11 @@ class Order extends \yii\db\ActiveRecord {
             'room' => 'Квартира',
             'delivery_type' => 'Тип доставки',
             'user_id' => 'User ID',
+            'order_number' => 'Номера заказа'
         ];
     }
 
-    public function createNewOrder() {
+    public function createNewOrder($arrprice) {
         $this->load(Yii::$app->request->post());
 
         switch ($this->delivery_type) {
@@ -78,19 +80,38 @@ class Order extends \yii\db\ActiveRecord {
                 break;
 
             case 2:
-                $this->scenario = Order::SCENARIO_POSTDELIVERY;
+                $this->scenario = self::SCENARIO_POSTDELIVERY;
                 break;
 
             default:
-                $this->scenario = Order::SCENARIO_CREATENEW;
+                $this->scenario = self::SCENARIO_CREATENEW;
                 $this->validate();
                 return false;
         }
 
-        //Записываем значение полей из заказа 
+        //Записываем значение полей из заказа в Order
         //var_dump($this->validate(), $this->getErrors(), $this->save());
         if ($this->validate() & $this->save()) {
-            yii::$app->session->setFlash('regsuccess', 'Заказ оформлен');
+            $order_id = $this->id;
+            //Генерация уникального номера заказа
+            $rndkey = random_int(0, PHP_INT_MAX);
+            $order_number = date('YmdHis') . 'N' . $order_id . 'R' . substr($rndkey, 1, 4);
+            $this->order_number = $order_number;
+            $this->save();
+
+            //Разбор массива товаров корзины и запись в базу в order_product
+            foreach ($arrprice['cart'] as $key => $val) {
+                //print $key . '-' . $val['count'].' | ';
+                $order_product = new OrderProduct;
+                $order_product->product_id = $key;
+                $order_product->count = $val['count'];
+                $order_product->price = $val['price'];
+                $order_product->order_id = $order_id;
+                //var_dump($order_product->validate(), $order_product->getErrors(), $order_product->save());
+                $order_product->save();
+            }
+
+            yii::$app->session->setFlash('regsuccess', 'Спасибо. Заказ оформлен. </br>Номер заказа: '.$order_number.'</br>В ближайшее время наш менеджер свяжется с Вами.');
             return true;
         }
     }

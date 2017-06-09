@@ -9,8 +9,15 @@ use app\models\Category;
 $this->title = 'Product details';
 
 $path = Yii::getAlias('@web/img/products/');
+
 $categoryid = yii::$app->request->get('category_id');
-$categoryname = Category::findOne($categoryid)->name;
+if ($categoryid) {
+    $categoryname = Category::findOne($categoryid)->name;
+} else {
+    $categories = $model->mmCategoryProducts[0];
+    $categoryid = $categories->category->id;
+    $categoryname = $categories->category->name;
+}
 
 $this->title = $model->title . ' (Арт.: ' . str_pad($model->id, 8, "0", STR_PAD_LEFT) . ')';
 $this->params['breadcrumbs'][] = ['label' => $categoryname, 'url' => ['/shop/page-products', 'category_id' => $categoryid]];
@@ -65,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?>
 
                 <span id="result_div_id1">
-                  
+
                 </span>
 
                 <h4>
@@ -161,7 +168,7 @@ $this->params['breadcrumbs'][] = $this->title;
 Modal::begin(
 [
     'id' => 'ModalWindow',
-    'size' => Modal::SIZE_SMALL,        
+    'size' => Modal::SIZE_SMALL,
 ]
 );
 Modal::end();
