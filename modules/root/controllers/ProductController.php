@@ -65,7 +65,8 @@ class ProductController extends Controller {
     public function actionCreate() {
         $model = new Product();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save() && $this->uploadfiles()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            $this->uploadfiles();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
