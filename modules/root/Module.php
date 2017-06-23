@@ -35,12 +35,12 @@ class Module extends \yii\base\Module {
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
+//            'verbs' => [
+//                'class' => VerbFilter::className(),
+//                'actions' => [
+//                    'delete' => ['POST','GET'],
+//                ],
+//            ],
         ];
     }
 

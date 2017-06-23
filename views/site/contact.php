@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </p>
 
                 <div class="row">
-                    <div class="col-md-8 col-lg-6">
+                    <div class="col-md-10 col-lg-8">
 
                         <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
 
@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         <?=
                         $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-                            'template' => '<div class="row"><div class="col-md-6 col-lg-3">{image}</div><div class="col-md-6 col-lg-4">{input}</div></div>',
+                            'template' => '<div class="row"><div class="col-md-6 col-lg-4">{image}</div><div class="col-md-6 col-lg-4">{input}</div></div>',
                         ])
                         ?>
 

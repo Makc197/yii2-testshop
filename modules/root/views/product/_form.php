@@ -19,22 +19,24 @@ $path = Yii::getAlias('@web/img/products/');
     <!--<div class="section">
         <div class="container">-->
 
-    <div class="row">
+    <div class="row">   
         <!-- Product Image & Available Colors -->
-        <div class="col-lg-4 col-md-5 col-sm-6">
+        <div class="col-lg-4 col-md-6 col-sm-6">
             <!--<div class="product-image-large">-->
 
-            <div class="form-group field-product-imagefiles">
-                <div class="file-upload">
-                    <label>
-                        <!--<input type="hidden" name="Product[imageFiles][]" value="">-->
-                        <input type="file" form="fakeform" id="product-imagefiles" name="Product[imageFiles][]" multiple="" accept="image/*">
-                        <span class="icon-span-filestyle glyphicon glyphicon-folder-open"></span> 
-                        <span class="buttonText">  Добавить изображение</span>
-                    </label>
+            <?php if ($model->id) { ?>
+                <div class="form-group field-product-imagefiles">
+                    <div class="file-upload">
+                        <label>
+                            <!--<input type="hidden" name="Product[imageFiles][]" value="">-->
+                            <input type="file" form="fakeform" id="product-imagefiles" name="Product[imageFiles][]" multiple="" accept="image/*">
+                            <span class="icon-span-filestyle glyphicon glyphicon-folder-open"></span> 
+                            <span class="buttonText">  Добавить изображение</span>
+                        </label>
+                    </div>
+                    <span id="result_div_id1"></span>
                 </div>
-                <span id="result_div_id1"></span>
-            </div>
+            <?php } ?>
 
             <div class="form-group">
                 <div class="owl-theme owl-carousel">
@@ -50,7 +52,7 @@ $path = Yii::getAlias('@web/img/products/');
             <!--</div>-->             
         </div>
 
-        <div class="col-lg-6 col-md-5 col-sm-6 product-details">
+        <div class="col-lg-6 col-md-6 col-sm-6 product-details">
 
             <?= $form->errorSummary($model); ?>
 
@@ -75,14 +77,14 @@ $path = Yii::getAlias('@web/img/products/');
     </div>
 
     <div class="row">
-        <div class="col-lg-10 col-md-10 product-details">
+        <div class="col-lg-10 product-details">
 
             <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
             <div class="form-group">
                 <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Сохранить внесенные изменения', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
             </div>
-            
+
         </div>
     </div>
 

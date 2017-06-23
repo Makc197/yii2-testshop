@@ -18,7 +18,7 @@ $path = Yii::getAlias('@web/img/products/');
     <div class="container">
         <div class="row">
             <!-- Product Image & Available Colors -->
-            <div class="col-lg-4 col-md-5 col-sm-6">
+            <div class="col-lg-4 col-md-6 col-sm-6">
                 <!--<div class="product-image-large">-->
                 <div class="form-group">
                     <div class="owl-theme owl-carousel">
@@ -32,7 +32,7 @@ $path = Yii::getAlias('@web/img/products/');
                 <!--</div>-->             
             </div>
 
-            <div class="col-lg-3 col-md-5 col-sm-6 product-details">
+            <div class="col-lg-6 col-md-6 col-sm-6 product-details">
                 <p>
                     <?= Html::a('Внести изменения', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                     <?=
@@ -86,7 +86,7 @@ $path = Yii::getAlias('@web/img/products/');
 
         <div class="row">
             <!-- Full Description & Specification -->
-            <div class="col-lg-7 col-md-10">
+            <div class="col-lg-10">
                 <div class="tabbable">
                     <!-- Tabs -->
                     <ul class="nav nav-tabs product-details-nav">
