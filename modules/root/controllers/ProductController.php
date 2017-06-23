@@ -18,21 +18,6 @@ class ProductController extends Controller {
     public $enableCsrfValidation = false;
 
     /**
-     * @inheritdoc
-     */
-//    public function behaviors()
-//    {
-//        return [
-//            'verbs' => [
-//                'class' => VerbFilter::className(),
-//                'actions' => [
-//                    'delete' => ['POST'],
-//                ],
-//            ],
-//        ];
-//    }
-
-    /**
      * Lists all Product models.
      * @return mixed
      */
