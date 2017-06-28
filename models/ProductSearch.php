@@ -64,7 +64,7 @@ class ProductSearch extends Product {
         $query->andFilterWhere([
             'price' => $this->price,
             'sale' => $this->sale,
-            'id' => $this->id,
+            'product.id' => $this->id,
             'count' => $this->count,
         ]);
 

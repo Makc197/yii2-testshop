@@ -24,6 +24,7 @@ use app\models\Category;
                     <a href="#"><i class="fa fa-cog fa-fw"></i> Администрирование<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="<?= Url::to('/root/product') ?>"> Товары</a></li>
+                        <li><a href="<?= Url::to('/root/order') ?>"> Заказы</a></li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
