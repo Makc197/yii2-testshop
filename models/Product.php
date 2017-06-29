@@ -133,6 +133,8 @@ class Product extends \yii\db\ActiveRecord {
     public function getOrders() {
         return $this->hasMany(Order::className(), ['id' => 'order_id'])->viaTable('order_product', ['product_id' => 'id']);
     }
+    
+    
 
     public function getImages() {
         return $this->hasMany(Image::className(), ['product_id' => 'id']);

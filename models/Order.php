@@ -129,6 +129,11 @@ class Order extends \yii\db\ActiveRecord {
     public function getOrderProducts() {
         return $this->hasMany(OrderProduct::className(), ['order_id' => 'id']);
     }
+    
+    public function getOrdersArray()
+    {
+        return $this->getProducts()->asArray();
+    }
 
     /**
      * @return \yii\db\ActiveQuery

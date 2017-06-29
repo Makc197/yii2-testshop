@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\Models\Order */
@@ -27,6 +29,41 @@ $this->params['breadcrumbs'][] = $this->title;
                     ])
                     ?>
                 </p>
+
+                <?=
+                GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'pager' => [
+                        'options' => ['class' => 'pagination pagination-lg'],
+                        'nextPageLabel' => 'Вперед',
+                        'prevPageLabel' => 'Назад'
+                    ],
+                    'layout' => '{summary}{items}<div class="pagination-wrapper">{pager}</div>',
+                    'columns' => [
+                            ['class' => 'yii\grid\SerialColumn'],
+                            ['attribute' => 'title',
+                            'label' => 'Наименование',
+                            'format' => 'html',
+                            'value' => function($data, $id) {
+                                return //print_r($k,1);
+                                Html::a(
+                                $data["title"], Url::to(['/shop/page-product-details', 'product_id' => $id, 'category_id' => $categoryid]), [
+                                    'target' => '_blank'
+                                ]
+                                );
+                            }
+                        ],
+                            ['attribute' => 'article',
+                            'label' => 'Артикул'],
+                            ['attribute' => 'price',
+                            'label' => 'Цена'],
+                            ['attribute' => 'count',
+                            'label' => 'Количество'],
+                            ['attribute' => 'totalprice_product',
+                            'label' => 'Сумма'],
+                    ],
+                ]);
+                ?>
 
                 <?=
                 DetailView::widget([

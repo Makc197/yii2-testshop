@@ -4,10 +4,14 @@ namespace app\modules\root\controllers;
 
 use Yii;
 use app\Models\Order;
+use app\models\OrderProduct;
 use app\Models\OrderSearch;
+//use app\models\Product;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+//use yii\filters\VerbFilter;
+//use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -44,8 +48,40 @@ class OrderController extends Controller {
      * @return mixed
      */
     public function actionView($id) {
+//        $dataProvider = new ActiveDataProvider([
+//            'query' => Order::find()->where(['id' => $id])->one()->getProducts(),
+//            'pagination' => [
+//                'pageSize' => 5,
+//            ],
+//        ]);
+
+        $products_arr = Order::find()->where(['id' => $id])->one()->products;
+//      Формируем массив и передаем его в качестве \yii\data\ArrayDataProvider в \yii\grid\GridView
+        foreach ($products_arr as $product) {
+            $product_id = $product['id'];
+            $order_product = OrderProduct::find()->where(['order_id' => $id, 'product_id' => $product_id])->one();
+            $product_count = $order_product['count'];
+            $productprice = $order_product['price'];
+            $arrprice['cart'][$product_id]['count'] = $product_count;
+            $arrprice['cart'][$product_id]['price'] = $productprice;
+            $arrprice['cart'][$product_id]['title'] = $product['title'];
+            $arrprice['cart'][$product_id]['article'] = str_pad($product_id, 8, "0", STR_PAD_LEFT);
+            $totalprice_product = $productprice * $product_count;
+            $arrprice['cart'][$product_id]['totalprice_product'] = $totalprice_product;
+            $totalprice_all = $totalprice_all + $totalprice_product;
+        }
+
+        $arrprice['totalprice_all'] = $totalprice_all;
+
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $arrprice['cart'],
+            'pagination' => [
+                'pageSize' => 5,
+            ],
+        ]);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($id), 'dataProvider' => $dataProvider
         ]);
     }
 
