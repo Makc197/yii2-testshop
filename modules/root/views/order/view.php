@@ -79,8 +79,24 @@ $this->params['breadcrumbs'][] = $this->title;
                         'house',
                         'build',
                         'room',
-                        'user_id',
-                        'delivery_type',
+                            [
+                            'header' => 'Тип доставки',
+                            'attribute' => 'delivery_type',
+                            'filter' => [
+                                1 => 'Доставка курьером',
+                                2 => 'Доставка почтой'],
+                            'format' => 'raw',
+                            'value' => function($data) {
+                                switch ($data->delivery_type) {
+                                    case 1:
+                                        return 'Доставка курьером';
+                                        break;
+                                    case 2:
+                                        return 'Доставка почтой';
+                                        break;
+                                }
+                            }
+                        ],
                         'order_number',
                     ],
                 ])

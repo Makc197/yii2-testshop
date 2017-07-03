@@ -93,7 +93,7 @@ class OrderController extends Controller {
     public function actionCreate() {
         $model = new Order();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->adminOrder() && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -110,6 +110,10 @@ class OrderController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+
+        //Определение сценария
+        $model->orderScenario();
+        //echo $model->getScenario(); die;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

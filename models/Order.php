@@ -111,9 +111,29 @@ class Order extends \yii\db\ActiveRecord {
                 $order_product->save();
             }
 
-            yii::$app->session->setFlash('regsuccess', 'Спасибо. Заказ оформлен. </br>Номер заказа: '.$order_number.'</br>В ближайшее время наш менеджер свяжется с Вами.');
+            yii::$app->session->setFlash('regsuccess', 'Спасибо. Заказ оформлен. </br>Номер заказа: ' . $order_number . '</br>В ближайшее время наш менеджер свяжется с Вами.');
             return true;
         }
+    }
+
+    //Определение сценария в зависимости от типа доставки
+    public function orderScenario() {
+//      $this->load(Yii::$app->request->post());
+
+        switch ($this->delivery_type) {
+            case 1:
+                $this->scenario = self::SCENARIO_COURIERDELIVERY;
+                break;
+
+            case 2:
+                $this->scenario = self::SCENARIO_POSTDELIVERY;
+                break;
+
+            default:
+                $this->scenario = self::SCENARIO_CREATENEW;
+        }
+
+        return $this->validate();
     }
 
     /**
@@ -129,9 +149,8 @@ class Order extends \yii\db\ActiveRecord {
     public function getOrderProducts() {
         return $this->hasMany(OrderProduct::className(), ['order_id' => 'id']);
     }
-    
-    public function getOrdersArray()
-    {
+
+    public function getOrdersArray() {
         return $this->getProducts()->asArray();
     }
 

@@ -30,9 +30,16 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'room')->textInput() ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
-
-    <?= $form->field($model, 'delivery_type')->textInput() ?>
+    <?php
+    $items = [
+        '1' => 'Доставка курьером',
+        '2' => 'Доставка почтой'
+    ];
+    $params = [
+        'prompt' => 'Выберите тип доставки...'
+    ];
+    echo $form->field($model, 'delivery_type')->dropDownList($items, $params);
+    ?>
 
     <?= $form->field($model, 'order_number')->textInput() ?>
 
