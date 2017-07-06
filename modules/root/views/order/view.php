@@ -11,6 +11,7 @@ use yii\grid\GridView;
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Заказы', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="section">
     <div class="container">
@@ -30,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ?>
                 </p>
 
+                <h3>Всего товаров в заказе на сумму: <?=$totalprice_all?> руб.</h3>
                 <?=
                 GridView::widget([
                     'dataProvider' => $dataProvider,

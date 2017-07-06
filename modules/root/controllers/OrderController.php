@@ -71,7 +71,7 @@ class OrderController extends Controller {
             $totalprice_all = $totalprice_all + $totalprice_product;
         }
 
-        $arrprice['totalprice_all'] = $totalprice_all;
+//      $arrprice['totalprice_all'] = $totalprice_all;
 
         $dataProvider = new ArrayDataProvider([
             'allModels' => $arrprice['cart'],
@@ -81,7 +81,7 @@ class OrderController extends Controller {
         ]);
 
         return $this->render('view', [
-            'model' => $this->findModel($id), 'dataProvider' => $dataProvider
+            'model' => $this->findModel($id), 'dataProvider' => $dataProvider, 'totalprice_all' => $totalprice_all
         ]);
     }
 
