@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ea48d1c0562ffabe74f21787e73d68a3",
+    "content-hash": "23b01eef1ed153bb14feb980d05b5a7d",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -54,6 +54,37 @@
                 "responsive",
                 "web"
             ]
+        },
+        {
+            "name": "bower-asset/chartjs",
+            "version": "v2.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chartjs/Chart.js.git",
+                "reference": "28cb390c4102fc34391289d955d342281cac0e85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chartjs/Chart.js/zipball/28cb390c4102fc34391289d955d342281cac0e85",
+                "reference": "28cb390c4102fc34391289d955d342281cac0e85",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "./dist/Chart.js",
+                "bower-asset-ignore": [
+                    ".github",
+                    ".codeclimate.yml",
+                    ".gitignore",
+                    ".npmignore",
+                    ".travis.yml",
+                    "scripts"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Simple HTML5 charts using the canvas element."
         },
         {
             "name": "bower-asset/jquery",
@@ -443,6 +474,49 @@
                 "mailer"
             ],
             "time": "2017-05-01T15:54:03+00:00"
+        },
+        {
+            "name": "yiier/yii2-chartjs-widget",
+            "version": "v1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiier/yii2-chartjs-widget.git",
+                "reference": "e49244ff04104193f87677f3aeb1cb8177c76c1e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiier/yii2-chartjs-widget/zipball/e49244ff04104193f87677f3aeb1cb8177c76c1e",
+                "reference": "e49244ff04104193f87677f3aeb1cb8177c76c1e",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/chartjs": "^2.1.3",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "yiier\\chartjs\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "forecho",
+                    "email": "caizhenghai@gmail.com"
+                }
+            ],
+            "description": "ChartJs 2 for Yii2 widget",
+            "keywords": [
+                "chartjs",
+                "extension",
+                "widget",
+                "yii2"
+            ],
+            "time": "2016-05-17T08:16:19+00:00"
         },
         {
             "name": "yiisoft/yii2",
