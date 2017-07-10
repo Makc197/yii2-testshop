@@ -16,7 +16,7 @@ use yii\data\ArrayDataProvider;
 /**
  * OrderController implements the CRUD actions for Order model.
  */
-class StatisticController extends Controller {
+class StatisticsController extends Controller {
 
     public $enableCsrfValidation = false;
 
@@ -33,12 +33,24 @@ class StatisticController extends Controller {
 //    }
 
     public function actionProductsSell() {
-
-        $test = OrderProduct::find()
-        ->joinWith('product', 'product.categories')
-        ->select(['category.name', 'COUNT(*) as cent'])
+        $test = (new \yii\db\Query())
+        ->from('order_product')
+        ->leftJoin('product', 'order_product.product_id = product.id')
+        ->innerJoin('mm_category_product', 'mm_category_product.product_id = product.id')
+        ->leftJoin('category', 'mm_category_product.category_id = category.id')
         ->groupBy(['category.name'])
+        ->select(['count(*)', 'category.name'])
         ->all();
+
+//        $test = OrderProduct::find()
+//        ->joinWith('product')
+//        ->with('category')
+//        //->with('product')
+//       //->leftJoin('order', 'order.id = order_product.order_id')
+//        //->Where(['category_id' => 'product.id'])
+//        //->select(['category.name', 'COUNT(*) as cnt'])
+//        //->groupBy(['category.name'])
+//        ->all();
 
         var_dump($test);
         exit;
