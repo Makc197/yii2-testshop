@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Url;
 use app\models\Category;
 ?>
@@ -25,8 +26,18 @@ use app\models\Category;
                     <ul class="nav nav-second-level">
                         <li><a href="<?= Url::to('/root/product') ?>"> Товары</a></li>
                         <li><a href="<?= Url::to('/root/order') ?>"> Заказы</a></li>
+                        <li>
+                            <a href="<?= Url::to('/root/statistics/products-sell') ?>"> Статистика</a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="<?= Url::to('/root/statistics/products-sell') ?>">По проданным товарам</a>
+                                </li>
+                                <li>
+                                    <a href="#">Оборот по категориям</a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
-                    <!-- /.nav-second-level -->
                 </li>
             <?php endif ?>
 

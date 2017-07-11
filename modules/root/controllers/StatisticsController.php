@@ -2,11 +2,7 @@
 
 namespace app\modules\root\controllers;
 
-use Yii;
-use app\Models\Order;
-use app\models\OrderProduct;
-use app\Models\OrderSearch;
-use app\models\Product;
+use \yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 //use yii\filters\VerbFilter;
@@ -33,7 +29,7 @@ class StatisticsController extends Controller {
 //    }
 
     public function actionProductsSell() {
-        $test = (new \yii\db\Query())
+        $productsbycategory = (new Query())
         ->from('order_product')
         ->leftJoin('product', 'order_product.product_id = product.id')
         ->innerJoin('mm_category_product', 'mm_category_product.product_id = product.id')
@@ -42,25 +38,12 @@ class StatisticsController extends Controller {
         ->select(['count(*)', 'category.name'])
         ->all();
 
-//        $test = OrderProduct::find()
-//        ->joinWith('product')
-//        ->with('category')
-//        //->with('product')
-//       //->leftJoin('order', 'order.id = order_product.order_id')
-//        //->Where(['category_id' => 'product.id'])
-//        //->select(['category.name', 'COUNT(*) as cnt'])
-//        //->groupBy(['category.name'])
-//        ->all();
-
-        var_dump($test);
-        exit;
-
-        $dataProvider = new ActiveDataProvider([
-//        'query' => OrderProduct::
-        ]);
+        $productsbycategory2 = array_column($productsbycategory, 'count');
+        $category = array_column($productsbycategory, 'name');
 
         return $this->render('productssell', [
-            'dataProvider' => $dataProvider
+            'productsbycategory' => $productsbycategory2,
+            'category' => $category
         ]);
     }
 
