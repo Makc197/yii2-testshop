@@ -33,7 +33,7 @@ use app\models\Category;
                                     <a href="<?= Url::to('/root/statistics/products-sell') ?>">По проданным товарам</a>
                                 </li>
                                 <li>
-                                    <a href="#">Оборот по категориям</a>
+                                    <a href="<?= Url::to('/root/statistics/cost-by-category') ?>">Оборот по категориям</a>
                                 </li>
                             </ul>
                         </li>
