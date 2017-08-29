@@ -12,6 +12,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Товары', 'url' => ['index']]
 $this->params['breadcrumbs'][] = $this->title;
 
 $path = Yii::getAlias('@web/img/products/');
+$emptyimg = '@web/img/emptyimg.jpg';
 ?>
 
 <div class="section">
@@ -22,11 +23,15 @@ $path = Yii::getAlias('@web/img/products/');
                 <!--<div class="product-image-large">-->
                 <div class="form-group">
                     <div class="owl-theme owl-carousel">
-                        <?php foreach ($model->images as $image) : ?>
+                        <?php if ($model->images): ?>
+                            <?php foreach ($model->images as $image) : ?>
                             <div class="item">
                                 <?= Html::img($path . $image->img, []) ?>
                             </div>
                         <?php endforeach ?>
+                        <?php else: ?>
+                            <?= Html::img($emptyimg, []) ?>
+                        <?php endif; ?>   
                     </div>
                 </div>
                 <!--</div>-->             

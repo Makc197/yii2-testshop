@@ -9,6 +9,7 @@ use app\models\Category;
 $this->title = 'Product details';
 
 $path = Yii::getAlias('@web/img/products/');
+$emptyimg = '@web/img/emptyimg.jpg';
 
 $categoryid = yii::$app->request->get('category_id');
 if ($categoryid) {
@@ -32,11 +33,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 <!--<div class="product-image-large">-->
                 <div class="form-group">
                     <div class="owl-theme owl-carousel">
-                        <?php foreach ($model->images as $image) : ?>
+                        <?php if ($model->images): ?>
+                            <?php foreach ($model->images as $image) : ?>
                             <div class="item">
                                 <?= Html::img($path . $image->img, []) ?>
                             </div>
                         <?php endforeach ?>
+                        <?php else: ?>
+                            <?= Html::img($emptyimg, []) ?>
+                        <?php endif; ?>   
                     </div>
                 </div>
                 <!--</div>-->             
