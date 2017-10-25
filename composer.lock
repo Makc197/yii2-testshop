@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "23b01eef1ed153bb14feb980d05b5a7d",
+    "content-hash": "7aca6c17074d9f1dd9e448319f8d320a",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -420,6 +420,62 @@
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
             "time": "2017-03-15T19:32:56+00:00"
+        },
+        {
+            "name": "stalkerrr/yii2-yandex-map",
+            "version": "0.11",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/stalkerrr/yii2-yandex-map.git",
+                "reference": "1df29661abec0942596e51ff87af9d3ab3f14d45"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/stalkerrr/yii2-yandex-map/get/1df29661abec0942596e51ff87af9d3ab3f14d45.zip",
+                "reference": "1df29661abec0942596e51ff87af9d3ab3f14d45",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "@dev"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "asset-installer-paths": {
+                    "npm-asset-library": "vendor/npm",
+                    "bower-asset-library": "vendor/bower"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "stalkerrr\\yandex_map\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "David Khachatryan",
+                    "email": "khachatryan.unicredit@gmail.com",
+                    "homepage": "https://bitbucket.org/stalkerrr/"
+                }
+            ],
+            "description": "Yandex map widget for Yii2",
+            "homepage": "https://bitbucket.org/stalkerrr/yii2-yandex-map",
+            "keywords": [
+                "yandex",
+                "yandex api",
+                "yandex map",
+                "yandex map cluster",
+                "yandex map markers",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2017-10-25T12:18:05+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
