@@ -40,16 +40,15 @@ $this->title = 'Оформление заказа';
                                 ['attribute' => 'title',
                                 'label' => 'Наименование',
                                 'format' => 'html',
-                                'value' => function($data,$id) {
+                                'value' => function($data, $id) {
                                     return //print_r($k,1);
                                     Html::a(
-                                    $data["title"], Url::to(['/shop/page-product-details', 'product_id' => $id, 'category_id' => $categoryid]), 
-                                    [
+                                    $data["title"], Url::to(['/shop/page-product-details', 'product_id' => $id, 'category_id' => $categoryid]), [
                                         'target' => '_blank'
                                     ]
                                     );
                                 }
-                                ],
+                            ],
                                 ['attribute' => 'article',
                                 'label' => 'Артикул'],
                                 ['attribute' => 'price',
@@ -66,7 +65,8 @@ $this->title = 'Оформление заказа';
                     $form->field($model, 'delivery_type')->dropdownList([
                         1 => 'Доставка курьером',
                         2 => 'Доставка почтой'
-                    ], ['prompt' => 'Выберите тип доставки']
+                    ], ['prompt' => 'Выберите тип доставки',
+                        'class' => 'delivery_type form-control' ]
                     );
                     ?>
 

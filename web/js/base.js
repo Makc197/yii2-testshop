@@ -159,6 +159,26 @@ $('.cart-item-count').on('change', function (event) {
     });
 });
 
+//На изменение типа доставки (delivery_type) отправляем ajax запрос - делаем валидацию полей формы по сценарию
+$('#order-delivery_type').on('change', function (event) {
+    event.preventDefault();
+    var inp = $(this);;
+//  Ajax запрос на сервер
+    $.ajax({
+        url: '/order/ajax-validate', //Адрес экшена
+        type: "POST", //Тип запроса 
+        dataType: "html", //Тип данных 
+        //Надо передать постом всю форму с значениями полей
+        data: {delivery_type: inp.val()}, // В экшен передаем value delivery_type
+        success: function (response) {  // Если удачно, то    
+            console.log(response);
+        },
+        error: function (response) { //Если ошибка 
+            console.log('Ошибка при отправке формы');
+        }
+    });
+});
+
 //Функция пересчета итоговой суммы
 function recalctotalprice() {
     $.ajax({

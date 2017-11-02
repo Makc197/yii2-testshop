@@ -9,8 +9,11 @@ use yii\data\ArrayDataProvider;
 
 class OrderController extends _BaseController {
 
+    public $enableCsrfValidation = false;
+
     //Создание заказа и запись его в базу на основании массива $_SESSION
     public function actionCreateOrder($id = null) {
+
         $order = $id ? Order::findOne($id) : new Order();
 
         //Массив товаров в корзине
@@ -36,6 +39,11 @@ class OrderController extends _BaseController {
             return $this->render('order', [
                 'arrprice' => $arrprice, 'model' => $order, 'dataProvider' => $dataProvider]);
         }
+    }
+
+    public function actionAjaxValidate() {
+        $order = new Order();
+        return $order->orderScenario();
     }
 
 }

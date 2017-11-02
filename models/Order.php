@@ -86,7 +86,6 @@ class Order extends \yii\db\ActiveRecord {
             default:
                 $this->scenario = self::SCENARIO_CREATENEW;
                 $this->validate();
-                return false;
         }
 
         //Записываем значение полей из заказа в Order
@@ -118,7 +117,8 @@ class Order extends \yii\db\ActiveRecord {
 
     //Определение сценария в зависимости от типа доставки
     public function orderScenario() {
-//      $this->load(Yii::$app->request->post());
+        $this->delivery_type = Yii::$app->request->post()['delivery_type'];
+//        $this->load(Yii::$app->request->post());
 
         switch ($this->delivery_type) {
             case 1:
@@ -133,7 +133,8 @@ class Order extends \yii\db\ActiveRecord {
                 $this->scenario = self::SCENARIO_CREATENEW;
         }
 
-        return $this->validate();
+        return $this->scenario;
+//        return $this->validate();
     }
 
     /**

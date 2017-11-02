@@ -112,7 +112,7 @@ class OrderController extends Controller {
         $model = $this->findModel($id);
 
         //Определение сценария
-        $model->orderScenario();
+        //$model->orderScenario();
         //echo $model->getScenario(); die;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
