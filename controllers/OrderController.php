@@ -6,6 +6,8 @@ use Yii;
 use app\models\Cart;
 use app\models\Order;
 use yii\data\ArrayDataProvider;
+use yii\widgets\ActiveForm;
+use yii\web\Response;
 
 class OrderController extends _BaseController {
 
@@ -13,6 +15,10 @@ class OrderController extends _BaseController {
 
     //Создание заказа и запись его в базу на основании массива $_SESSION
     public function actionCreateOrder($id = null) {
+
+        if (Yii::$app->request->isAjax) {
+            return $this->actionAjaxValidate();
+        }
 
         $order = $id ? Order::findOne($id) : new Order();
 

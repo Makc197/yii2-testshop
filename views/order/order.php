@@ -19,8 +19,12 @@ $this->title = 'Оформление заказа';
 
                     <?php
                     $form = ActiveForm::begin([
+                        'id' => 'form-order',
                         'method' => 'post',
-                        'action' => '/order/create-order'
+                        'action' => '/order/create-order',
+//                        'enableAjaxValidation' => true,
+//                        'enableClientValidation' => false
+                        
                     ]);
                     ?>
 
@@ -66,7 +70,7 @@ $this->title = 'Оформление заказа';
                         1 => 'Доставка курьером',
                         2 => 'Доставка почтой'
                     ], ['prompt' => 'Выберите тип доставки',
-                        'class' => 'delivery_type form-control' ]
+                        'class' => 'delivery_type form-control']
                     );
                     ?>
 

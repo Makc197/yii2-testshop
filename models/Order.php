@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\widgets\ActiveForm;
+use yii\web\Response;
 
 /**
  * This is the model class for table "order".
@@ -117,8 +119,8 @@ class Order extends \yii\db\ActiveRecord {
 
     //Определение сценария в зависимости от типа доставки
     public function orderScenario() {
-        $this->delivery_type = Yii::$app->request->post()['delivery_type'];
-//        $this->load(Yii::$app->request->post());
+//        $this->delivery_type = Yii::$app->request->post()['delivery_type'];
+        $this->load(Yii::$app->request->post());
 
         switch ($this->delivery_type) {
             case 1:
@@ -133,8 +135,9 @@ class Order extends \yii\db\ActiveRecord {
                 $this->scenario = self::SCENARIO_CREATENEW;
         }
 
-        return $this->scenario;
-//        return $this->validate();
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return ActiveForm::validate($this);
+//        return $this->scenario;
     }
 
     /**

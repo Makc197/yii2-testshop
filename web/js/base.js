@@ -4,7 +4,6 @@ $('.logout_link').on('click', function (event) {
     event.preventDefault();
     $('#logout_form').submit();
 });
-
 //Перехватываем событие на изменение fileinput
 $('#product-imagefiles').on('change', function (event) {
 //  event.preventDefault();
@@ -33,7 +32,6 @@ $('#product-imagefiles').on('change', function (event) {
 
 }
 );
-
 //Функция для отправки формы средствами Ajax 
 function AjaxFormRequest(result_id, dataURL, url) {
     var header = ";base64,";
@@ -109,7 +107,6 @@ $('.add-to-cart').on('click', function (event) {
         }
     });
 });
-
 //Функция удаления товара из корзины
 //Перехватываем событие нажатия на кнопку Удалить из корзины
 $('.remove-cart-item').on('click', function (event) {
@@ -134,7 +131,6 @@ $('.remove-cart-item').on('click', function (event) {
         }
     });
 });
-
 //Перехватываем событие при изменении количества товара в корзине
 $('.cart-item-count').on('change', function (event) {
     event.preventDefault();
@@ -159,25 +155,52 @@ $('.cart-item-count').on('change', function (event) {
     });
 });
 
+//Ajax валилация формы
 //На изменение типа доставки (delivery_type) отправляем ajax запрос - делаем валидацию полей формы по сценарию
-$('#order-delivery_type').on('change', function (event) {
-    event.preventDefault();
-    var inp = $(this);;
-//  Ajax запрос на сервер
-    $.ajax({
-        url: '/order/ajax-validate', //Адрес экшена
-        type: "POST", //Тип запроса 
-        dataType: "html", //Тип данных 
-        //Надо передать постом всю форму с значениями полей
-        data: {delivery_type: inp.val()}, // В экшен передаем value delivery_type
-        success: function (response) {  // Если удачно, то    
-            console.log(response);
-        },
-        error: function (response) { //Если ошибка 
-            console.log('Ошибка при отправке формы');
-        }
-    });
-});
+//$('#order-delivery_type').on('change', function (event) {
+//    event.preventDefault();
+//    var inp = $(this);
+//    var form = document.getElementById('form-order');
+//    var formdata = new FormData(form);
+////  Ajax запрос на сервер
+//    $.ajax({
+//        url: '/order/ajax-validate', //Адрес экшена
+//        type: "POST", //Тип запроса 
+//        processData: false,
+//        contentType: false,
+//        data: formdata,
+//        //dataType: "html", //Тип данных 
+//        //Надо передать постом всю форму с значениями полей
+//        //data: {delivery_type: inp.val()}, // В экшен передаем value delivery_type
+//
+//        success: function (response) {  // Если удачно, то    
+//            console.log(response);
+//            $('#form-order').yiiActiveForm('updateMessages', response, true);
+//        },
+//        error: function (response) { //Если ошибка 
+//            console.log('Ошибка при отправке формы');
+//
+//            $('#form-order').find('input, select, textarea').each(function() {
+//                $(this).yiiActiveForm('remove', $(this).attr('id'));
+//            });
+//            
+//            for(prop in response) {
+//                $('#form-order').yiiActiveForm('add',
+//                {
+//                    id: prop,
+//                    name: prop,
+//                    container: '.field' + prop,
+//                    input: '#' + prop,
+//                    error: '.help-block',
+//                    validate: function(attribute, value, messages, deffered, $form) {
+//                        yii.validation.required(value, messages, {message: response[prop]});
+//                    }
+//                }
+//                );
+//            }
+//        }
+//    });
+//});
 
 //Функция пересчета итоговой суммы
 function recalctotalprice() {
@@ -230,7 +253,6 @@ $(document).ready(function () {
         }
     });
 });
-
 $(function () {
     $('[data-toggle = modal]').on('click', function (e) {
         var $target = $(this);
@@ -239,7 +261,6 @@ $(function () {
         }
     })
 });
-
 //$(function () {
 //    $('.modal-submit').on('click', function (e) {
 //        var $target = $(this);
