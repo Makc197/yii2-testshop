@@ -17,7 +17,10 @@ class OrderController extends _BaseController {
     public function actionCreateOrder($id = null) {
 
         if (Yii::$app->request->isAjax) {
-            return $this->actionAjaxValidate();
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $order = new Order();
+            $order->selectOrderingScenario();
+            return ActiveForm::validate($order);
         }
 
         $order = $id ? Order::findOne($id) : new Order();
@@ -25,12 +28,14 @@ class OrderController extends _BaseController {
         //Массив товаров в корзине
         $arrprice = Cart::recalcpricearr(Yii::$app->session['cart']);
 
-        //Если создается новый заказ и в корзине присутствуют товары -  
-        //загрузка массива $_POST, валидация, сохранение, редирект на главную
-        if ($id == null && $arrprice && $order->createNewOrder($arrprice)) {
-            //Очищение корзины при успешном оформлении заказа
-            Yii::$app->session->remove('cart');
-            return $this->redirect('/');
+        if (Yii::$app->request->isPost){
+            //Если создается новый заказ и в корзине присутствуют товары -
+            //загрузка массива $_POST, валидация, сохранение, редирект на главную
+            if ($id == null && $arrprice && $order->createNewOrder($arrprice)) {
+                //Очищение корзины при успешном оформлении заказа
+                Yii::$app->session->remove('cart');
+                return $this->redirect('/');
+            }
         }
 
         //Рендер страницы оформления заказа если в корзине присутствуют товары
@@ -46,10 +51,4 @@ class OrderController extends _BaseController {
                 'arrprice' => $arrprice, 'model' => $order, 'dataProvider' => $dataProvider]);
         }
     }
-
-    public function actionAjaxValidate() {
-        $order = new Order();
-        return $order->orderScenario();
-    }
-
 }

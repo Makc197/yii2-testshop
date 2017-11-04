@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
 use yii\helpers\Url;
 
 $this->title = 'Оформление заказа';
@@ -17,12 +18,16 @@ $this->title = 'Оформление заказа';
             <div class="row">
                 <div class="col-md-8 col-lg-8">
 
+
                     <?php
+
                     $form = ActiveForm::begin([
                         'id' => 'form-order',
                         'method' => 'post',
                         'action' => '/order/create-order',
-//                        'enableAjaxValidation' => true,
+                        //'enableAjaxValidation' => true,
+                        'enableClientValidation' => false,
+                        'enableAjaxValidation' => true,
 //                        'enableClientValidation' => false
                         
                     ]);

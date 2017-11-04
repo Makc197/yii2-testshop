@@ -3,8 +3,6 @@
 namespace app\models;
 
 use Yii;
-use yii\widgets\ActiveForm;
-use yii\web\Response;
 
 /**
  * This is the model class for table "order".
@@ -47,6 +45,7 @@ class Order extends \yii\db\ActiveRecord {
 
     public function rules() {
         return [
+
                 [['name', 'phone', 'email', 'zipcode', 'city', 'street', 'house', 'build', 'room'], 'string'],
                 [['name', 'phone', 'email', 'zipcode', 'city', 'street', 'house', 'build', 'room', 'delivery_type'], 'required'],
                 [['user_id', 'delivery_type'], 'integer'],
@@ -86,12 +85,11 @@ class Order extends \yii\db\ActiveRecord {
                 break;
 
             default:
-                $this->scenario = self::SCENARIO_CREATENEW;
+                $this->scenario = self::SCENARIO_DEFAULT;
                 $this->validate();
         }
 
         //Записываем значение полей из заказа в Order
-        //var_dump($this->validate(), $this->getErrors(), $this->save());
         if ($this->validate() & $this->save()) {
             $order_id = $this->id;
             //Генерация уникального номера заказа
@@ -102,42 +100,36 @@ class Order extends \yii\db\ActiveRecord {
 
             //Разбор массива товаров корзины и запись в базу в order_product
             foreach ($arrprice['cart'] as $key => $val) {
-                //print $key . '-' . $val['count'].' | ';
                 $order_product = new OrderProduct;
                 $order_product->product_id = $key;
                 $order_product->count = $val['count'];
                 $order_product->price = $val['price'];
                 $order_product->order_id = $order_id;
-                //var_dump($order_product->validate(), $order_product->getErrors(), $order_product->save());
                 $order_product->save();
             }
 
-            yii::$app->session->setFlash('regsuccess', 'Спасибо. Заказ оформлен. </br>Номер заказа: ' . $order_number . '</br>В ближайшее время наш менеджер свяжется с Вами.');
+            yii::$app->session->setFlash(
+                'regsuccess',
+                'Спасибо. Заказ оформлен. </br>Номер заказа: ' . $order_number . '</br>В ближайшее время наш менеджер свяжется с Вами.');
             return true;
         }
     }
 
     //Определение сценария в зависимости от типа доставки
-    public function orderScenario() {
-//        $this->delivery_type = Yii::$app->request->post()['delivery_type'];
+    public function selectOrderingScenario() {
+
         $this->load(Yii::$app->request->post());
 
         switch ($this->delivery_type) {
             case 1:
                 $this->scenario = self::SCENARIO_COURIERDELIVERY;
                 break;
-
             case 2:
                 $this->scenario = self::SCENARIO_POSTDELIVERY;
                 break;
-
             default:
                 $this->scenario = self::SCENARIO_CREATENEW;
         }
-
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        return ActiveForm::validate($this);
-//        return $this->scenario;
     }
 
     /**
