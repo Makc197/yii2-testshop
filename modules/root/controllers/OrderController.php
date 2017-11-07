@@ -4,14 +4,13 @@ namespace app\modules\root\controllers;
 
 use Yii;
 use app\Models\Order;
-use app\models\OrderProduct;
+use app\Models\OrderProduct;
 use app\Models\OrderSearch;
-//use app\models\Product;
+use yii\widgets\ActiveForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-//use yii\filters\VerbFilter;
-//use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
+use yii\web\Response;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -106,14 +105,15 @@ class OrderController extends Controller {
      * Updates an existing Order model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
-     */
+     * @return mixed     */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
 
-        //Определение сценария
-        //$model->orderScenario();
-        //echo $model->getScenario(); die;
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $model->selectOrderingScenario();
+            return ActiveForm::validate($model);
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

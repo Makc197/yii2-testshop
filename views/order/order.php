@@ -18,18 +18,14 @@ $this->title = 'Оформление заказа';
             <div class="row">
                 <div class="col-md-8 col-lg-8">
 
-
                     <?php
 
                     $form = ActiveForm::begin([
                         'id' => 'form-order',
                         'method' => 'post',
                         'action' => '/order/create-order',
-                        //'enableAjaxValidation' => true,
                         'enableClientValidation' => false,
-                        'enableAjaxValidation' => true,
-//                        'enableClientValidation' => false
-                        
+                        'enableAjaxValidation' => true,                        
                     ]);
                     ?>
 
@@ -92,6 +88,7 @@ $this->title = 'Оформление заказа';
                     <div class="form-group">
                         <?= Html::submitButton('Подтвердить', ['class' => 'btn btn-primary']) ?>
                     </div>
+                    
                     <?php ActiveForm::end(); ?>
                 </div>
             </div>

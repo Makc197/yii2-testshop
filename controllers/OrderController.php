@@ -16,19 +16,19 @@ class OrderController extends _BaseController {
     //Создание заказа и запись его в базу на основании массива $_SESSION
     public function actionCreateOrder($id = null) {
 
+        $order = $id ? Order::findOne($id) : new Order();
+
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-            $order = new Order();
             $order->selectOrderingScenario();
             return ActiveForm::validate($order);
         }
 
-        $order = $id ? Order::findOne($id) : new Order();
 
         //Массив товаров в корзине
         $arrprice = Cart::recalcpricearr(Yii::$app->session['cart']);
 
-        if (Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
             //Если создается новый заказ и в корзине присутствуют товары -
             //загрузка массива $_POST, валидация, сохранение, редирект на главную
             if ($id == null && $arrprice && $order->createNewOrder($arrprice)) {
@@ -51,4 +51,5 @@ class OrderController extends _BaseController {
                 'arrprice' => $arrprice, 'model' => $order, 'dataProvider' => $dataProvider]);
         }
     }
+
 }

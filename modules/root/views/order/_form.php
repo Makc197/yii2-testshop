@@ -10,7 +10,15 @@ use yii\widgets\ActiveForm;
 
 <div class="order-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php
+    $form = ActiveForm::begin([
+        'id' => 'form-order',
+        'method' => 'post',
+        'action' => '/root/order/update?id=' . $model->id,
+        'enableClientValidation' => false,
+        'enableAjaxValidation' => true,
+    ]);
+    ?>
 
     <?= $form->field($model, 'name')->textInput() ?>
 
