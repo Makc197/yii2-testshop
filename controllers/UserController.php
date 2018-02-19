@@ -10,7 +10,7 @@ class UserController extends _BaseController {
     //При первой аутентификации - проверка токена, простановка признака Active, удаление токена из БД 
     public function actionAcceptreg($actkey) {
 
-        $user = new User();
+        $user = new User(['scenario' => User::SCENARIO_FIRSTACTIVATION]);
 
         if ($user->userActivate($actkey)) {
             return $this->redirect('/');
@@ -19,9 +19,9 @@ class UserController extends _BaseController {
 
     //Регистрация нового пользователя
     public function actionRegistration() {
-        $user = new User();
-        
-        if ($user->load(Yii::$app->request->post()) && $user->regnewuser()) {
+        $user = new User(['scenario' => User::SCENARIO_REGISTRATION]);
+
+        if ($user->load(Yii::$app->request->post()) && $user->regNewUser()) {
             return $this->redirect('/');
         }
 
@@ -32,9 +32,9 @@ class UserController extends _BaseController {
 
     //Запрос на смену пароля 
     public function actionReqresPassword() {
-        $user = new User();
+        $user = new User(['scenario' => User::SCENARIO_RESETPASSWORD]);
 
-        if ( $user->load(Yii::$app->request->post()) && $user->reqrespassword()) {
+        if ($user->load(Yii::$app->request->post()) && $user->reqResPassword()) {
             return $this->redirect('/');
         }
 
@@ -46,9 +46,9 @@ class UserController extends _BaseController {
     //Сброс пароля пользователя
     public function actionPasswordReset($actkey) {
 
-        $user = new User();
+        $user = new User(['scenario' => User::SCENARIO_RESETPASSWORD]);
 
-        if ($user->passwordreset($actkey)) {
+        if ($user->passwordReset($actkey)) {
             return $this->redirect('/');
         }
     }

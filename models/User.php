@@ -37,37 +37,39 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
         $scenarios = parent::scenarios();
         //Перечень полей, которые нужно проверять в сценарии - остальные поля исключаются
         $scenarios[self::SCENARIO_LOGIN] = ['login', 'password', 'rememberme'];
-        $scenarios[self::SCENARIO_REGISTRATION] = ['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'created', 'birthday', 'captcha'];
+        $scenarios[self::SCENARIO_REGISTRATION] = ['lastname', 'firstname', 'middlename', 'login', 'email', 'passwhash', 'password', 'reppassword', 'created', 'birthday', 'captcha'];
         $scenarios[self::SCENARIO_FIRSTACTIVATION] = ['emailtoken', 'isactive'];
         $scenarios[self::SCENARIO_RESETPASSWORD] = ['email'];
         return $scenarios;
     }
 
     public function rules() {
-//        Правила валидации - вариант1 - с перечислением сценариев
-//        return [
-//                [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'created', 'birthday'], 'required', 'on' => 'registration'],
-//                [['email'], 'email', 'on' => 'registration'],
-//                [['password'], 'validatePassword'],
-//                [['id', 'emailtoken', 'isactive'], 'safe','on' => 'registration', 'firstactivation'],
-//                [['birthday'], 'date', 'format' => 'php:d.m.Y', 'on' => 'registration'],
-//                [['reppassword'], 'myunique', 'on' => 'registration'], //myunique - самописный валидатор используем при регистрации
-//                [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200,'on' => 'registration'],
-//        ];
-//        
-//      Правила валидации - вариант2 - поля для проверки в сценарии заданы в function scenarios()
+
+//      Правила валидации - вариант1 - с перечислением сценариев
         return [
-                [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'birthday'], 'required'],
-                [['email'], 'email'],
-                [['id', 'emailtoken', 'isactive'], 'safe'],
-                [['birthday'], 'date', 'format' => 'dd.mm.yyyy'],
-                [['reppassword'], 'passunique'], //passunique - самописный валидатор используем при регистрации
-                [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200],
-                [['rememberme'], 'boolean'],
-                [['login'], 'loginunique'],
-                ['password', 'validatePassword'],
-                ['verifyCode', 'captcha'],
+            [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'reppassword', 'created', 'birthday'], 'required', 'on' => self::SCENARIO_REGISTRATION],
+            [['email'], 'email', 'on' => self::SCENARIO_REGISTRATION],
+            [['birthday'], 'date', 'format' => 'dd.mm.yyyy', 'on' => self::SCENARIO_REGISTRATION],
+            [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200, 'on' => self::SCENARIO_REGISTRATION],
+            [['reppassword'], 'passunique', 'on' => self::SCENARIO_REGISTRATION], //passunique - самописный валидатор используем при регистрации
+            [['password'], 'validatePassword', 'on' => self::SCENARIO_LOGIN],
+            [['id', 'emailtoken', 'isactive'], 'safe', 'on' => [self::SCENARIO_REGISTRATION, self::SCENARIO_FIRSTACTIVATION]],
+            [['verifyCode'], 'captcha', 'on' => self::SCENARIO_REGISTRATION],
         ];
+
+//      Правила валидации - вариант2 - поля для проверки в сценарии заданы в function scenarios()
+//        return [
+//                [['lastname', 'firstname', 'middlename', 'login', 'email', 'password', 'passwhash', 'reppassword', 'birthday'], 'required'],
+//                [['email'], 'email'],
+//                [['id', 'emailtoken', 'isactive'], 'safe'],
+//                [['birthday'], 'date', 'format' => 'dd.mm.yyyy'],
+//                [['reppassword'], 'passunique'], //passunique - самописный валидатор используем при регистрации
+//                [['lastname', 'firstname', 'middlename', 'login'], 'string', 'max' => 200],
+//                [['rememberme'], 'boolean'],
+//                [['login'], 'loginunique'],
+//                ['password', 'validatePassword'],
+//                ['verifyCode', 'captcha'],
+//        ];
     }
 
     public function attributeLabels() {
@@ -94,9 +96,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
 
         if (!$this->hasErrors()) {
             $user = $this->findByUsername($this->login);
+            
+            
 
             if ($user && Yii::$app->getSecurity()->validatePassword($this->password, $user->passwhash) && $user->isactive) {
                 //Доступ разрешен
+//                echo '<pre>';
+//                echo 'Доступ разрешен';
+//                var_dump($user); die;
                 return Yii::$app->user->login($user, $this->rememberme ? 3600 * 24 * 30 : 0);
             } else {
                 $this->addError($attribute, 'Неправильный логин или пароль');
@@ -126,15 +133,17 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
     }
 
     //Регистрация нового пользователя
-    public function regnewuser() {
-        $this->scenario = User::SCENARIO_REGISTRATION;
-
+    public function regNewUser() {
+//        $this->scenario = User::SCENARIO_REGISTRATION;
         //Установим значения вспомогательных полей
         $this->passwhash = Yii::$app->getSecurity()->generatePasswordHash($this->password);
         $this->emailtoken = md5($this->login . time());
         $this->created = date('Y-m-d H:i:s');
 
-        // var_dump($this->validate(), $this->getErrors(), $this->save());
+//        echo '<pre>';
+//        var_dump($this);
+//        var_dump($this->validate(), $this->getErrors(), $this->save());
+//        die;
 
         if ($this->validate() && $this->save()) {
             $registurl = Url::toRoute(['user/acceptreg', 'actkey' => $this->emailtoken], true);
@@ -178,7 +187,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
     }
 
     //Запрос на сброс пароля
-    public function reqrespassword() {
+    public function reqResPassword() {
 
         $this->scenario = User::SCENARIO_RESETPASSWORD;
         if ($this->validate()) {
@@ -199,7 +208,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
     }
 
     //Сброс пароля
-    public function passwordreset($acttoken, $type = null) {
+    public function passwordReset($acttoken, $type = null) {
         $user = $this->findIdentityByActivateToken($acttoken);
         $user->scenario = User::SCENARIO_RESETPASSWORD;
 
